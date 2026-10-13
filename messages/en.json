@@ -1,7 +1,27 @@
 {
   "Metadata": {
     "title": "Veroya Apartments",
-    "description": "Apartment rentals in Spain."
+    "description": "Apartments for short and long stays in Spain's best cities."
+  },
+  "Nav": {
+    "home": "Home",
+    "cities": "Cities",
+    "howItWorks": "How it works",
+    "longStays": "Long stays",
+    "owners": "Owners",
+    "menu": "Menu",
+    "mainNavigation": "Main navigation"
+  },
+  "LocaleSwitcher": {
+    "label": "Change language",
+    "es": "Español",
+    "en": "English"
+  },
+  "Footer": {
+    "tagline": "Well-kept apartments in Spain's best cities, for a few days or several months.",
+    "explore": "Explore",
+    "language": "Language",
+    "rights": "Veroya Apartments. All rights reserved."
   },
   "HomePage": {
     "title": "Veroya Apartments",
@@ -9,7 +29,7 @@
   },
   "NotFound": {
     "title": "Page not found",
-    "description": "The page you are looking for does not exist or has been moved.",
+    "description": "The page you are looking for doesn't exist or has moved.",
     "backHome": "Back to home"
   }
 }

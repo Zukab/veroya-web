@@ -1,7 +1,27 @@
 {
   "Metadata": {
     "title": "Veroya Apartments",
-    "description": "Alquiler de apartamentos en España."
+    "description": "Apartamentos para estancias cortas y largas en las mejores ciudades de España."
+  },
+  "Nav": {
+    "home": "Inicio",
+    "cities": "Ciudades",
+    "howItWorks": "Cómo funciona",
+    "longStays": "Estancias largas",
+    "owners": "Propietarios",
+    "menu": "Menú",
+    "mainNavigation": "Navegación principal"
+  },
+  "LocaleSwitcher": {
+    "label": "Cambiar idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "Footer": {
+    "tagline": "Apartamentos cuidados en las mejores ciudades de España, para unos días o para varios meses.",
+    "explore": "Explora",
+    "language": "Idioma",
+    "rights": "Veroya Apartments. Todos los derechos reservados."
   },
   "HomePage": {
     "title": "Veroya Apartments",

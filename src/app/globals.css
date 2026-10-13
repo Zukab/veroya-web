@@ -1,26 +1,42 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Colores de la marca (provisionales hasta que el cliente confirme):
+ * arena para fondos, terracota como acento y oliva como secundario.
+ */
+@theme {
+  --color-sand-50: #faf7f2;
+  --color-sand-100: #f3ede4;
+  --color-sand-200: #e8dfd2;
+  --color-sand-300: #d8cab6;
+
+  --color-terracotta-50: #fbf1ec;
+  --color-terracotta-100: #f5dccf;
+  --color-terracotta-500: #c8653a;
+  --color-terracotta-600: #b4532a;
+  --color-terracotta-700: #96431f;
+
+  --color-olive-50: #f1f3ee;
+  --color-olive-600: #5b6b4e;
+  --color-olive-700: #4a5740;
+
+  --color-ink: #1c1917;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-fraunces);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-sand-50);
+  color: var(--color-ink);
+}
+
+/* Desplazamiento suave al saltar al formulario de reserva (respeta la preferencia del usuario). */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
