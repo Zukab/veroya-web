@@ -17,15 +17,24 @@ dirección de prueba.
   (`supabase/migrations/`). Tipos en `src/types/database.ts`.
 - Datos de ejemplo cargados en el proyecto real (ver "Datos de ejemplo").
 - Usuario administrador creado: `veroyaproyecto@gmail.com` (en `public.admins`).
-- Solo existe la portada provisional; no hay páginas públicas reales ni panel todavía.
+**Bloque 2 — páginas públicas: pasos 1–5 terminados (2026-10-13).**
+- Base visual, inicio, `/ciudades`, `/ciudades/[ciudad]`, `/apartamento/[id]` (galería y
+  comodidades) y las tres páginas de contenido con textos provisionales.
+- Comodidades pasadas a claves fijas (migración `..._comodidades_a_claves` aplicada).
+- El formulario de reserva público **no está hecho**: el detalle del apartamento solo muestra
+  el resumen de precio (comentario "Paso 6" en `src/app/[locale]/apartamento/[id]/page.tsx`).
+  Se rehace dentro del plan de "Reservas y voucher".
 
-**Siguientes bloques:** páginas públicas, panel de administración, formulario de reserva.
+**Siguientes bloques:** reservas y voucher (formulario público, panel de reservas, pagos,
+PDF, verificación y correo) y el resto del panel de administración.
 
 Pendiente de verificar:
 - Escrituras con sesión iniciada (admin y usuario no admin) contra RLS y Storage: no se
   han probado porque aún no hay panel. Hacerlo en el bloque del panel.
 - Protección contra contraseñas filtradas de Supabase Auth: desactivada (aviso de
   `db advisors`); probablemente no disponible en el plan gratuito. Activarla si lo está.
+- `canonical` y `hreflang` (es/en): pendientes hasta tener dominio, porque Next exige
+  `metadataBase` con la URL definitiva.
 
 ## Stack
 
@@ -38,6 +47,8 @@ Pendiente de verificar:
 - Supabase en plan gratuito por ahora.
 - Idiomas: español (por defecto) e inglés, con `next-intl` y rutas con prefijo (`/en/...`).
 - Validación de formularios y entradas del servidor con `zod`.
+- Iconos con `lucide-react` (aprobado). Fuentes con `next/font/google`: Geist (texto) y
+  Fraunces (títulos).
 
 Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
 `node_modules/next/dist/docs/` antes de escribir código):
@@ -46,7 +57,16 @@ Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
 - `cacheComponents` está activado: leer cookies o cabeceras hace dinámica la página. Las
   páginas públicas leen datos con el cliente sin sesión (`src/lib/supabase/public.ts`) para
   poder cachearse; el cliente con cookies (`server.ts`) es solo para el panel.
-- El idioma se obtiene con `next/root-params` (`src/i18n/request.ts`).
+- El idioma se obtiene con `next/root-params` (`src/i18n/request.ts`). `next/root-params`
+  **no funciona en Server Actions**: ahí hay que pasar el idioma explícitamente
+  (`getTranslations({ locale, namespace })`).
+- Lecturas públicas en `src/lib/data/catalog.ts` con `'use cache'`, `cacheLife('hours')` y
+  las etiquetas de `src/lib/data/tags.ts`. El panel debe invalidarlas con `updateTag()` al
+  crear, editar o borrar ciudades y apartamentos.
+- `partialPrefetching` está activado: en páginas con parámetros dinámicos, leer `params`
+  dentro de un componente envuelto en `<Suspense>` con esqueleto (ver
+  `ciudades/[ciudad]/page.tsx`). Las rutas dinámicas usan `generateStaticParams` con al
+  menos un valor.
 
 ## Cuentas e infraestructura
 
@@ -83,7 +103,8 @@ Se validan con zod en `src/lib/env.ts` y `src/lib/env.server.ts`.
 ## Alcance
 
 Parte pública:
-- `/` inicio (portada, ciudades destacadas, apartamentos destacados)
+- `/` inicio (portada, ciudades y apartamentos destacados: los 6 mejor valorados; los que
+  no tienen valoraciones van al final)
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
 - `/apartamento/[id]` detalle con galería, comodidades y formulario de reserva
 - `/como-funciona`, `/estancias-largas`, `/propietarios` (páginas de contenido; usa textos
@@ -93,9 +114,12 @@ Formulario de reserva: nombre, correo, teléfono, país, número de huéspedes, 
 fecha de salida y mensaje opcional. Al guardar, genera un código `VRY-XXXXX`
 (5 caracteres A-Z0-9) y un PIN de 4 dígitos, queda en estado `Pendiente` y se le muestran
 al usuario el código y el PIN. Además:
-- **Protección contra spam:** campo trampa invisible (honeypot) y límite de envíos por IP.
-  El límite no puede usar servicios exclusivos de Vercel (p. ej. KV); debe funcionar
-  también en Cloudflare (por ejemplo, con una tabla en Supabase).
+- **Protección contra spam:** campo trampa invisible (honeypot) y límite de **30 envíos por
+  hora y por IP** (el equipo del cliente puede registrar muchas reservas seguidas desde el
+  mismo equipo). El límite no puede usar servicios exclusivos de Vercel (p. ej. KV); debe
+  funcionar también en Cloudflare (por ejemplo, con una tabla en Supabase).
+- **Reglas del apartamento:** rechazar estancias por debajo de `min_nights` y más huéspedes
+  que `max_guests`, con un mensaje claro.
 - **Código repetido:** si el insert falla por `booking_code` duplicado (error `23505`),
   reintentar con otro código generado con `crypto`.
 
@@ -107,16 +131,41 @@ Panel de administración (`/admin`):
 - `/admin/ciudades` y `/admin/ciudades/[slug]`: crear, editar, borrar, subir foto. Borrar
   una ciudad con apartamentos está bloqueado en la base de datos (error `23503`): el panel
   debe mostrar un mensaje claro.
-- `/admin/reservas`: listado (más recientes primero), filtro por estado, cambiar estado
-  (`Pendiente`, `Confirmada`, `Cancelada`) y borrar.
+- `/admin/reservas`: listado (más recientes primero), filtro por estado, botón "Crear
+  reserva", cambiar estado (`Pendiente`, `Confirmada`, `Cancelada`), registrar pagos y
+  borrar. Ver "Reservas y voucher".
 
 Los contenidos (ciudades, apartamentos, fotos) los carga el cliente desde el panel.
 
-Fuera de alcance por ahora: pagos, calendarios de disponibilidad, sincronización con
-Airbnb/Booking, correos automáticos.
+Fuera de alcance por ahora: cobros en línea (pasarela de pago), calendarios de
+disponibilidad públicos, sincronización con Airbnb/Booking y cualquier correo automático
+distinto del de confirmación de reserva.
 
-**No bloquees reservas por cruce de fechas.** El cliente registra reservas que pueden
-coincidir en el mismo apartamento; el sistema solo registra y el equipo gestiona.
+## Reservas y voucher
+
+Reglas aprobadas por el cliente (2026-10-13). Sustituyen a la regla anterior de no
+bloquear reservas por cruce de fechas.
+
+1. **Origen de las reservas:** el formulario público y el equipo del cliente desde el panel
+   (botón "Crear reserva" en `/admin/reservas`).
+2. **Pagos:** el administrador registra el pago en el panel (monto, fecha y forma de pago).
+   El voucher dice "Total pagado" solo si hay un pago registrado; si no, dice "Pendiente de
+   pago" o "Pago al llegar".
+3. **Disponibilidad:** no se pueden confirmar dos reservas en el mismo apartamento con
+   fechas que se crucen. Las solicitudes `Pendiente` sí pueden coincidir; el bloqueo se
+   aplica al pasar a `Confirmada`. Las fechas son intervalos [entrada, salida): si una
+   reserva sale el mismo día que entra otra, no se cruzan. Si el cliente tiene varios
+   apartamentos iguales, cada uno se registra como una unidad (un apartamento) distinta.
+4. **Voucher en PDF** solo con la marca Veroya, inspirado en el diseño de referencia del
+   cliente pero sin copiar marcas ajenas. Incluye un QR que lleva a la página pública de
+   verificación de la reserva.
+5. **Página de verificación:** muestra el estado real (confirmada o no, fechas, apartamento
+   y si el pago está registrado). Se accede con el enlace del QR o con localizador y PIN, y
+   no muestra más datos personales de los necesarios.
+6. **Correo de confirmación:** al confirmar una reserva se envía un correo al huésped con el
+   PDF adjunto y el enlace de verificación.
+7. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
+   VALIDEZ" y datos `@example.com`.
 
 ## Idiomas
 
@@ -128,8 +177,9 @@ coincidir en el mismo apartamento; el sistema solo registra y el equipo gestiona
   (también en `/en`).
 - **Comodidades:** lista fija definida en el código y traducida con `next-intl`; en la base
   de datos se guardan sus claves en `amenities`, y el panel las elige con casillas.
-  El seed actual aún guarda texto en español ("Wifi", "Aire acondicionado"…): al
-  implementar la lista hay que pasar el seed y los datos existentes a claves.
+  La lista está en `src/lib/amenities.ts`, con iconos en
+  `src/components/apartments/amenity-icon.tsx` y textos en `Amenities` de los mensajes.
+  Las claves desconocidas se ignoran al mostrar.
 
 ## Modelo de datos (Supabase)
 
@@ -188,3 +238,15 @@ de la base de datos son la última barrera; la validación principal es con zod.
 - Corre `npm run build` y `npm run lint` antes de decir que algo está listo.
 - Pregunta antes de instalar dependencias que no estén en el stack de arriba.
 - Diseño limpio, moderno y responsive (primero móvil).
+
+## Diseño
+
+- Colores **provisionales** hasta que el cliente confirme los suyos: arena (fondos),
+  terracota (acento) y oliva (secundario), definidos en `@theme` de `src/app/globals.css`.
+- Solo tema claro. Logotipo de texto provisional en `src/components/layout/logo.tsx`.
+- Sin fotos se muestra un marcador (`PhotoPlaceholder`); las páginas deben verse bien así.
+- Las tarjetas marcan "Estancia larga" a partir de 28 noches mínimas
+  (`LONG_STAY_MIN_NIGHTS` en `src/lib/format.ts`).
+- Las páginas de contenido muestran un aviso de texto provisional (`ContentPage`) hasta que
+  el cliente entregue los textos; Propietarios no tiene botón de contacto hasta tener los
+  datos de contacto.
