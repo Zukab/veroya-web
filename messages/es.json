@@ -1,0 +1,15 @@
+{
+  "Metadata": {
+    "title": "Veroya Apartments",
+    "description": "Alquiler de apartamentos en España."
+  },
+  "HomePage": {
+    "title": "Veroya Apartments",
+    "subtitle": "Sitio en construcción."
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o se ha movido.",
+    "backHome": "Volver al inicio"
+  }
+}
