@@ -41,9 +41,54 @@
     "workspace": "Escritorio para trabajar",
     "pets_allowed": "Se admiten mascotas"
   },
-  "HomePage": {
-    "title": "Veroya Apartments",
-    "subtitle": "Sitio en construcción."
+  "Apartment": {
+    "perNight": "/ noche",
+    "rooms": "{count, plural, =0 {Estudio} one {# habitación} other {# habitaciones}}",
+    "baths": "{count, plural, one {# baño} other {# baños}}",
+    "guests": "{count, plural, one {# huésped} other {# huéspedes}}",
+    "size": "{size} m²",
+    "minNights": "Mínimo {count, plural, one {# noche} other {# noches}}",
+    "reviews": "{count, plural, one {# reseña} other {# reseñas}}",
+    "ratingLabel": "Valoración: {rating} de 5",
+    "new": "Nuevo",
+    "longStay": "Estancia larga"
+  },
+  "Home": {
+    "heroEyebrow": "Apartamentos en España",
+    "heroTitle": "Tu casa en España, para unos días o para meses",
+    "heroSubtitle": "Apartamentos cuidados en buenos barrios, con un equipo cercano que te acompaña antes y durante tu estancia.",
+    "heroCtaCities": "Ver ciudades",
+    "heroCtaLongStays": "Estancias largas",
+    "citiesTitle": "Elige tu ciudad",
+    "citiesSubtitle": "Apartamentos seleccionados en las ciudades con más vida de España.",
+    "seeAllCities": "Ver todas las ciudades",
+    "featuredTitle": "Apartamentos destacados",
+    "featuredSubtitle": "Los mejor valorados por nuestros huéspedes.",
+    "howTitle": "Reservar es sencillo",
+    "howStep1Title": "Elige tu apartamento",
+    "howStep1Text": "Explora las ciudades y encuentra el apartamento que encaja con tu viaje.",
+    "howStep2Title": "Envía tu solicitud",
+    "howStep2Text": "Indica tus fechas y tus datos. Recibirás un código de reserva al momento.",
+    "howStep3Title": "Te confirmamos",
+    "howStep3Text": "Nuestro equipo revisa la disponibilidad y se pone en contacto contigo.",
+    "howCta": "Cómo funciona",
+    "ownersTitle": "¿Tienes un apartamento?",
+    "ownersText": "Nos ocupamos de todo para que tu propiedad esté siempre en buenas manos.",
+    "ownersCta": "Información para propietarios",
+    "emptyCities": "Pronto añadiremos ciudades.",
+    "emptyApartments": "Pronto añadiremos apartamentos."
+  },
+  "Cities": {
+    "title": "Ciudades",
+    "subtitle": "Elige una ciudad para ver sus apartamentos.",
+    "apartmentsCount": "{count, plural, =0 {Próximamente} one {# apartamento} other {# apartamentos}}",
+    "empty": "Pronto añadiremos ciudades."
+  },
+  "City": {
+    "breadcrumb": "Ciudades",
+    "apartmentsTitle": "Apartamentos en {city}",
+    "empty": "Todavía no hay apartamentos en esta ciudad. Vuelve pronto.",
+    "metaDescription": "Apartamentos para estancias cortas y largas en {city}."
   },
   "NotFound": {
     "title": "Página no encontrada",

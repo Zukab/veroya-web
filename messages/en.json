@@ -41,9 +41,54 @@
     "workspace": "Dedicated workspace",
     "pets_allowed": "Pets allowed"
   },
-  "HomePage": {
-    "title": "Veroya Apartments",
-    "subtitle": "Site under construction."
+  "Apartment": {
+    "perNight": "/ night",
+    "rooms": "{count, plural, =0 {Studio} one {# bedroom} other {# bedrooms}}",
+    "baths": "{count, plural, one {# bathroom} other {# bathrooms}}",
+    "guests": "{count, plural, one {# guest} other {# guests}}",
+    "size": "{size} m²",
+    "minNights": "Minimum {count, plural, one {# night} other {# nights}}",
+    "reviews": "{count, plural, one {# review} other {# reviews}}",
+    "ratingLabel": "Rating: {rating} out of 5",
+    "new": "New",
+    "longStay": "Long stay"
+  },
+  "Home": {
+    "heroEyebrow": "Apartments in Spain",
+    "heroTitle": "Your home in Spain, for a few days or for months",
+    "heroSubtitle": "Well-kept apartments in great neighbourhoods, with a friendly team that looks after you before and during your stay.",
+    "heroCtaCities": "Browse cities",
+    "heroCtaLongStays": "Long stays",
+    "citiesTitle": "Choose your city",
+    "citiesSubtitle": "Hand-picked apartments in Spain's liveliest cities.",
+    "seeAllCities": "See all cities",
+    "featuredTitle": "Featured apartments",
+    "featuredSubtitle": "The highest rated by our guests.",
+    "howTitle": "Booking is simple",
+    "howStep1Title": "Choose your apartment",
+    "howStep1Text": "Explore our cities and find the apartment that fits your trip.",
+    "howStep2Title": "Send your request",
+    "howStep2Text": "Enter your dates and details. You'll get a booking code straight away.",
+    "howStep3Title": "We confirm",
+    "howStep3Text": "Our team checks availability and gets in touch with you.",
+    "howCta": "How it works",
+    "ownersTitle": "Do you own an apartment?",
+    "ownersText": "We take care of everything so your property is always in good hands.",
+    "ownersCta": "Information for owners",
+    "emptyCities": "Cities coming soon.",
+    "emptyApartments": "Apartments coming soon."
+  },
+  "Cities": {
+    "title": "Cities",
+    "subtitle": "Choose a city to see its apartments.",
+    "apartmentsCount": "{count, plural, =0 {Coming soon} one {# apartment} other {# apartments}}",
+    "empty": "Cities coming soon."
+  },
+  "City": {
+    "breadcrumb": "Cities",
+    "apartmentsTitle": "Apartments in {city}",
+    "empty": "There are no apartments in this city yet. Check back soon.",
+    "metaDescription": "Apartments for short and long stays in {city}."
   },
   "NotFound": {
     "title": "Page not found",
