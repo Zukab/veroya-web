@@ -23,6 +23,24 @@
     "language": "Language",
     "rights": "Veroya Apartments. All rights reserved."
   },
+  "Amenities": {
+    "wifi": "Wi-Fi",
+    "air_conditioning": "Air conditioning",
+    "heating": "Heating",
+    "kitchen": "Fully equipped kitchen",
+    "washer": "Washing machine",
+    "dishwasher": "Dishwasher",
+    "tv": "TV",
+    "elevator": "Elevator",
+    "crib": "Crib",
+    "balcony": "Balcony",
+    "terrace": "Terrace",
+    "sea_view": "Sea view",
+    "pool": "Pool",
+    "parking": "Parking",
+    "workspace": "Dedicated workspace",
+    "pets_allowed": "Pets allowed"
+  },
   "HomePage": {
     "title": "Veroya Apartments",
     "subtitle": "Site under construction."
