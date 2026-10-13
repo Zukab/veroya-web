@@ -53,6 +53,19 @@
     "new": "New",
     "longStay": "Long stay"
   },
+  "ApartmentPage": {
+    "breadcrumb": "Cities",
+    "about": "About the apartment",
+    "amenities": "Amenities",
+    "details": "Details",
+    "maxGuests": "Up to {count, plural, one {# guest} other {# guests}}",
+    "photosCount": "{count, plural, one {# photo} other {# photos}}",
+    "showAllPhotos": "Show all {count} photos",
+    "photoAlt": "{name}, photo {index} of {total}",
+    "closeGallery": "Close gallery",
+    "gallery": "Photos of {name}",
+    "metaDescription": "{name} in {location}. From {price} per night."
+  },
   "Home": {
     "heroEyebrow": "Apartments in Spain",
     "heroTitle": "Your home in Spain, for a few days or for months",

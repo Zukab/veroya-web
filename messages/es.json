@@ -53,6 +53,19 @@
     "new": "Nuevo",
     "longStay": "Estancia larga"
   },
+  "ApartmentPage": {
+    "breadcrumb": "Ciudades",
+    "about": "Sobre el apartamento",
+    "amenities": "Comodidades",
+    "details": "Detalles",
+    "maxGuests": "Hasta {count, plural, one {# huésped} other {# huéspedes}}",
+    "photosCount": "{count, plural, one {# foto} other {# fotos}}",
+    "showAllPhotos": "Ver las {count} fotos",
+    "photoAlt": "{name}, foto {index} de {total}",
+    "closeGallery": "Cerrar galería",
+    "gallery": "Fotos de {name}",
+    "metaDescription": "{name} en {location}. Desde {price} por noche."
+  },
   "Home": {
     "heroEyebrow": "Apartamentos en España",
     "heroTitle": "Tu casa en España, para unos días o para meses",

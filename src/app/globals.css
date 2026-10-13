@@ -34,6 +34,11 @@ body {
   color: var(--color-ink);
 }
 
+/* Con un <dialog> abierto (p. ej. la galería), la página de fondo no se desplaza. */
+html:has(dialog[open]) {
+  overflow: hidden;
+}
+
 /* Desplazamiento suave al saltar al formulario de reserva (respeta la preferencia del usuario). */
 @media (prefers-reduced-motion: no-preference) {
   html {
