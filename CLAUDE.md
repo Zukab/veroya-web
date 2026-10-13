@@ -273,6 +273,14 @@ de la base de datos son la última barrera; la validación principal es con zod.
 - Ninguna contraseña ni clave escrita en el código.
 - Las rutas `/admin/*` se protegen en el servidor (`src/proxy.ts` + verificación de sesión
   y de pertenencia a `public.admins`), no solo ocultándolas en el cliente.
+  - `src/app/admin/layout.tsx` es un layout raíz aparte (solo español, sin `next-intl`,
+    `noindex`); las páginas con sesión van en el grupo `src/app/admin/(panel)/`.
+  - `src/proxy.ts` desvía `/admin` a `src/lib/supabase/proxy.ts`: renueva la sesión y
+    manda al login a quien no la tiene (con `?next=`, solo hacia rutas `/admin`).
+  - `src/lib/auth/admin.ts`: `requireSession()` para páginas y `requireAdmin()` para cada
+    lectura y Server Action del panel (devuelve el cliente con la sesión). El layout del
+    panel muestra "Sin permisos" a usuarios con sesión que no están en `public.admins`.
+  - Login con límite propio de 10 intentos cada 15 minutos por IP, además del de Supabase.
 - Las imágenes van en Supabase Storage (bucket público `media`), nunca como base64 en la
   base de datos.
 - Código y PIN de reserva generados con `crypto`, no con `Math.random`.
