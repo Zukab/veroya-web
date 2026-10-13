@@ -143,6 +143,12 @@ al usuario el código y el PIN. Además:
   que `max_guests`, con un mensaje claro.
 - **Código repetido:** si el insert falla por `booking_code` duplicado (error `23505`),
   reintentar con otro código generado con `crypto`.
+- Implementado en `src/app/[locale]/apartamento/[id]/actions.ts` (Server Action) y
+  `src/components/bookings/booking-form.tsx`. Validación en `src/lib/bookings/schema.ts`;
+  los errores son claves de `BookingErrors` en los mensajes. Guarda `total_amount` =
+  precio × noches (el formulario lo muestra como precio orientativo).
+- El límite por IP (`src/lib/rate-limit.ts`) guarda un HMAC de la IP con la clave secreta
+  de Supabase como clave: si se rota esa clave, los contadores empiezan de cero.
 
 Panel de administración (`/admin`):
 - `/admin/login` con Supabase Auth (correo y contraseña). Sin registro público:

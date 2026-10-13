@@ -6,6 +6,8 @@ import { Suspense } from "react";
 import { AmenityIcon } from "@/components/apartments/amenity-icon";
 import { ApartmentGallery } from "@/components/apartments/apartment-gallery";
 import { Rating } from "@/components/apartments/rating";
+import { BookingWidget } from "@/components/bookings/booking-form";
+import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
 import { knownAmenities } from "@/lib/amenities";
@@ -61,6 +63,7 @@ async function ApartmentContent({
   const t = await getTranslations("ApartmentPage");
   const tApartment = await getTranslations("Apartment");
   const tAmenities = await getTranslations("Amenities");
+  const tBooking = await getTranslations("BookingForm");
   const format = await getFormatter();
 
   const amenities = knownAmenities(apartment.amenities);
@@ -74,7 +77,7 @@ async function ApartmentContent({
   ];
 
   return (
-    <main className="pb-16 sm:pb-24">
+    <main className="pb-28 sm:pb-32 lg:pb-24">
       <Container className="pt-6 sm:pt-8">
         <nav aria-label="Breadcrumb" className="mb-3 flex items-center gap-1 text-sm text-stone-500">
           <Link href="/ciudades" className="hover:text-ink">
@@ -141,23 +144,43 @@ async function ApartmentContent({
             )}
           </div>
 
-          <aside className="lg:sticky lg:top-24 lg:self-start">
-            <div className="rounded-3xl border border-sand-200 bg-white p-6 shadow-sm">
+          <aside id="reservar" className="scroll-mt-20 lg:sticky lg:top-24 lg:self-start">
+            <div className="relative rounded-3xl border border-sand-200 bg-white p-6 shadow-sm">
               <p className="flex items-baseline gap-1.5">
                 <span className="text-3xl font-semibold">
                   {format.number(apartment.price, priceFormat)}
                 </span>
                 <span className="text-stone-600">{tApartment("perNight")}</span>
               </p>
-              <ul className="mt-4 space-y-1 text-sm text-stone-600">
+              <ul className="mt-2 space-y-0.5 text-sm text-stone-600">
                 <li>{tApartment("minNights", { count: apartment.min_nights })}</li>
                 <li>{t("maxGuests", { count: apartment.max_guests })}</li>
               </ul>
-              {/* Paso 6 del bloque 2: aquí irá el formulario de reserva. */}
+              <hr className="my-5 border-sand-200" />
+              <BookingWidget
+                apartmentId={apartment.id}
+                price={apartment.price}
+                maxGuests={apartment.max_guests}
+              />
             </div>
           </aside>
         </div>
       </Container>
+
+      {/* Móvil: barra fija con el precio que lleva al formulario. */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-sand-200 bg-white/95 backdrop-blur lg:hidden">
+        <Container className="flex items-center justify-between gap-4 py-3">
+          <p className="flex items-baseline gap-1">
+            <span className="text-lg font-semibold">
+              {format.number(apartment.price, priceFormat)}
+            </span>
+            <span className="text-sm text-stone-600">{tApartment("perNight")}</span>
+          </p>
+          <a href="#reservar" className={buttonClasses()}>
+            {tBooking("mobileCta")}
+          </a>
+        </Container>
+      </div>
     </main>
   );
 }
