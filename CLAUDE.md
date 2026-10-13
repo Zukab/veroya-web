@@ -163,6 +163,18 @@ Panel de administración (`/admin`):
 - `/admin/reservas`: listado (más recientes primero), filtro por estado, botón "Crear
   reserva", cambiar estado (`Pendiente`, `Confirmada`, `Cancelada`), registrar pagos y
   borrar. Ver "Reservas y voucher".
+  - Listado con búsqueda por localizador, nombre o correo y 25 por página.
+  - `/admin/reservas/nueva` y `/admin/reservas/[id]`: el panel edita datos del huésped,
+    fechas, apartamento, estado, idioma, total y condiciones de pago. Si cambia el
+    apartamento se copian su nombre y su ciudad.
+  - En el panel, `min_nights` y `max_guests` **solo se avisan** (no bloquean): el equipo
+    puede hacer excepciones y registrar reservas pasadas. El formulario público sí los
+    exige.
+  - Total: al crear, si se deja vacío se usa precio × noches; el panel propone ese cálculo.
+  - Errores explicados: cruce con otra confirmada (`23P01`, indica qué reserva) y
+    confirmada sin apartamento (`23514`).
+  - Pagos: se registran (importe, fecha, forma, nota) o se borran; la ficha muestra total,
+    pagado y pendiente.
 
 Los contenidos (ciudades, apartamentos, fotos) los carga el cliente desde el panel.
 - Crear: `/admin/ciudades/nueva` y `/admin/apartamentos/nuevo` (por eso `nueva`/`nuevo` son
