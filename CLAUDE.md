@@ -165,6 +165,13 @@ Panel de administración (`/admin`):
   borrar. Ver "Reservas y voucher".
 
 Los contenidos (ciudades, apartamentos, fotos) los carga el cliente desde el panel.
+- Crear: `/admin/ciudades/nueva` y `/admin/apartamentos/nuevo` (por eso `nueva`/`nuevo` son
+  identificadores reservados). El identificador (slug/id) no se cambia una vez creado.
+- Fotos: el navegador las reduce a 2000 px en WebP y las sube a `media` (`ciudades/` y
+  `apartamentos/`, nombres aleatorios) con la sesión del administrador. Al guardar o borrar
+  se eliminan de Storage las que ya no se usan; si se sube una foto y no se guarda el
+  formulario, queda huérfana en Storage (no afecta a la web).
+- Al guardar se invalidan las etiquetas de caché con `updateTag()`.
 
 Fuera de alcance por ahora: cobros en línea (pasarela de pago), calendarios de
 disponibilidad públicos, sincronización con Airbnb/Booking y cualquier correo automático
