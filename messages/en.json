@@ -103,6 +103,53 @@
     "empty": "There are no apartments in this city yet. Check back soon.",
     "metaDescription": "Apartments for short and long stays in {city}."
   },
+  "ContentPage": {
+    "placeholderNotice": "Placeholder text: the final content for this page is pending."
+  },
+  "HowItWorksPage": {
+    "title": "How it works",
+    "intro": "Booking with Veroya is simple and personal. Here is the process, from your request to your arrival.",
+    "s1Title": "Find your apartment",
+    "s1Text": "Explore our cities and choose the apartment that fits your dates, number of guests and needs.",
+    "s2Title": "Send your request",
+    "s2Text": "Fill in the form with your details and dates. Once sent, you'll see your booking code and a PIN: keep them for any enquiry.",
+    "s3Title": "We confirm your booking",
+    "s3Text": "Our team checks availability and gets in touch to confirm your booking and explain the next steps.",
+    "s4Title": "Arrival and stay",
+    "s4Text": "Before you arrive we send you the access instructions. During your stay, we're available for anything you need.",
+    "ctaTitle": "Ready to choose?",
+    "ctaText": "Discover the apartments available in each city.",
+    "ctaButton": "Browse cities"
+  },
+  "LongStaysPage": {
+    "title": "Long stays",
+    "intro": "Coming to work, study or live here for a while? We have apartments ready for stays of one or several months.",
+    "s1Title": "Ready to live in",
+    "s1Text": "Equipped kitchen, washing machine, good Wi-Fi and, in many apartments, a comfortable space to work.",
+    "s2Title": "Terms for months",
+    "s2Text": "Long stays come with special terms. Tell us your dates and we'll prepare a proposal.",
+    "s3Title": "Support throughout your stay",
+    "s3Text": "A friendly team to handle issues, maintenance and any questions while you live in the apartment.",
+    "s4Title": "Flexibility",
+    "s4Text": "We adjust check-in and check-out dates where possible to fit your plans.",
+    "ctaTitle": "Find your apartment",
+    "ctaText": "Look for apartments marked «Long stay» in each city.",
+    "ctaButton": "Browse cities"
+  },
+  "OwnersPage": {
+    "title": "Owners",
+    "intro": "Do you own an apartment in one of our cities? We manage it for you so you earn income without the hassle.",
+    "s1Title": "Full management",
+    "s1Text": "Listing, guest communication, check-ins and check-outs, cleaning and maintenance.",
+    "s2Title": "Trusted guests",
+    "s2Text": "We review every request and keep in touch with guests before and during their stay.",
+    "s3Title": "Transparency",
+    "s3Text": "Clear, regular information about your property's bookings and income.",
+    "s4Title": "Short and long stays",
+    "s4Text": "We combine different types of stay to make the most of your apartment all year round.",
+    "ctaTitle": "Shall we talk?",
+    "ctaText": "Write to us and we'll tell you how we can help. [Contact details pending]"
+  },
   "NotFound": {
     "title": "Page not found",
     "description": "The page you are looking for doesn't exist or has moved.",
