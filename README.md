@@ -1,4 +1,4 @@
-# Veroya Apartments — página web
+# Euronest Apartamentos — página web
 
 Next.js (App Router) + TypeScript + Tailwind CSS + Supabase.
 

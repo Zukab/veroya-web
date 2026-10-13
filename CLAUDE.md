@@ -1,6 +1,11 @@
-# Veroya Apartments — página web
+# Euronest Apartamentos — página web
 
-Página web de Veroya Apartments, negocio de alquiler de apartamentos en España.
+Página web de **Euronest Apartamentos**, negocio de alquiler de apartamentos en España.
+La marca se llamaba antes "Veroya" (cambio del 2026-10-13). Los nombres técnicos de la
+infraestructura conservan "veroya" y no se renombran: repositorio `veroya-web`, proyecto
+de Supabase `veroya`, cuenta `veroyaproyecto@gmail.com`, `package.json` y
+`supabase/config.toml`. En todo lo que ve el usuario (web, correos, voucher) la marca es
+"Euronest Apartamentos"; "Apartamentos" forma parte del nombre y no se traduce en `/en`.
 Proyecto nuevo y limpio: no se reutiliza código, datos ni infraestructura de ninguna
 versión anterior.
 
@@ -33,8 +38,18 @@ Pendiente de verificar:
   han probado porque aún no hay panel. Hacerlo en el bloque del panel.
 - Protección contra contraseñas filtradas de Supabase Auth: desactivada (aviso de
   `db advisors`); probablemente no disponible en el plan gratuito. Activarla si lo está.
-- `canonical` y `hreflang` (es/en): pendientes hasta tener dominio, porque Next exige
-  `metadataBase` con la URL definitiva.
+
+**Pendiente para el final (depende del dominio `euronestapartamentos.com`):**
+1. Comprar el dominio.
+2. Conectarlo a Vercel y poner `SITE_URL` con el dominio (hasta entonces, la dirección de
+   Vercel).
+3. Verificarlo en Resend (registros DNS) y cambiar `EMAIL_FROM` a una dirección del dominio.
+4. Probar el envío de correos a huéspedes reales (antes, Resend solo envía a la dirección
+   de la cuenta).
+5. Revisar que los QR de los vouchers apunten al dominio definitivo. Los vouchers enviados
+   antes llevan la dirección de Vercel: mantenerla activa o redirigirla al dominio.
+6. Añadir `metadataBase`, `canonical` y `hreflang` (es/en), que Next solo genera con la
+   URL definitiva.
 
 ## Stack
 
@@ -76,7 +91,8 @@ Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
   `veroyaproyecto@gmail.com`. Registro público de Auth desactivado.
 - Las funciones de Vercel corren en **`pdx1`** (Oregón), la misma zona que Supabase, fijado
   en `vercel.json`. Si Supabase cambia de región, cambia también `vercel.json`.
-- Dominio: uno nuevo, por definir. Mientras tanto se usa la dirección de prueba de Vercel.
+- Dominio: `euronestapartamentos.com`, que se compra al final (ver "Pendiente para el
+  final"). Mientras tanto se usa la dirección de prueba de Vercel.
 - Sebastián administra todas las cuentas. Nunca escribas claves, contraseñas ni tokens en el
   código, en commits ni en archivos versionados; todo va en `.env.local`.
 
@@ -112,7 +128,8 @@ Parte pública:
 
 Formulario de reserva: nombre, correo, teléfono, país, número de huéspedes, fecha de entrada,
 fecha de salida y mensaje opcional. Al guardar, genera un código `VRY-XXXXX`
-(5 caracteres A-Z0-9) y un PIN de 4 dígitos, queda en estado `Pendiente` y se le muestran
+(5 caracteres A-Z0-9; el prefijo `VRY-` viene de la marca anterior y está pendiente de
+cambiar) y un PIN de 4 dígitos, queda en estado `Pendiente` y se le muestran
 al usuario el código y el PIN. Además:
 - **Protección contra spam:** campo trampa invisible (honeypot) y límite de **30 envíos por
   hora y por IP** (el equipo del cliente puede registrar muchas reservas seguidas desde el
@@ -156,8 +173,9 @@ bloquear reservas por cruce de fechas.
    aplica al pasar a `Confirmada`. Las fechas son intervalos [entrada, salida): si una
    reserva sale el mismo día que entra otra, no se cruzan. Si el cliente tiene varios
    apartamentos iguales, cada uno se registra como una unidad (un apartamento) distinta.
-4. **Voucher en PDF** solo con la marca Veroya, inspirado en el diseño de referencia del
-   cliente pero sin copiar marcas ajenas. Incluye un QR que lleva a la página pública de
+4. **Voucher en PDF** solo con la marca Euronest Apartamentos, inspirado en el diseño de
+   referencia del cliente (`referencias/`, fuera del repositorio) pero sin copiar marcas
+   ajenas ni los datos personales que aparecen en él. Incluye un QR que lleva a la página pública de
    verificación de la reserva.
 5. **Página de verificación:** muestra el estado real (confirmada o no, fechas, apartamento
    y si el pago está registrado). Se accede con el enlace del QR o con localizador y PIN, y
