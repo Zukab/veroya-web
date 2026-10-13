@@ -34,8 +34,12 @@ dirección de prueba.
 PDF, verificación y correo) y el resto del panel de administración.
 
 Pendiente de verificar:
-- Escrituras con sesión iniciada (admin y usuario no admin) contra RLS y Storage: no se
-  han probado porque aún no hay panel. Hacerlo en el bloque del panel.
+- Escrituras con sesión iniciada contra RLS: `bookings`, `booking_payments` y
+  `check_rate_limit` **ya probados** (2026-10-13) simulando a `admin-prueba@example.com`
+  (admin), `sinpermisos@example.com` (sin permisos), `anon` y `service_role` por SQL dentro
+  de una transacción con `ROLLBACK`. Faltan `cities`, `apartments` y Storage: probarlos
+  igual en el paso del panel de contenidos. Claude no escribe contraseñas (ni de prueba):
+  las pantallas del panel las prueba con la sesión que Sebastián inicie en el navegador.
 - Protección contra contraseñas filtradas de Supabase Auth: desactivada (aviso de
   `db advisors`); probablemente no disponible en el plan gratuito. Activarla si lo está.
 
@@ -127,9 +131,9 @@ Parte pública:
   provisionales claros que el cliente reemplazará)
 
 Formulario de reserva: nombre, correo, teléfono, país, número de huéspedes, fecha de entrada,
-fecha de salida y mensaje opcional. Al guardar, genera un código `VRY-XXXXX`
-(5 caracteres A-Z0-9; el prefijo `VRY-` viene de la marca anterior y está pendiente de
-cambiar) y un PIN de 4 dígitos, queda en estado `Pendiente` y se le muestran
+fecha de salida y mensaje opcional. Al guardar, genera un localizador `ENA-XXXXX`
+(5 caracteres A-Z0-9; la base de datos exige el prefijo `ENA-`, que sustituyó a `VRY-` de
+la marca anterior) y un PIN de 4 dígitos, queda en estado `Pendiente` y se le muestran
 al usuario el código y el PIN. Además:
 - **Protección contra spam:** campo trampa invisible (honeypot) y límite de **30 envíos por
   hora y por IP** (el equipo del cliente puede registrar muchas reservas seguidas desde el
@@ -147,7 +151,9 @@ Panel de administración (`/admin`):
 - `/admin/apartamentos` y `/admin/apartamentos/[id]`: crear, editar, borrar, subir fotos.
 - `/admin/ciudades` y `/admin/ciudades/[slug]`: crear, editar, borrar, subir foto. Borrar
   una ciudad con apartamentos está bloqueado en la base de datos (error `23503`): el panel
-  debe mostrar un mensaje claro.
+  debe mostrar un mensaje claro. Borrar un apartamento con reservas `Confirmada` también
+  falla (error `23514`, regla `bookings_confirmed_requires_apartment`): el panel debe
+  explicar que hay que cancelar o mover antes esas reservas.
 - `/admin/reservas`: listado (más recientes primero), filtro por estado, botón "Crear
   reserva", cambiar estado (`Pendiente`, `Confirmada`, `Cancelada`), registrar pagos y
   borrar. Ver "Reservas y voucher".
@@ -207,11 +213,27 @@ bloquear reservas por cruce de fechas.
   `baths`, `size` (m², opcional), `max_guests`, `rating` (numeric 3,2; null = sin
   valoraciones), `reviews`, `min_nights`, `neighborhood`, `description`,
   `images` (text[] con URLs de Storage), `amenities` (text[]), `created_at`
-- `bookings`: `id` (uuid), `booking_code` (único), `booking_pin`, `created_at`,
-  `status` (enum: Pendiente, Confirmada, Cancelada), `user_name`, `user_email`,
-  `user_phone`, `user_country`, `guests`, `check_in` (date), `check_out` (date),
-  `city_name`, `apartment_id` (FK nullable, on delete set null), `apartment_name`, `message`
+- `bookings`: `id` (uuid), `booking_code` (único, `ENA-XXXXX`), `booking_pin`,
+  `created_at`, `status` (enum: Pendiente, Confirmada, Cancelada), `user_name`,
+  `user_email`, `user_phone`, `user_country`, `guests`, `check_in` (date), `check_out`
+  (date), `city_name`, `apartment_id` (FK nullable, on delete set null), `apartment_name`,
+  `message`, y desde M1 (`..._reservas_pagos_voucher`):
+  - `source` (enum `web`/`panel`), `created_by` (FK → auth.users): los fija el trigger al
+    crear según haya sesión o no; no se pueden falsear ni cambiar.
+  - `locale` (`es`/`en`), `verification_token` (32 hex, único, para el QR),
+    `payment_terms` (enum `pendiente`/`al_llegar`), `total_amount` (numeric 10,2, euros;
+    null = sin definir), `confirmed_at` (lo mantiene el trigger), `confirmation_email_sent_at`
+    (solo lo escribe el servidor) y `updated_at`.
+  - Restricciones: una `Confirmada` exige `apartment_id`; no puede haber dos `Confirmada`
+    del mismo apartamento con fechas cruzadas (exclusión con `btree_gist`, error `23P01`).
+- `booking_payments`: `id`, `booking_id` (FK, on delete cascade), `amount` (numeric 10,2,
+  > 0), `paid_on` (date), `method` (enum `efectivo`/`transferencia`/`tarjeta`/`bizum`/
+  `otro`), `note`, `created_by` y `created_at` (los fija el trigger). Solo se registran o
+  se borran; no se editan.
 - `admins`: `user_id` (PK, FK → auth.users), `created_at` — lista de administradores
+- `private.rate_limit_hits` + `public.check_rate_limit(bucket, key_hash, max, ventana_s)`:
+  límite de intentos por hash de IP u otra clave; solo lo ejecuta el servidor
+  (`service_role`).
 
 Gestiona el esquema con migraciones SQL en `supabase/migrations/`. Las restricciones CHECK
 de la base de datos son la última barrera; la validación principal es con zod.
@@ -219,8 +241,9 @@ de la base de datos son la última barrera; la validación principal es con zod.
 ## Datos de ejemplo
 
 - `supabase/seed.sql` está **cargado en el proyecto real** (no hay Supabase local).
-  Identificables por slugs/ids `ejemplo-...`, correos `@example.com` y códigos `VRY-EJ...`.
-  Se puede volver a ejecutar sin duplicar datos.
+  Identificables por slugs/ids `ejemplo-...`, correos `@example.com` y códigos `ENA-EJ...`.
+  Se puede volver a ejecutar sin duplicar datos (si se cargara en una base vacía, el
+  trigger pondría a sus reservas la fecha de la carga como `created_at`).
 - **Antes del lanzamiento**, borrarlos con:
   `npx supabase db query --linked -f supabase/cleanup-seed.sql`
 
@@ -233,7 +256,10 @@ de la base de datos son la última barrera; la validación principal es con zod.
   - `cities` y `apartments`: lectura pública; escritura solo administradores.
   - `bookings`: sin acceso público. La creación se hace en una Server Action o Route
     Handler del servidor que valida con `zod` y usa la clave secreta. Los administradores
-    leen, borran y solo pueden cambiar la columna `status`.
+    leen, crean, borran y editan solo estas columnas: `status`, datos del huésped,
+    `guests`, `message`, `locale`, fechas, apartamento (`apartment_id`, `apartment_name`,
+    `city_name`), `payment_terms` y `total_amount`.
+  - `booking_payments`: solo administradores; leer, registrar y borrar (no editar).
   - Storage `media`: lectura pública por URL; subir, reemplazar y borrar solo
     administradores. Máximo 5 MB, solo JPEG, PNG y WebP.
 - La `SUPABASE_SERVICE_ROLE_KEY` solo se usa en código de servidor, nunca en el cliente

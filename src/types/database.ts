@@ -94,6 +94,47 @@ export type Database = {
           },
         ]
       }
+      booking_payments: {
+        Row: {
+          amount: number
+          booking_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          method: Database["public"]["Enums"]["payment_method"]
+          note: string | null
+          paid_on: string
+        }
+        Insert: {
+          amount: number
+          booking_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          method: Database["public"]["Enums"]["payment_method"]
+          note?: string | null
+          paid_on: string
+        }
+        Update: {
+          amount?: number
+          booking_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          method?: Database["public"]["Enums"]["payment_method"]
+          note?: string | null
+          paid_on?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_payments_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           apartment_id: string | null
@@ -103,15 +144,24 @@ export type Database = {
           check_in: string
           check_out: string
           city_name: string
+          confirmation_email_sent_at: string | null
+          confirmed_at: string | null
           created_at: string
+          created_by: string | null
           guests: number
           id: string
+          locale: string
           message: string | null
+          payment_terms: Database["public"]["Enums"]["payment_terms"]
+          source: Database["public"]["Enums"]["booking_source"]
           status: Database["public"]["Enums"]["booking_status"]
+          total_amount: number | null
+          updated_at: string
           user_country: string
           user_email: string
           user_name: string
           user_phone: string
+          verification_token: string
         }
         Insert: {
           apartment_id?: string | null
@@ -121,15 +171,24 @@ export type Database = {
           check_in: string
           check_out: string
           city_name?: string
+          confirmation_email_sent_at?: string | null
+          confirmed_at?: string | null
           created_at?: string
+          created_by?: string | null
           guests: number
           id?: string
+          locale?: string
           message?: string | null
+          payment_terms?: Database["public"]["Enums"]["payment_terms"]
+          source?: Database["public"]["Enums"]["booking_source"]
           status?: Database["public"]["Enums"]["booking_status"]
+          total_amount?: number | null
+          updated_at?: string
           user_country: string
           user_email: string
           user_name: string
           user_phone: string
+          verification_token?: string
         }
         Update: {
           apartment_id?: string | null
@@ -139,15 +198,24 @@ export type Database = {
           check_in?: string
           check_out?: string
           city_name?: string
+          confirmation_email_sent_at?: string | null
+          confirmed_at?: string | null
           created_at?: string
+          created_by?: string | null
           guests?: number
           id?: string
+          locale?: string
           message?: string | null
+          payment_terms?: Database["public"]["Enums"]["payment_terms"]
+          source?: Database["public"]["Enums"]["booking_source"]
           status?: Database["public"]["Enums"]["booking_status"]
+          total_amount?: number | null
+          updated_at?: string
           user_country?: string
           user_email?: string
           user_name?: string
           user_phone?: string
+          verification_token?: string
         }
         Relationships: [
           {
@@ -188,10 +256,26 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_rate_limit: {
+        Args: {
+          p_bucket: string
+          p_key_hash: string
+          p_max: number
+          p_window_seconds: number
+        }
+        Returns: boolean
+      }
     }
     Enums: {
+      booking_source: "web" | "panel"
       booking_status: "Pendiente" | "Confirmada" | "Cancelada"
+      payment_method:
+        | "efectivo"
+        | "transferencia"
+        | "tarjeta"
+        | "bizum"
+        | "otro"
+      payment_terms: "pendiente" | "al_llegar"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -319,7 +403,10 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      booking_source: ["web", "panel"],
       booking_status: ["Pendiente", "Confirmada", "Cancelada"],
+      payment_method: ["efectivo", "transferencia", "tarjeta", "bizum", "otro"],
+      payment_terms: ["pendiente", "al_llegar"],
     },
   },
 } as const

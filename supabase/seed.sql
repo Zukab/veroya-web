@@ -1,7 +1,7 @@
 -- Datos de ejemplo SOLO para desarrollo y pruebas.
 -- Se identifican por:
 --   - ciudades y apartamentos con slug/id que empieza por "ejemplo-"
---   - reservas con correos @example.com y códigos VRY-EJ...
+--   - reservas con correos @example.com y códigos ENA-EJ...
 -- Se borran con supabase/cleanup-seed.sql antes del lanzamiento.
 --
 -- Cargar en el proyecto enlazado:
@@ -82,33 +82,33 @@ insert into public.bookings
   (booking_code, booking_pin, created_at, status, user_name, user_email, user_phone,
    user_country, guests, check_in, check_out, city_name, apartment_id, apartment_name, message)
 values
-  ('VRY-EJ001', '4821', now() - interval '1 hour', 'Pendiente',
+  ('ENA-EJ001', '4821', now() - interval '1 hour', 'Pendiente',
    'Ana García', 'ana.garcia@example.com', '+34 600 000 001', 'España', 2,
    '2026-11-20', '2026-11-23', 'Madrid', 'ejemplo-madrid-loft-malasana', 'Loft luminoso en Malasaña',
    '¿Se puede hacer el check-in a partir de las 22:00?'),
 
-  -- Se solapa con VRY-EJ001 en el mismo apartamento (permitido a propósito)
-  ('VRY-EJ002', '1937', now() - interval '3 hours', 'Pendiente',
+  -- Se solapa con ENA-EJ001 en el mismo apartamento (permitido a propósito)
+  ('ENA-EJ002', '1937', now() - interval '3 hours', 'Pendiente',
    'John Smith', 'john.smith@example.com', '+44 7700 900001', 'Reino Unido', 2,
    '2026-11-21', '2026-11-24', 'Madrid', 'ejemplo-madrid-loft-malasana', 'Loft luminoso en Malasaña',
    null),
 
-  ('VRY-EJ003', '5502', now() - interval '2 days', 'Confirmada',
+  ('ENA-EJ003', '5502', now() - interval '2 days', 'Confirmada',
    'Lena Müller', 'lena.mueller@example.com', '+49 151 00000001', 'Alemania', 4,
    '2026-12-27', '2027-01-02', 'Barcelona', 'ejemplo-barcelona-gracia', 'Apartamento con balcón en Gràcia',
    'Viajamos con un bebé, ¿hay cuna disponible?'),
 
-  ('VRY-EJ004', '7710', now() - interval '5 days', 'Confirmada',
+  ('ENA-EJ004', '7710', now() - interval '5 days', 'Confirmada',
    'Marie Dubois', 'marie.dubois@example.com', '+33 6 00 00 00 01', 'Francia', 3,
    '2027-02-01', '2027-03-01', 'Málaga', 'ejemplo-malaga-estancia-larga', 'Apartamento para estancias largas en El Limonar',
    'Estancia de un mes por trabajo.'),
 
-  ('VRY-EJ005', '2468', now() - interval '8 days', 'Cancelada',
+  ('ENA-EJ005', '2468', now() - interval '8 days', 'Cancelada',
    'Carlos Pérez', 'carlos.perez@example.com', '+34 600 000 005', 'España', 2,
    '2026-11-14', '2026-11-16', 'Valencia', 'ejemplo-valencia-ruzafa', 'Piso de diseño en Ruzafa',
    null),
 
-  ('VRY-EJ006', '3090', now() - interval '12 days', 'Cancelada',
+  ('ENA-EJ006', '3090', now() - interval '12 days', 'Cancelada',
    'Laura Martín', 'laura.martin@example.com', '+34 600 000 006', 'España', 1,
    '2026-10-30', '2026-11-02', 'Valencia', null, 'Apartamento retirado (ejemplo)',
    'Reserva de un apartamento que ya no existe.')
