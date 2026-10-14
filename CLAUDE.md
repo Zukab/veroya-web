@@ -56,7 +56,12 @@ Pendiente de verificar:
   `db advisors`); probablemente no disponible en el plan gratuito. Activarla si lo está.
 
 **Pendiente para el final (depende del dominio `euronestapartamentos.com`):**
-1. Comprar el dominio.
+Decisión (2026-10-14): se trabaja en `https://veroya-web-6h67.vercel.app` hasta que el
+cliente pague; entonces se compra el dominio. Mientras tanto los correos automáticos solo
+llegan a `veroyaproyecto@gmail.com` (Resend no permite verificar `vercel.app`): el equipo
+descarga el voucher en el panel y lo envía por WhatsApp. `veroya-web.vercel.app` (sin
+sufijo) es una web antigua con la marca anterior: pendiente de borrar en Vercel.
+1. Comprar el dominio (en Vercel → Settings → Domains).
 2. Conectarlo a Vercel y poner `SITE_URL` con el dominio (hasta entonces, la dirección de
    Vercel).
 3. Verificarlo en Resend (registros DNS) y cambiar `EMAIL_FROM` a una dirección del dominio.
