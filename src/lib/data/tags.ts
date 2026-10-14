@@ -3,4 +3,5 @@
 export const CACHE_TAGS = {
   cities: "cities",
   apartments: "apartments",
+  settings: "settings",
 } as const;

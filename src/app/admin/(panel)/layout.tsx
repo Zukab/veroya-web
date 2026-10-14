@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/admin/reservas", label: "Reservas" },
   { href: "/admin/apartamentos", label: "Apartamentos" },
   { href: "/admin/ciudades", label: "Ciudades" },
+  { href: "/admin/ajustes", label: "Ajustes" },
 ];
 
 export default function PanelLayout({ children }: LayoutProps<"/admin">) {

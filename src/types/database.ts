@@ -29,6 +29,36 @@ export type Database = {
         }
         Relationships: []
       }
+      agency_settings: {
+        Row: {
+          cancellation_policy: string
+          check_in_time: string
+          check_out_time: string
+          email: string
+          house_rules: string
+          id: boolean
+          phone: string
+        }
+        Insert: {
+          cancellation_policy?: string
+          check_in_time?: string
+          check_out_time?: string
+          email?: string
+          house_rules?: string
+          id?: boolean
+          phone?: string
+        }
+        Update: {
+          cancellation_policy?: string
+          check_in_time?: string
+          check_out_time?: string
+          email?: string
+          house_rules?: string
+          id?: boolean
+          phone?: string
+        }
+        Relationships: []
+      }
       apartments: {
         Row: {
           address: string
