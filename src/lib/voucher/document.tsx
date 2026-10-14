@@ -38,9 +38,9 @@ const s = StyleSheet.create({
     fontSize: 9.5,
     lineHeight: 1.4,
     color: color.ink,
-    paddingTop: 36,
+    paddingTop: 30,
     paddingHorizontal: 40,
-    paddingBottom: 30,
+    paddingBottom: 24,
   },
   label: {
     fontSize: 6.8,
@@ -73,7 +73,7 @@ const s = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    paddingBottom: 13,
+    paddingBottom: 10,
     borderBottomWidth: 1,
     borderBottomColor: color.sand300,
   },
@@ -84,10 +84,10 @@ const s = StyleSheet.create({
   docIssued: { fontSize: 8, color: color.muted, marginTop: 2 },
 
   status: {
-    marginTop: 14,
+    marginTop: 10,
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 9,
+    paddingVertical: 8,
     paddingHorizontal: 14,
     borderRadius: 8,
     borderWidth: 1,
@@ -97,7 +97,7 @@ const s = StyleSheet.create({
   statusTitle: { fontSize: 11, fontWeight: 600, color: color.olive700 },
   statusNote: { fontSize: 8, color: color.olive600 },
 
-  card: { marginTop: 14, borderWidth: 1, borderColor: color.sand300, borderRadius: 8 },
+  card: { marginTop: 10, borderWidth: 1, borderColor: color.sand300, borderRadius: 8 },
   apt: {
     padding: 14,
     backgroundColor: color.sand50,
@@ -116,10 +116,10 @@ const s = StyleSheet.create({
   big: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 12, lineHeight: 1.25, marginTop: 3 },
   small: { fontSize: 7.8, color: color.muted },
 
-  middle: { marginTop: 14, flexDirection: "row" },
+  middle: { marginTop: 10, flexDirection: "row" },
   facts: { flex: 1 },
-  fact: { borderWidth: 1, borderColor: color.sand300, borderRadius: 8, paddingVertical: 10, paddingHorizontal: 13 },
-  factGap: { marginTop: 10 },
+  fact: { borderWidth: 1, borderColor: color.sand300, borderRadius: 8, paddingVertical: 8, paddingHorizontal: 12 },
+  factGap: { marginTop: 8 },
   factValue: { fontSize: 11, fontWeight: 600, marginTop: 3 },
   note: { fontSize: 7.8, color: color.muted, marginTop: 2 },
   payRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
@@ -164,11 +164,12 @@ const s = StyleSheet.create({
   qrNote: { marginTop: 4, fontSize: 7.4, color: color.sand300, textAlign: "center" },
   qrUrl: { marginTop: 6, fontFamily: "GeistMono", fontWeight: 500, fontSize: 6.6, color: color.terra100, textAlign: "center" },
 
-  conditions: { marginTop: 14, paddingTop: 12, borderTopWidth: 1, borderTopColor: color.sand300 },
+  conditions: { marginTop: 10, paddingTop: 9, borderTopWidth: 1, borderTopColor: color.sand300 },
   conditionsTitle: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 12, marginBottom: 8 },
   cols: { flexDirection: "row" },
   col: { flex: 1 },
-  colGap: { marginLeft: 14 },
+  colNarrow: { width: "38%" },
+  colGap: { marginLeft: 16 },
   colTitle: {
     fontSize: 7.6,
     fontWeight: 600,
@@ -177,9 +178,9 @@ const s = StyleSheet.create({
     color: color.terra700,
     marginBottom: 4,
   },
-  bullet: { flexDirection: "row", marginBottom: 3 },
-  dot: { width: 3.4, height: 3.4, borderRadius: 2, backgroundColor: color.terra500, marginTop: 4.2, marginRight: 5 },
-  colText: { flex: 1, fontSize: 8.2, color: color.body },
+  bullet: { flexDirection: "row", marginBottom: 2.5 },
+  dot: { width: 3.2, height: 3.2, borderRadius: 2, backgroundColor: color.terra500, marginTop: 3.9, marginRight: 5 },
+  colText: { flex: 1, fontSize: 7.8, lineHeight: 1.35, color: color.body },
 
   footer: {
     marginTop: "auto",
@@ -305,7 +306,7 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
   }
 
   const token = data.verificationUrl.split("/").pop() ?? "";
-  const shortUrl = `${siteHost}/verificar/${token.slice(0, 4)}…${token.slice(-4)}`;
+  const shortPath = `/verificar/${token.slice(0, 4)}…${token.slice(-4)}`;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     fullAddress(apartment),
   )}`;
@@ -436,14 +437,18 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
             </Link>
             <Text style={s.qrTitle}>{t("scan")}</Text>
             <Text style={s.qrNote}>{t("scanNote")}</Text>
-            <Text style={s.qrUrl}>{shortUrl}</Text>
+            {/* En dos líneas: la dirección de la web puede ser larga. */}
+            <Text style={s.qrUrl}>{siteHost}</Text>
+            <Text style={[s.qrUrl, { marginTop: 1 }]}>{shortPath}</Text>
           </View>
         </View>
 
-        <View style={s.conditions} wrap={false}>
+        {/* Dos columnas: horarios y cancelación a la izquierda; las normas, que pueden
+            ser muchas, en la columna ancha. Si aun así no cabe, se parte entre páginas. */}
+        <View style={s.conditions}>
           <Text style={s.conditionsTitle}>{t("stayInfo")}</Text>
           <View style={s.cols}>
-            <View style={s.col}>
+            <View style={s.colNarrow}>
               <Text style={s.colTitle}>{t("schedule")}</Text>
               <Bullets
                 items={[
@@ -451,14 +456,12 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
                   t("scheduleOut", { time: settings.check_out_time }),
                 ]}
               />
+              <Text style={[s.colTitle, { marginTop: 8 }]}>{t("cancellation")}</Text>
+              <Text style={s.colText}>{settings.cancellation_policy}</Text>
             </View>
             <View style={[s.col, s.colGap]}>
               <Text style={s.colTitle}>{t("rules")}</Text>
               <Bullets items={houseRulesList(settings.house_rules)} />
-            </View>
-            <View style={[s.col, s.colGap]}>
-              <Text style={s.colTitle}>{t("cancellation")}</Text>
-              <Text style={s.colText}>{settings.cancellation_policy}</Text>
             </View>
           </View>
         </View>

@@ -109,7 +109,7 @@ export function SettingsForm({ settings }: { settings: AgencySettings }) {
             id="settings-house_rules"
             label="Normas"
             error={errors.house_rules}
-            hint="Una norma por línea. El voucher las muestra como lista."
+            hint="Una norma por línea. Para que el voucher quepa en una página, mejor unas 7 normas cortas y una política de cancelación de pocas líneas."
           >
             <textarea
               id="settings-house_rules"
