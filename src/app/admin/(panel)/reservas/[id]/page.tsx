@@ -19,6 +19,9 @@ import { SendVoucherButton } from "../send-voucher-button";
 
 export const metadata: Metadata = { title: "Reserva" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export default async function BookingPage({ params, searchParams }: PageProps<"/admin/reservas/[id]">) {

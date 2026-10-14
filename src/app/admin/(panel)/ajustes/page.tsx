@@ -7,6 +7,9 @@ import { SettingsForm } from "./settings-form";
 
 export const metadata: Metadata = { title: "Ajustes" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 export default async function SettingsPage() {
   await requireAdmin();
   const settings = await getAgencySettings();

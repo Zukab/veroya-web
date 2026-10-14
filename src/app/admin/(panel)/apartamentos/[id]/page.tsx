@@ -12,6 +12,9 @@ import { ApartmentForm } from "../apartment-form";
 
 export const metadata: Metadata = { title: "Editar apartamento" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 export default async function EditApartmentPage({
   params,
   searchParams,

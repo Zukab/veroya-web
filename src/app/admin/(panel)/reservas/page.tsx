@@ -14,6 +14,9 @@ import { requireAdmin } from "@/lib/auth/admin";
 
 export const metadata: Metadata = { title: "Reservas" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 const PAGE_SIZE = 25;
 
 type Status = (typeof BOOKING_STATUSES)[number];

@@ -10,6 +10,9 @@ import { requireAdmin } from "@/lib/auth/admin";
 
 export const metadata: Metadata = { title: "Apartamentos" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 export default async function AdminApartmentsPage({ searchParams }: PageProps<"/admin/apartamentos">) {
   const { supabase } = await requireAdmin();
   const { borrado } = await searchParams;

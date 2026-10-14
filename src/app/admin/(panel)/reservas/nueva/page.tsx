@@ -7,6 +7,9 @@ import { BookingForm } from "../booking-form";
 
 export const metadata: Metadata = { title: "Crear reserva" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 export default async function NewBookingPage() {
   const { supabase } = await requireAdmin();
   const apartments = await readApartmentOptions(supabase);

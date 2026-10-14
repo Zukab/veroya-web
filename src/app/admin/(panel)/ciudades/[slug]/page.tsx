@@ -12,6 +12,9 @@ import { CityForm } from "../city-form";
 
 export const metadata: Metadata = { title: "Editar ciudad" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 export default async function EditCityPage({ params, searchParams }: PageProps<"/admin/ciudades/[slug]">) {
   const { supabase } = await requireAdmin();
   const [{ slug }, { creada }] = await Promise.all([params, searchParams]);

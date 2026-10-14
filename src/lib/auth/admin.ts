@@ -1,5 +1,6 @@
 import "server-only";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 
@@ -13,6 +14,9 @@ export type AdminAccess =
 
 // Una vez por petición (cache de React).
 export const getAdminAccess = cache(async (): Promise<AdminAccess | null> => {
+  // Supabase valida la sesión con la hora actual (caducidad del token): se marca
+  // la petición como dinámica antes, como pide Cache Components.
+  await connection();
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   if (error || !data?.claims) return null;

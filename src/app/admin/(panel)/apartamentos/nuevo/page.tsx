@@ -8,6 +8,9 @@ import { ApartmentForm } from "../apartment-form";
 
 export const metadata: Metadata = { title: "Nuevo apartamento" };
 
+// Lee la sesión en cada petición (sin navegación instantánea; ver el layout).
+export const instant = false;
+
 export default async function NewApartmentPage() {
   const { supabase } = await requireAdmin();
   const { data: cities, error } = await supabase.from("cities").select("slug, name").order("name");
