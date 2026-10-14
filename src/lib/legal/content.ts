@@ -210,7 +210,7 @@ export function privacyPolicy(locale: Locale, owner: LegalOwner): LegalDocument 
         {
           title: "How long we keep it",
           list: [
-            "Requests that are never confirmed: up to 12 months.",
+            "Requests that are never confirmed and have no payments: they are deleted automatically 12 months after the request, once the stay dates have passed.",
             "Confirmed bookings and their payments: as long as legal, tax and accounting obligations require (usually between 5 and 10 years, depending on the country).",
             "Technical IP records: 24 hours.",
           ],
@@ -292,7 +292,7 @@ export function privacyPolicy(locale: Locale, owner: LegalOwner): LegalDocument 
       {
         title: "Cuánto tiempo los conservamos",
         list: [
-          "Solicitudes que no llegan a confirmarse: un máximo de 12 meses.",
+          "Solicitudes que no llegan a confirmarse y no tienen pagos: se borran automáticamente 12 meses después de la solicitud, una vez pasadas las fechas de la estancia.",
           "Reservas confirmadas y sus pagos: el tiempo que exijan las obligaciones legales, fiscales y contables (normalmente entre 5 y 10 años, según el país).",
           "Registros técnicos de IP: 24 horas.",
         ],
