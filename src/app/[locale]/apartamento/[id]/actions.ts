@@ -37,6 +37,7 @@ export async function createBookingRequest(
     ...values,
     apartment_id: formData.get("apartment_id"),
     locale: formData.get("locale"),
+    privacy: formData.get("privacy"),
   });
   if (!parsed.success) return fail({ fieldErrors: fieldErrorsFrom(parsed.error) });
   const input = parsed.data;

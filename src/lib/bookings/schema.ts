@@ -19,6 +19,7 @@ export const BOOKING_ERROR_KEYS = [
   "apartmentNotFound",
   "cityNotFound",
   "unavailable",
+  "privacyRequired",
   "rateLimited",
   "unexpected",
 ] as const;
@@ -68,9 +69,13 @@ export const guestFields = {
     .transform((value) => value || null),
 };
 
+// Casilla de la política de privacidad (autorización expresa; ver /privacidad).
+const privacyConsent = z.literal("yes", { error: "privacyRequired" });
+
 export const publicBookingSchema = z.object({
   apartment_id: z.string().trim().min(1).max(150),
   locale: z.enum(["es", "en"]),
+  privacy: privacyConsent,
   ...guestFields,
 });
 
@@ -80,6 +85,7 @@ export type PublicBookingInput = z.infer<typeof publicBookingSchema>;
 export const generalRequestSchema = z.object({
   city: z.string().trim().min(1, { error: "cityNotFound" }).max(80, { error: "cityNotFound" }),
   locale: z.enum(["es", "en"]),
+  privacy: privacyConsent,
   ...guestFields,
 });
 

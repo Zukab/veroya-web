@@ -149,8 +149,14 @@ Parte pública:
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
 - `/apartamento/[id]` detalle con galería, camas, comodidades, dirección (con enlace a
   Google Maps, `src/lib/maps.ts`) y formulario de reserva
-- `/como-funciona`, `/estancias-largas`, `/propietarios` (páginas de contenido; usa textos
-  provisionales claros que el cliente reemplazará)
+- `/como-funciona`, `/estancias-largas`, `/propietarios`: textos recomendados (2026-10-13),
+  pendientes de aprobación del cliente. Propietarios va dirigida a quien quiere vender o
+  alquilar su piso (el cliente compra apartamentos), con botones de WhatsApp y correo.
+- `/aviso-legal`, `/privacidad`, `/cookies`: textos en `src/lib/legal/content.ts` (es/en),
+  pensados para varios países (RGPD y Ley 1581 de Colombia). Usan los datos del titular de
+  `/admin/ajustes` (`src/lib/legal/owner.ts`). Son una base: recomendar revisión legal.
+  Enlazados en el pie. Los formularios públicos exigen la casilla de privacidad
+  (`PrivacyConsent`, campo `privacy` validado en el servidor).
 - `/solicitud`: solicitud general sin elegir apartamento (ciudad, fechas, huéspedes y datos;
   llega rellena desde el buscador). Se guarda como Pendiente con `apartment_id` null y la
   ciudad en `city_name`; el equipo asigna el apartamento en el panel y la confirma. Botón
@@ -334,7 +340,8 @@ bloquear reservas por cruce de fechas.
 - `agency_settings`: una sola fila (`id = true`) con `phone`, `email`, `whatsapp` (vacío = sin
   botones), `hero_image_url`, `check_in_time`,
   `check_out_time`, `house_rules` y `cancellation_policy`. Lectura pública; solo los
-  administradores la editan (no se crean ni borran filas).
+  administradores la editan (no se crean ni borran filas). Desde `..._ajustes_datos_legales`:
+  `legal_name`, `tax_id` y `legal_address` (datos del titular para los textos legales).
 - `private.rate_limit_hits` + `public.check_rate_limit(bucket, key_hash, max, ventana_s)`:
   límite de intentos por hash de IP u otra clave; solo lo ejecuta el servidor
   (`service_role`).
@@ -415,6 +422,5 @@ de la base de datos son la última barrera; la validación principal es con zod.
 - Sin fotos se muestra un marcador (`PhotoPlaceholder`); las páginas deben verse bien así.
 - Las tarjetas marcan "Estancia larga" a partir de 28 noches mínimas
   (`LONG_STAY_MIN_NIGHTS` en `src/lib/format.ts`).
-- Las páginas de contenido muestran un aviso de texto provisional (`ContentPage`) hasta que
-  el cliente entregue los textos; Propietarios no tiene botón de contacto hasta tener los
-  datos de contacto.
+- Las páginas de contenido usan `ContentPage` (botones internos o externos en la llamada
+  final). Ya no muestran aviso de texto provisional.

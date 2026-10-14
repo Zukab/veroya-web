@@ -24,7 +24,10 @@
     "language": "Idioma",
     "rights": "Euronest Apartamentos. Todos los derechos reservados.",
     "verify": "Consultar una reserva",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "legalNotice": "Aviso legal",
+    "privacy": "Privacidad",
+    "cookies": "Cookies"
   },
   "Amenities": {
     "wifi": "Wifi",
@@ -124,7 +127,8 @@
     "stay": "{checkIn} → {checkOut} · {guests, plural, one {# huésped} other {# huéspedes}}",
     "newRequest": "Hacer otra solicitud",
     "mobileCta": "Reservar",
-    "checkStatus": "Consultar el estado de tu reserva"
+    "checkStatus": "Consultar el estado de tu reserva",
+    "privacyConsent": "He leído y acepto la <link>política de privacidad</link>."
   },
   "BookingErrors": {
     "required": "Este campo es obligatorio.",
@@ -142,7 +146,8 @@
     "rateLimited": "Has enviado demasiadas solicitudes. Inténtalo de nuevo más tarde.",
     "unexpected": "No hemos podido enviar la solicitud. Inténtalo de nuevo en unos minutos.",
     "unavailable": "Este apartamento ya está reservado en esas fechas. Prueba con otras fechas o envíanos una solicitud.",
-    "cityNotFound": "Elige una ciudad de la lista."
+    "cityNotFound": "Elige una ciudad de la lista.",
+    "privacyRequired": "Para enviar la solicitud tienes que aceptar la política de privacidad."
   },
   "Home": {
     "heroTitle": "Tu apartamento, por unos días o una temporada",
@@ -178,52 +183,52 @@
     "empty": "Todavía no hay apartamentos en esta ciudad. Vuelve pronto.",
     "metaDescription": "Apartamentos para estancias cortas y largas en {city}."
   },
-  "ContentPage": {
-    "placeholderNotice": "Texto provisional: el contenido definitivo de esta página está pendiente."
-  },
   "HowItWorksPage": {
     "title": "Cómo funciona",
-    "intro": "Reservar con Euronest es sencillo y personal. Así es el proceso, desde la solicitud hasta la llegada.",
-    "s1Title": "Encuentra tu apartamento",
-    "s1Text": "Explora nuestras ciudades y elige el apartamento que encaja con tus fechas, el número de huéspedes y lo que necesitas.",
+    "intro": "Reservar con Euronest es sencillo y personal: eliges el apartamento, nos envías tu solicitud y nosotros te confirmamos. En la web no se paga nada.",
+    "s1Title": "Busca y elige",
+    "s1Text": "Indica ciudad, fechas y número de huéspedes en el buscador. Verás solo los apartamentos libres en esas fechas, con fotos, distribución, comodidades y un precio orientativo.",
     "s2Title": "Envía tu solicitud",
-    "s2Text": "Completa el formulario con tus datos y tus fechas. Al enviarlo verás tu código de reserva y un PIN: guárdalos para cualquier consulta.",
+    "s2Text": "Completa el formulario con tus datos. Al enviarlo verás tu localizador y tu PIN, y te llegará un correo con la solicitud. Enviarla no tiene ningún coste ni compromiso.",
     "s3Title": "Te confirmamos la reserva",
-    "s3Text": "Nuestro equipo revisa la disponibilidad y se pone en contacto contigo para confirmar la reserva y explicarte los siguientes pasos.",
+    "s3Text": "Revisamos la disponibilidad y te escribimos por correo o WhatsApp para confirmar el total y la forma de pago. Cuando la reserva queda confirmada, te enviamos el voucher en PDF.",
     "s4Title": "Llegada y estancia",
-    "s4Text": "Antes de tu llegada te damos las instrucciones de acceso. Durante la estancia, estamos disponibles para lo que necesites.",
+    "s4Text": "Presenta el voucher y tu documento de identidad al llegar. El código QR del voucher permite comprobar en cualquier momento que la reserva es válida. Durante la estancia, estamos a un mensaje de distancia.",
     "ctaTitle": "¿Listo para elegir?",
-    "ctaText": "Descubre los apartamentos disponibles en cada ciudad.",
-    "ctaButton": "Ver ciudades"
+    "ctaText": "Busca por ciudad y fechas, o cuéntanos lo que necesitas y te proponemos opciones.",
+    "ctaButton": "Solicitar reserva"
   },
   "LongStaysPage": {
     "title": "Estancias largas",
-    "intro": "¿Vienes a trabajar, a estudiar o a vivir una temporada? Tenemos apartamentos preparados para estancias de uno o varios meses.",
-    "s1Title": "Preparados para vivir",
-    "s1Text": "Cocina equipada, lavadora, buena conexión wifi y, en muchos apartamentos, un espacio cómodo para trabajar.",
-    "s2Title": "Condiciones para meses",
-    "s2Text": "Las estancias largas tienen condiciones especiales. Cuéntanos tus fechas y te preparamos una propuesta.",
-    "s3Title": "Atención durante toda la estancia",
-    "s3Text": "Un equipo cercano para resolver incidencias, mantenimiento y cualquier duda mientras vives en el apartamento.",
-    "s4Title": "Flexibilidad",
-    "s4Text": "Ajustamos las fechas de entrada y salida, dentro de lo posible, para adaptarnos a tus planes.",
+    "intro": "¿Vienes a trabajar, a estudiar o a vivir una temporada? Tenemos apartamentos amueblados para estancias de uno o varios meses, con condiciones especiales.",
+    "s1Title": "Listos para vivir",
+    "s1Text": "Cocina equipada, lavadora, ropa de cama, wifi y, en muchos apartamentos, un espacio para trabajar. Solo tienes que llegar con tu maleta.",
+    "s2Title": "Precio especial por meses",
+    "s2Text": "A partir de 28 noches aplicamos condiciones especiales. Los apartamentos marcados como «Estancia larga» están pensados para ello: cuéntanos tus fechas y te enviamos una propuesta.",
+    "s3Title": "Sin sorpresas",
+    "s3Text": "Desde el principio te decimos qué incluye el precio (suministros, internet, limpieza) y cómo se paga cada mes.",
+    "s4Title": "Atención durante toda la estancia",
+    "s4Text": "Un equipo cercano para mantenimiento, incidencias o cualquier duda mientras vives en el apartamento, por WhatsApp o por teléfono.",
     "ctaTitle": "Encuentra tu apartamento",
-    "ctaText": "Busca los apartamentos marcados como «Estancia larga» en cada ciudad.",
-    "ctaButton": "Ver ciudades"
+    "ctaText": "Envíanos tus fechas y lo que necesitas, y te proponemos los apartamentos que mejor encajan.",
+    "ctaButton": "Solicitar reserva"
   },
   "OwnersPage": {
     "title": "Propietarios",
-    "intro": "¿Tienes un apartamento en una de nuestras ciudades? Nos encargamos de su gestión para que obtengas rentabilidad sin preocupaciones.",
-    "s1Title": "Gestión integral",
-    "s1Text": "Publicación, atención a los huéspedes, entradas y salidas, limpieza y mantenimiento.",
-    "s2Title": "Huéspedes de confianza",
-    "s2Text": "Revisamos cada solicitud y mantenemos el contacto con los huéspedes antes y durante la estancia.",
-    "s3Title": "Transparencia",
-    "s3Text": "Información clara y periódica sobre las reservas y los ingresos de tu propiedad.",
-    "s4Title": "Estancias cortas y largas",
-    "s4Text": "Combinamos distintos tipos de estancia para aprovechar al máximo tu apartamento durante todo el año.",
+    "intro": "¿Tienes un apartamento y quieres venderlo o alquilarlo? Compramos y alquilamos viviendas en buenas zonas de las ciudades donde trabajamos.",
+    "s1Title": "Compramos tu apartamento",
+    "s1Text": "Si quieres vender, estudiamos tu vivienda y te hacemos una propuesta. Un trato directo, sin intermediarios.",
+    "s2Title": "Alquiler a medida",
+    "s2Text": "Si prefieres no vender, estudiamos un acuerdo de alquiler adaptado a tu propiedad y a tus plazos.",
+    "s3Title": "Cuidamos la vivienda",
+    "s3Text": "Nos encargamos del mantenimiento, la limpieza y la atención a los huéspedes, para que tu apartamento esté siempre en buen estado.",
+    "s4Title": "Claridad desde el primer día",
+    "s4Text": "Hablas directamente con nosotros y conoces las condiciones por escrito antes de decidir.",
     "ctaTitle": "¿Hablamos?",
-    "ctaText": "Escríbenos y te contamos cómo podemos ayudarte. [Datos de contacto pendientes]"
+    "ctaText": "Escríbenos por WhatsApp o por correo y te respondemos lo antes posible.",
+    "ctaWhatsApp": "Escribir por WhatsApp",
+    "ctaEmail": "Enviar un correo",
+    "whatsAppMessage": "Hola, tengo un apartamento y me gustaría hablar con Euronest Apartamentos."
   },
   "NotFound": {
     "title": "Página no encontrada",

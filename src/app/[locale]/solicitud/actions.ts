@@ -27,7 +27,11 @@ export async function createGeneralRequest(
   // Campo trampa contra bots (ver el formulario de apartamento).
   if (formData.get("website")) return fail({ formError: "unexpected" });
 
-  const parsed = generalRequestSchema.safeParse({ ...values, locale: formData.get("locale") });
+  const parsed = generalRequestSchema.safeParse({
+    ...values,
+    locale: formData.get("locale"),
+    privacy: formData.get("privacy"),
+  });
   if (!parsed.success) return fail({ fieldErrors: fieldErrorsFrom(parsed.error) });
   const input = parsed.data;
 

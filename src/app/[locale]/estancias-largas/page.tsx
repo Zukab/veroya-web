@@ -24,7 +24,7 @@ export default async function LongStaysPage() {
       cta={{
         title: t("ctaTitle"),
         text: t("ctaText"),
-        button: { label: t("ctaButton"), href: "/ciudades" },
+        buttons: [{ label: t("ctaButton"), href: "/solicitud" }],
       }}
     />
   );

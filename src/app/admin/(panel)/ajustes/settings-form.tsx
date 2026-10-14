@@ -138,6 +138,52 @@ export function SettingsForm({ settings }: { settings: AgencySettings }) {
         </div>
       </FormSection>
 
+      <FormSection title="Datos legales del titular">
+        <p className="mb-4 text-sm text-stone-600">
+          Aparecen en el aviso legal y en la política de privacidad de la web. Son obligatorios por
+          ley en muchos países: complétalos con los datos de la persona o empresa titular.
+        </p>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <Field id="settings-legal_name" label="Nombre o razón social" error={errors.legal_name}>
+            <input
+              id="settings-legal_name"
+              name="legal_name"
+              maxLength={150}
+              defaultValue={settings.legal_name}
+              className={inputClasses}
+            />
+          </Field>
+          <Field
+            id="settings-tax_id"
+            label="Identificación fiscal"
+            error={errors.tax_id}
+            hint="NIF en España, NIT o cédula en Colombia…"
+          >
+            <input
+              id="settings-tax_id"
+              name="tax_id"
+              maxLength={40}
+              defaultValue={settings.tax_id}
+              className={inputClasses}
+            />
+          </Field>
+          <Field
+            id="settings-legal_address"
+            label="Domicilio"
+            error={errors.legal_address}
+            className="sm:col-span-2"
+          >
+            <input
+              id="settings-legal_address"
+              name="legal_address"
+              maxLength={300}
+              defaultValue={settings.legal_address}
+              className={inputClasses}
+            />
+          </Field>
+        </div>
+      </FormSection>
+
       <button type="submit" disabled={pending} className={buttonClasses()}>
         {pending ? "Guardando…" : "Guardar ajustes"}
       </button>

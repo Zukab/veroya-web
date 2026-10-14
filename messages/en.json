@@ -24,7 +24,10 @@
     "language": "Language",
     "rights": "Euronest Apartamentos. All rights reserved.",
     "verify": "Check a booking",
-    "contact": "Contact"
+    "contact": "Contact",
+    "legalNotice": "Legal notice",
+    "privacy": "Privacy",
+    "cookies": "Cookies"
   },
   "Amenities": {
     "wifi": "Wi-Fi",
@@ -124,7 +127,8 @@
     "stay": "{checkIn} → {checkOut} · {guests, plural, one {# guest} other {# guests}}",
     "newRequest": "Make another request",
     "mobileCta": "Book",
-    "checkStatus": "Check your booking status"
+    "checkStatus": "Check your booking status",
+    "privacyConsent": "I have read and accept the <link>privacy policy</link>."
   },
   "BookingErrors": {
     "required": "This field is required.",
@@ -142,7 +146,8 @@
     "rateLimited": "You've sent too many requests. Please try again later.",
     "unexpected": "We couldn't send your request. Please try again in a few minutes.",
     "unavailable": "This apartment is already booked for those dates. Try other dates or send us a request.",
-    "cityNotFound": "Choose a city from the list."
+    "cityNotFound": "Choose a city from the list.",
+    "privacyRequired": "To send the request you must accept the privacy policy."
   },
   "Home": {
     "heroTitle": "Your apartment, for a few days or a whole season",
@@ -178,52 +183,52 @@
     "empty": "There are no apartments in this city yet. Check back soon.",
     "metaDescription": "Apartments for short and long stays in {city}."
   },
-  "ContentPage": {
-    "placeholderNotice": "Placeholder text: the final content for this page is pending."
-  },
   "HowItWorksPage": {
     "title": "How it works",
-    "intro": "Booking with Euronest is simple and personal. Here is the process, from your request to your arrival.",
-    "s1Title": "Find your apartment",
-    "s1Text": "Explore our cities and choose the apartment that fits your dates, number of guests and needs.",
+    "intro": "Booking with Euronest is simple and personal: you choose the apartment, send us your request and we confirm it. Nothing is paid on the website.",
+    "s1Title": "Search and choose",
+    "s1Text": "Enter the city, dates and number of guests in the search. You will only see apartments available on those dates, with photos, layout, amenities and an indicative price.",
     "s2Title": "Send your request",
-    "s2Text": "Fill in the form with your details and dates. Once sent, you'll see your booking code and a PIN: keep them for any enquiry.",
+    "s2Text": "Fill in the form with your details. When you send it you will see your booking reference and PIN, and you will receive an email with your request. Sending it is free and has no commitment.",
     "s3Title": "We confirm your booking",
-    "s3Text": "Our team checks availability and gets in touch to confirm your booking and explain the next steps.",
+    "s3Text": "We check availability and get in touch by email or WhatsApp to confirm the total and how to pay. Once the booking is confirmed, we send you the voucher as a PDF.",
     "s4Title": "Arrival and stay",
-    "s4Text": "Before you arrive we send you the access instructions. During your stay, we're available for anything you need.",
+    "s4Text": "Show the voucher and your ID on arrival. The voucher QR code lets anyone check at any time that the booking is valid. During your stay, we are just a message away.",
     "ctaTitle": "Ready to choose?",
-    "ctaText": "Discover the apartments available in each city.",
-    "ctaButton": "Browse cities"
+    "ctaText": "Search by city and dates, or tell us what you need and we will suggest options.",
+    "ctaButton": "Request a booking"
   },
   "LongStaysPage": {
     "title": "Long stays",
-    "intro": "Coming to work, study or live here for a while? We have apartments ready for stays of one or several months.",
+    "intro": "Coming to work, study or live for a while? We have furnished apartments for stays of one or several months, with special terms.",
     "s1Title": "Ready to live in",
-    "s1Text": "Equipped kitchen, washing machine, good Wi-Fi and, in many apartments, a comfortable space to work.",
-    "s2Title": "Terms for months",
-    "s2Text": "Long stays come with special terms. Tell us your dates and we'll prepare a proposal.",
-    "s3Title": "Support throughout your stay",
-    "s3Text": "A friendly team to handle issues, maintenance and any questions while you live in the apartment.",
-    "s4Title": "Flexibility",
-    "s4Text": "We adjust check-in and check-out dates where possible to fit your plans.",
+    "s1Text": "Equipped kitchen, washing machine, bed linen, Wi-Fi and, in many apartments, a place to work. Just bring your suitcase.",
+    "s2Title": "Special monthly prices",
+    "s2Text": "From 28 nights we offer special terms. Apartments marked “Long stay” are designed for this: tell us your dates and we will send you a proposal.",
+    "s3Title": "No surprises",
+    "s3Text": "From the start we tell you what the price includes (utilities, internet, cleaning) and how monthly payments work.",
+    "s4Title": "Support throughout your stay",
+    "s4Text": "A friendly team for maintenance, issues or any question while you live in the apartment, by WhatsApp or phone.",
     "ctaTitle": "Find your apartment",
-    "ctaText": "Look for apartments marked «Long stay» in each city.",
-    "ctaButton": "Browse cities"
+    "ctaText": "Send us your dates and what you need, and we will suggest the apartments that fit best.",
+    "ctaButton": "Request a booking"
   },
   "OwnersPage": {
     "title": "Owners",
-    "intro": "Do you own an apartment in one of our cities? We manage it for you so you earn income without the hassle.",
-    "s1Title": "Full management",
-    "s1Text": "Listing, guest communication, check-ins and check-outs, cleaning and maintenance.",
-    "s2Title": "Trusted guests",
-    "s2Text": "We review every request and keep in touch with guests before and during their stay.",
-    "s3Title": "Transparency",
-    "s3Text": "Clear, regular information about your property's bookings and income.",
-    "s4Title": "Short and long stays",
-    "s4Text": "We combine different types of stay to make the most of your apartment all year round.",
+    "intro": "Do you own an apartment and want to sell or rent it? We buy and rent homes in good areas of the cities where we work.",
+    "s1Title": "We buy your apartment",
+    "s1Text": "If you want to sell, we assess your home and make you an offer. A direct deal, with no intermediaries.",
+    "s2Title": "Tailored rental",
+    "s2Text": "If you would rather not sell, we can agree a rental arrangement suited to your property and your timing.",
+    "s3Title": "We look after the home",
+    "s3Text": "We take care of maintenance, cleaning and guest support, so your apartment is always in good condition.",
+    "s4Title": "Clear from day one",
+    "s4Text": "You deal with us directly and get the terms in writing before you decide.",
     "ctaTitle": "Shall we talk?",
-    "ctaText": "Write to us and we'll tell you how we can help. [Contact details pending]"
+    "ctaText": "Message us on WhatsApp or by email and we will reply as soon as possible.",
+    "ctaWhatsApp": "Message on WhatsApp",
+    "ctaEmail": "Send an email",
+    "whatsAppMessage": "Hello, I own an apartment and would like to talk to Euronest Apartamentos."
   },
   "NotFound": {
     "title": "Page not found",

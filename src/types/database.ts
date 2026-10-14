@@ -38,7 +38,10 @@ export type Database = {
           hero_image_url: string | null
           house_rules: string
           id: boolean
+          legal_address: string
+          legal_name: string
           phone: string
+          tax_id: string
           whatsapp: string
         }
         Insert: {
@@ -49,7 +52,10 @@ export type Database = {
           hero_image_url?: string | null
           house_rules?: string
           id?: boolean
+          legal_address?: string
+          legal_name?: string
           phone?: string
+          tax_id?: string
           whatsapp?: string
         }
         Update: {
@@ -60,7 +66,10 @@ export type Database = {
           hero_image_url?: string | null
           house_rules?: string
           id?: boolean
+          legal_address?: string
+          legal_name?: string
           phone?: string
+          tax_id?: string
           whatsapp?: string
         }
         Relationships: []

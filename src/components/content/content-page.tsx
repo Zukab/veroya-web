@@ -1,10 +1,11 @@
-import { ArrowRight, Info, type LucideIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { ArrowRight, type LucideIcon } from "lucide-react";
 import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
 
 type Section = { icon: LucideIcon; title: string; text: string };
+// Botón de la llamada final: enlace interno de la web o externo (WhatsApp, correo).
+type CtaButton = { label: string; href: string; external?: boolean };
 
 // Estructura común de las páginas de contenido (cómo funciona, estancias largas,
 // propietarios): título, introducción, bloques y llamada a la acción final.
@@ -19,19 +20,13 @@ export function ContentPage({
   intro: string;
   sections: Section[];
   numbered?: boolean;
-  cta: { title: string; text: string; button?: { label: string; href: string } };
+  cta: { title: string; text: string; buttons?: CtaButton[] };
 }) {
-  const t = useTranslations("ContentPage");
 
   return (
     <main className="pb-16 sm:pb-24">
       <section className="border-b border-sand-200 bg-sand-100">
         <Container className="py-12 sm:py-20">
-          {/* Aviso visible hasta que el cliente entregue los textos definitivos. */}
-          <p className="mb-6 inline-flex items-center gap-2 rounded-xl border border-terracotta-100 bg-terracotta-50 px-3 py-1 text-xs font-medium text-terracotta-700">
-            <Info aria-hidden="true" className="size-3.5" />
-            {t("placeholderNotice")}
-          </p>
           <h1 className="font-serif text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl">
             {title}
           </h1>
@@ -69,17 +64,27 @@ export function ContentPage({
             <h2 className="font-serif text-3xl font-semibold">{cta.title}</h2>
             <p className="mt-2 text-white/80">{cta.text}</p>
           </div>
-          {cta.button && (
-            <Link
-              href={cta.button.href}
-              className={buttonClasses({
-                variant: "secondary",
-                className: "shrink-0 border-transparent",
+          {cta.buttons && cta.buttons.length > 0 && (
+            <div className="flex shrink-0 flex-wrap gap-3">
+              {cta.buttons.map((button) => {
+                const className = buttonClasses({ variant: "secondary", className: "border-transparent" });
+                const content = (
+                  <>
+                    {button.label}
+                    <ArrowRight aria-hidden="true" className="size-4" />
+                  </>
+                );
+                return button.external ? (
+                  <a key={button.href} href={button.href} target="_blank" rel="noopener noreferrer" className={className}>
+                    {content}
+                  </a>
+                ) : (
+                  <Link key={button.href} href={button.href} className={className}>
+                    {content}
+                  </Link>
+                );
               })}
-            >
-              {cta.button.label}
-              <ArrowRight aria-hidden="true" className="size-4" />
-            </Link>
+            </div>
           )}
         </div>
       </Container>

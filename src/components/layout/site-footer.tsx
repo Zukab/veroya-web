@@ -56,7 +56,20 @@ export function SiteFooter() {
       </Container>
 
       <div className="border-t border-sand-200">
-        <Container className="py-5 text-xs text-stone-500">© {t("rights")}</Container>
+        <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-5 text-xs text-stone-500">
+          <span>© {t("rights")}</span>
+          <nav aria-label={t("legalNotice")} className="flex flex-wrap gap-x-4 gap-y-1">
+            <Link href="/aviso-legal" className="hover:text-terracotta-700">
+              {t("legalNotice")}
+            </Link>
+            <Link href="/privacidad" className="hover:text-terracotta-700">
+              {t("privacy")}
+            </Link>
+            <Link href="/cookies" className="hover:text-terracotta-700">
+              {t("cookies")}
+            </Link>
+          </nav>
+        </Container>
       </div>
     </footer>
   );

@@ -19,6 +19,9 @@ export async function saveSettings(_previous: AdminFormState, formData: FormData
     check_out_time: field("check_out_time"),
     house_rules: field("house_rules"),
     cancellation_policy: field("cancellation_policy"),
+    legal_name: field("legal_name"),
+    tax_id: field("tax_id"),
+    legal_address: field("legal_address"),
   });
   if (!parsed.success) return errorState("Revisa los campos marcados.", adminFieldErrors(parsed.error));
 

@@ -13,7 +13,7 @@ export async function getAgencySettings() {
   const { data, error } = await createPublicClient()
     .from("agency_settings")
     .select(
-      "phone, email, whatsapp, hero_image_url, check_in_time, check_out_time, house_rules, cancellation_policy",
+      "phone, email, whatsapp, hero_image_url, check_in_time, check_out_time, house_rules, cancellation_policy, legal_name, tax_id, legal_address",
     )
     .maybeSingle();
 

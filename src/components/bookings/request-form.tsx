@@ -12,6 +12,7 @@ import { Link } from "@/i18n/navigation";
 import { addDays, nightsBetween, todayInSpain } from "@/lib/bookings/dates";
 import type { PublicBookingState } from "@/lib/bookings/form-state";
 import { MAX_SEARCH_GUESTS, parseSearchParams } from "@/lib/search";
+import { PrivacyConsent } from "./privacy-consent";
 
 export type RequestCity = { slug: string; name: string; country: string; image_url: string | null };
 
@@ -279,6 +280,9 @@ function RequestFormInner({
 
           <hr className="my-5 border-sand-200" />
           <p className="text-sm text-stone-600">{t("summaryNote")}</p>
+          <div className="mt-4">
+            <PrivacyConsent id="request-privacy" error={errorText("privacy")} />
+          </div>
           <button type="submit" disabled={pending} className={buttonClasses({ size: "lg", className: "mt-5 w-full" })}>
             {pending ? t("submitting") : t("submit")}
           </button>

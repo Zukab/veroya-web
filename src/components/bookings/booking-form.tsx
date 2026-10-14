@@ -8,6 +8,7 @@ import { createBookingRequest } from "@/app/[locale]/apartamento/[id]/actions";
 import { buttonClasses } from "@/components/ui/button";
 import { Field, FormAlert, inputClasses } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
+import { PrivacyConsent } from "./privacy-consent";
 import { addDays, nightsBetween, todayInSpain } from "@/lib/bookings/dates";
 import type { PublicBookingState } from "@/lib/bookings/form-state";
 import { priceFormat } from "@/lib/format";
@@ -232,6 +233,8 @@ function BookingForm({
           className={inputClasses}
         />
       </Field>
+
+      <PrivacyConsent id="booking-privacy" error={errorText("privacy")} />
 
       <button
         type="submit"

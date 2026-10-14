@@ -41,6 +41,10 @@ export const settingsSchema = z.object({
       .join("\n"),
   ),
   cancellation_policy: text(2000),
+  // Datos legales del titular (aviso legal y privacidad); pueden quedar vacíos.
+  legal_name: z.string().trim().max(150, { error: "Máximo 150 caracteres." }),
+  tax_id: z.string().trim().max(40, { error: "Máximo 40 caracteres." }),
+  legal_address: z.string().trim().max(300, { error: "Máximo 300 caracteres." }),
 });
 
 export type SettingsInput = z.infer<typeof settingsSchema>;
