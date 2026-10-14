@@ -1,6 +1,7 @@
 import { createTranslator } from "next-intl";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
+import { fullAddress } from "@/lib/voucher/address";
 import { firstName } from "@/lib/voucher/guest-name";
 import type { VoucherData } from "@/lib/voucher/data";
 
@@ -35,7 +36,7 @@ export function confirmationEmail(data: VoucherData) {
   const rows: [string, string][] = [
     [t("code"), data.code],
     [t("apartment"), apartmentLabel],
-    ...(apartment.address ? ([[t("address"), apartment.address]] as [string, string][]) : []),
+    ...(apartment.address ? ([[t("address"), fullAddress(apartment)]] as [string, string][]) : []),
     [t("checkIn"), t("checkInValue", { date: day(data.checkIn), time: settings.check_in_time })],
     [t("checkOut"), t("checkOutValue", { date: day(data.checkOut), time: settings.check_out_time })],
     [t("guests"), t("guestsValue", { count: data.guest.count })],

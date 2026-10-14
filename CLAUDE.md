@@ -1,6 +1,6 @@
 # Euronest Apartamentos — página web
 
-Página web de **Euronest Apartamentos**, negocio de alquiler de apartamentos en España.
+Página web de **Euronest Apartamentos**, negocio de alquiler de apartamentos (en España y en otros países: el panel admite ciudades de cualquier país).
 El cliente (en Colombia) es el único propietario de todos los apartamentos; compra y vende
 pisos con frecuencia, así que los crea y borra él mismo desde el panel.
 La marca se llamaba antes "Veroya" (cambio del 2026-10-13). Los nombres técnicos de la
@@ -284,7 +284,7 @@ bloquear reservas por cruce de fechas.
 
 ## Modelo de datos (Supabase)
 
-- `cities`: `slug` (PK, texto), `name`, `image_url`, `description`, `created_at`
+- `cities`: `slug` (PK, texto), `name`, `country` (nombre del país en español; el panel lo exige), `image_url`, `description`, `created_at`
 - `apartments`: `id` (PK, texto, slug legible), `city_slug` (FK → cities, on delete
   restrict, on update cascade), `name`, `price` (entero, euros por noche), `rooms`,
   `baths`, `size` (m², opcional), `max_guests`, `rating` (numeric 3,2; null = sin

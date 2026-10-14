@@ -77,6 +77,9 @@ async function CityContent({ params }: Pick<PageProps<"/[locale]/ciudades/[ciuda
               <ChevronRight aria-hidden="true" className="size-4" />
             </Link>
           </nav>
+          {city.country && (
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/80">{city.country}</p>
+          )}
           <h1 className="font-serif text-4xl font-semibold tracking-tight sm:text-6xl">
             {city.name}
           </h1>

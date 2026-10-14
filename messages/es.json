@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Euronest Apartamentos",
-    "description": "Apartamentos para estancias cortas y largas en las mejores ciudades de España."
+    "description": "Apartamentos para estancias cortas y largas en las mejores ciudades."
   },
   "Nav": {
     "home": "Inicio",
@@ -18,7 +18,7 @@
     "en": "English"
   },
   "Footer": {
-    "tagline": "Apartamentos cuidados en las mejores ciudades de España, para unos días o para varios meses.",
+    "tagline": "Apartamentos cuidados en las mejores ciudades, para unos días o para varios meses.",
     "explore": "Explora",
     "language": "Idioma",
     "rights": "Euronest Apartamentos. Todos los derechos reservados.",
@@ -108,7 +108,7 @@
     "required": "Este campo es obligatorio.",
     "tooLong": "El texto es demasiado largo.",
     "invalidEmail": "Introduce un correo electrónico válido.",
-    "invalidPhone": "Introduce un teléfono válido, con prefijo si es de fuera de España.",
+    "invalidPhone": "Introduce un teléfono válido, con el prefijo del país.",
     "invalidDate": "Introduce una fecha válida.",
     "invalidGuests": "Indica un número de huéspedes válido.",
     "checkInPast": "La fecha de entrada no puede ser anterior a hoy.",
@@ -121,13 +121,13 @@
     "unexpected": "No hemos podido enviar la solicitud. Inténtalo de nuevo en unos minutos."
   },
   "Home": {
-    "heroEyebrow": "Apartamentos en España",
-    "heroTitle": "Tu casa en España, para unos días o para meses",
+    "heroEyebrow": "Apartamentos amueblados",
+    "heroTitle": "Tu apartamento, por unos días o una temporada",
     "heroSubtitle": "Apartamentos cuidados en buenos barrios, con un equipo cercano que te acompaña antes y durante tu estancia.",
     "heroCtaCities": "Ver ciudades",
     "heroCtaLongStays": "Estancias largas",
     "citiesTitle": "Elige tu ciudad",
-    "citiesSubtitle": "Apartamentos seleccionados en las ciudades con más vida de España.",
+    "citiesSubtitle": "Apartamentos seleccionados en ciudades con mucha vida.",
     "seeAllCities": "Ver todas las ciudades",
     "featuredTitle": "Apartamentos destacados",
     "featuredSubtitle": "Los mejor valorados por nuestros huéspedes.",

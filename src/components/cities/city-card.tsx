@@ -24,6 +24,7 @@ export async function CityCard({ city }: { city: CityWithCount }) {
         <PhotoPlaceholder label={city.name} className="pb-16" />
       )}
       <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/70 via-black/30 to-transparent p-4 pt-16 text-white sm:p-5">
+        {city.country && <p className="text-xs font-medium uppercase tracking-wider text-white/75">{city.country}</p>}
         <h3 className="font-serif text-xl font-semibold sm:text-2xl">{city.name}</h3>
         <p className="text-xs text-white/85 sm:text-sm">
           {t("apartmentsCount", { count: city.apartmentCount })}

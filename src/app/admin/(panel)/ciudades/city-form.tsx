@@ -12,7 +12,7 @@ import { idleState } from "@/lib/admin/form";
 import type { Database } from "@/types/database";
 import { saveCity } from "./actions";
 
-type City = Pick<Database["public"]["Tables"]["cities"]["Row"], "slug" | "name" | "description" | "image_url">;
+type City = Pick<Database["public"]["Tables"]["cities"]["Row"], "slug" | "name" | "country" | "description" | "image_url">;
 
 export function CityForm({ city }: { city?: City }) {
   const [state, formAction, pending] = useActionState(saveCity, idleState);
@@ -63,6 +63,16 @@ export function CityForm({ city }: { city?: City }) {
             />
           </Field>
         </div>
+        <Field id="city-country" label="País" error={errors.country} className="mt-4 sm:max-w-xs" hint="En español, p. ej. España, Francia, Italia.">
+          <input
+            id="city-country"
+            name="country"
+            required
+            maxLength={80}
+            defaultValue={city?.country}
+            className={inputClasses}
+          />
+        </Field>
         <Field id="city-description" label="Descripción" error={errors.description} className="mt-4">
           <textarea
             id="city-description"

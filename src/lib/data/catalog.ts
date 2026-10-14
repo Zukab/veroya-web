@@ -8,7 +8,7 @@ import { CACHE_TAGS } from "./tags";
 
 // Columnas que necesitan las tarjetas de apartamento.
 const APARTMENT_CARD_COLUMNS =
-  "id, name, price, rooms, max_guests, rating, reviews, min_nights, neighborhood, images, city:cities(slug, name)";
+  "id, name, price, rooms, max_guests, rating, reviews, min_nights, neighborhood, images, city:cities(slug, name, country)";
 
 export const FEATURED_APARTMENTS_LIMIT = 6;
 
@@ -23,7 +23,7 @@ export async function getCities() {
 
   const { data, error } = await createPublicClient()
     .from("cities")
-    .select("slug, name, image_url, description, apartments(count)")
+    .select("slug, name, country, image_url, description, apartments(count)")
     .order("name");
 
   if (error) fail("las ciudades", error);
@@ -41,7 +41,7 @@ export async function getCity(slug: string) {
 
   const { data, error } = await createPublicClient()
     .from("cities")
-    .select("slug, name, image_url, description")
+    .select("slug, name, country, image_url, description")
     .eq("slug", slug)
     .maybeSingle();
 
@@ -91,7 +91,7 @@ export async function getApartment(id: string) {
 
   const { data, error } = await createPublicClient()
     .from("apartments")
-    .select("*, city:cities(slug, name)")
+    .select("*, city:cities(slug, name, country)")
     .eq("id", id)
     .maybeSingle();
 

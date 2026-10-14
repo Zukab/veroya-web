@@ -41,6 +41,7 @@ const optional = <T extends z.ZodType>(schema: T) =>
 export const citySchema = z.object({
   slug,
   name: text(100, true),
+  country: text(80, true),
   description: text(5000),
   image_url: optional(mediaUrl),
 });

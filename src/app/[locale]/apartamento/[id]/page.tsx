@@ -80,7 +80,7 @@ async function ApartmentContent({
   const format = await getFormatter();
 
   const amenities = knownAmenities(apartment.amenities);
-  const location = [apartment.neighborhood, apartment.city.name].filter(Boolean).join(", ");
+  const location = [apartment.neighborhood, apartment.city.name, apartment.city.country].filter(Boolean).join(", ");
   const facts = [
     { icon: Users, label: t("maxGuests", { count: apartment.max_guests }) },
     { icon: DoorOpen, label: tApartment("rooms", { count: apartment.rooms }) },

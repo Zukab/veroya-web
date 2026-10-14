@@ -271,6 +271,7 @@ export type Database = {
       }
       cities: {
         Row: {
+          country: string
           created_at: string
           description: string
           image_url: string | null
@@ -278,6 +279,7 @@ export type Database = {
           slug: string
         }
         Insert: {
+          country?: string
           created_at?: string
           description?: string
           image_url?: string | null
@@ -285,6 +287,7 @@ export type Database = {
           slug: string
         }
         Update: {
+          country?: string
           created_at?: string
           description?: string
           image_url?: string | null

@@ -29,6 +29,7 @@ export type VoucherData = {
   apartment: {
     name: string;
     city: string;
+    country: string;
     address: string;
     rooms: number | null;
     baths: number | null;
@@ -50,7 +51,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     createAdminClient()
       .from("bookings")
       .select(
-        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name)), booking_payments(amount)",
+        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount)",
       )
       .eq("id", bookingId)
       .maybeSingle(),
@@ -87,6 +88,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     apartment: {
       name: booking.apartment_name,
       city: apartment?.city.name ?? booking.city_name,
+      country: apartment?.city.country ?? "",
       address: apartment?.address ?? "",
       rooms: apartment?.rooms ?? null,
       baths: apartment?.baths ?? null,

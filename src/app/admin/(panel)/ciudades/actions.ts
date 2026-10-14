@@ -24,6 +24,7 @@ export async function saveCity(_previous: AdminFormState, formData: FormData): P
   const parsed = citySchema.safeParse({
     slug: originalSlug || formData.get("slug"),
     name: formData.get("name"),
+    country: formData.get("country") ?? "",
     description: formData.get("description") ?? "",
     image_url: formData.get("image_url") ?? "",
   });
@@ -51,7 +52,7 @@ export async function saveCity(_previous: AdminFormState, formData: FormData): P
 
   const { data: updated, error } = await supabase
     .from("cities")
-    .update({ name: city.name, description: city.description, image_url: city.image_url })
+    .update({ name: city.name, country: city.country, description: city.description, image_url: city.image_url })
     .eq("slug", originalSlug)
     .select("slug");
   if (error) {

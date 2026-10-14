@@ -1,7 +1,7 @@
 {
   "Metadata": {
     "title": "Euronest Apartamentos",
-    "description": "Apartments for short and long stays in Spain's best cities."
+    "description": "Apartments for short and long stays in the best cities."
   },
   "Nav": {
     "home": "Home",
@@ -18,7 +18,7 @@
     "en": "English"
   },
   "Footer": {
-    "tagline": "Well-kept apartments in Spain's best cities, for a few days or several months.",
+    "tagline": "Well-kept apartments in the best cities, for a few days or several months.",
     "explore": "Explore",
     "language": "Language",
     "rights": "Euronest Apartamentos. All rights reserved.",
@@ -108,7 +108,7 @@
     "required": "This field is required.",
     "tooLong": "This text is too long.",
     "invalidEmail": "Enter a valid email address.",
-    "invalidPhone": "Enter a valid phone number, with country code if outside Spain.",
+    "invalidPhone": "Enter a valid phone number, with the country code.",
     "invalidDate": "Enter a valid date.",
     "invalidGuests": "Enter a valid number of guests.",
     "checkInPast": "Check-in can't be earlier than today.",
@@ -121,13 +121,13 @@
     "unexpected": "We couldn't send your request. Please try again in a few minutes."
   },
   "Home": {
-    "heroEyebrow": "Apartments in Spain",
-    "heroTitle": "Your home in Spain, for a few days or for months",
+    "heroEyebrow": "Furnished apartments",
+    "heroTitle": "Your apartment, for a few days or a whole season",
     "heroSubtitle": "Well-kept apartments in great neighbourhoods, with a friendly team that looks after you before and during your stay.",
     "heroCtaCities": "Browse cities",
     "heroCtaLongStays": "Long stays",
     "citiesTitle": "Choose your city",
-    "citiesSubtitle": "Hand-picked apartments in Spain's liveliest cities.",
+    "citiesSubtitle": "Hand-picked apartments in lively cities.",
     "seeAllCities": "See all cities",
     "featuredTitle": "Featured apartments",
     "featuredSubtitle": "The highest rated by our guests.",

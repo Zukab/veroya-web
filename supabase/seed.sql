@@ -13,14 +13,14 @@ begin;
 -- ---------------------------------------------------------------------------
 -- Ciudades
 -- ---------------------------------------------------------------------------
-insert into public.cities (slug, name, image_url, description) values
-  ('ejemplo-madrid', 'Madrid', null,
+insert into public.cities (slug, name, country, image_url, description) values
+  ('ejemplo-madrid', 'Madrid', 'España', null,
    '[Ejemplo] Texto provisional sobre Madrid: museos, parques y barrios con mucha vida.'),
-  ('ejemplo-barcelona', 'Barcelona', null,
+  ('ejemplo-barcelona', 'Barcelona', 'España', null,
    '[Ejemplo] Texto provisional sobre Barcelona: playa, arquitectura y gastronomía.'),
-  ('ejemplo-valencia', 'Valencia', null,
+  ('ejemplo-valencia', 'Valencia', 'España', null,
    '[Ejemplo] Texto provisional sobre Valencia: el Turia, la Ciudad de las Artes y la Malvarrosa.'),
-  ('ejemplo-malaga', 'Málaga', null,
+  ('ejemplo-malaga', 'Málaga', 'España', null,
    '[Ejemplo] Texto provisional sobre Málaga: sol todo el año, centro histórico y costa.')
 on conflict (slug) do nothing;
 

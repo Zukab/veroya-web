@@ -16,7 +16,7 @@ export default async function AdminCitiesPage({ searchParams }: PageProps<"/admi
 
   const { data: cities, error } = await supabase
     .from("cities")
-    .select("slug, name, image_url, apartments(count)")
+    .select("slug, name, country, image_url, apartments(count)")
     .order("name");
   if (error) throw new Error(`No se pudieron leer las ciudades: ${error.message}`);
 
@@ -53,7 +53,10 @@ export default async function AdminCitiesPage({ searchParams }: PageProps<"/admi
                       )}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block font-medium">{city.name}</span>
+                      <span className="block font-medium">
+                        {city.name}
+                        {city.country && <span className="font-normal text-stone-500"> · {city.country}</span>}
+                      </span>
                       <span className="block truncate text-sm text-stone-500">/{city.slug}</span>
                     </span>
                     <span className="text-sm text-stone-600">

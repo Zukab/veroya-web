@@ -18,7 +18,7 @@ export default async function EditCityPage({ params, searchParams }: PageProps<"
 
   const { data: city, error } = await supabase
     .from("cities")
-    .select("slug, name, description, image_url")
+    .select("slug, name, country, description, image_url")
     .eq("slug", slug)
     .maybeSingle();
   if (error) throw new Error(`No se pudo leer la ciudad: ${error.message}`);

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
 import { houseRulesList } from "@/lib/data/settings";
+import { fullAddress } from "./address";
 import type { PaymentKind, VoucherData } from "./data";
 
 // Voucher en PDF (una página A4), con el diseño aprobado por el cliente
@@ -306,7 +307,7 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
   const token = data.verificationUrl.split("/").pop() ?? "";
   const shortUrl = `${siteHost}/verificar/${token.slice(0, 4)}…${token.slice(-4)}`;
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    [apartment.address, apartment.city].filter(Boolean).join(", "),
+    fullAddress(apartment),
   )}`;
 
   return (
@@ -350,10 +351,7 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
               <>
                 <View style={s.address}>
                   <PinIcon />
-                  <Text>
-                    {apartment.address}
-                    {apartment.city && !apartment.address.includes(apartment.city) ? ` · ${apartment.city}` : ""}
-                  </Text>
+                  <Text>{fullAddress(apartment)}</Text>
                 </View>
                 <Link src={mapsUrl} style={s.mapLink}>
                   {t("openMap")}
