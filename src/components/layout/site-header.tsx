@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
+import { AdminShortcut } from "./admin-shortcut";
 import { LocaleLinks, LocaleSwitcher } from "./locale-switcher";
 import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
@@ -32,6 +33,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <AdminShortcut />
           {/* Envuelto: "hidden" no puede ir junto al inline-flex del botón. */}
           <div className="hidden xl:block">
             <Link href="/solicitud" className={buttonClasses({ className: "h-9 px-4 whitespace-nowrap" })}>

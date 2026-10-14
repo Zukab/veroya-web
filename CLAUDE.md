@@ -388,6 +388,9 @@ de la base de datos son la última barrera; la validación principal es con zod.
     lectura y Server Action del panel (devuelve el cliente con la sesión). El layout del
     panel muestra "Sin permisos" a usuarios con sesión que no están en `public.admins`.
   - Login con límite propio de 10 intentos cada 15 minutos por IP, además del de Supabase.
+  - Accesos rápidos: "Ver la web" en la cabecera del panel y "Panel" en la cabecera de la
+    web, este último solo en el navegador con sesión (cookie `sb-…-auth-token`, se comprueba en
+    el cliente para no romper la caché). Es solo un enlace: el control sigue en el servidor.
 - Las imágenes van en Supabase Storage (bucket público `media`), nunca como base64 en la
   base de datos.
 - Código y PIN de reserva generados con `crypto`, no con `Math.random`.
