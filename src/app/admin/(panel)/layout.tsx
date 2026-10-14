@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Container } from "@/components/ui/container";
@@ -56,6 +57,16 @@ async function SessionInfo() {
   const access = await requireSession();
   return (
     <div className="flex items-center gap-3 text-sm">
+      {/* La web pública en otra pestaña, para no perder lo que se está editando. */}
+      <a
+        href="/"
+        target="_blank"
+        rel="noopener"
+        className="inline-flex items-center gap-1.5 rounded-full border border-sand-300 px-3 py-1.5 font-medium text-stone-700 hover:bg-sand-100"
+      >
+        Ver la web
+        <ExternalLink aria-hidden="true" className="size-3.5" />
+      </a>
       <span className="hidden text-stone-500 md:inline">{access.email}</span>
       <form action={signOut}>
         <button type="submit" className="rounded-full px-3 py-2 font-medium text-stone-700 hover:bg-sand-100">
