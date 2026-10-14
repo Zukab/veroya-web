@@ -35,27 +35,33 @@ export type Database = {
           check_in_time: string
           check_out_time: string
           email: string
+          hero_image_url: string | null
           house_rules: string
           id: boolean
           phone: string
+          whatsapp: string
         }
         Insert: {
           cancellation_policy?: string
           check_in_time?: string
           check_out_time?: string
           email?: string
+          hero_image_url?: string | null
           house_rules?: string
           id?: boolean
           phone?: string
+          whatsapp?: string
         }
         Update: {
           cancellation_policy?: string
           check_in_time?: string
           check_out_time?: string
           email?: string
+          hero_image_url?: string | null
           house_rules?: string
           id?: boolean
           phone?: string
+          whatsapp?: string
         }
         Relationships: []
       }

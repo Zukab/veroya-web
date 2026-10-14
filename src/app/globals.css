@@ -45,3 +45,11 @@ html:has(dialog[open]) {
     scroll-behavior: smooth;
   }
 }
+
+/* Ficha del apartamento en móvil: el botón de WhatsApp sube por encima de la barra
+   fija de reservar. */
+@media (width < 64rem) {
+  body:has([data-mobile-booking-bar]) .whatsapp-float {
+    bottom: 5.5rem;
+  }
+}

@@ -12,7 +12,9 @@ export async function getAgencySettings() {
 
   const { data, error } = await createPublicClient()
     .from("agency_settings")
-    .select("phone, email, check_in_time, check_out_time, house_rules, cancellation_policy")
+    .select(
+      "phone, email, whatsapp, hero_image_url, check_in_time, check_out_time, house_rules, cancellation_policy",
+    )
     .maybeSingle();
 
   if (error) throw new Error(`No se pudieron leer los ajustes de la agencia: ${error.message}`);
@@ -27,6 +29,12 @@ export async function getAgencySettings() {
 }
 
 export type AgencySettings = Awaited<ReturnType<typeof getAgencySettings>>;
+
+// Enlace de WhatsApp con un mensaje ya escrito (null si no hay número).
+export function whatsappUrl(number: string, text: string) {
+  const digits = number.replace(/\D/g, "");
+  return digits ? `https://wa.me/${digits}?text=${encodeURIComponent(text)}` : null;
+}
 
 // Normas: una por línea, sin líneas vacías.
 export function houseRulesList(rules: string) {

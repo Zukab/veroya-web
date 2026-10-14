@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { ActionForm } from "@/components/admin/action-form";
 import { FormStatus } from "@/components/admin/form-status";
+import { ImageUpload } from "@/components/admin/image-upload";
 import { FormSection } from "@/components/admin/page-header";
 import { buttonClasses } from "@/components/ui/button";
 import { Field, inputClasses } from "@/components/ui/form";
@@ -35,6 +36,21 @@ export function SettingsForm({ settings }: { settings: AgencySettings }) {
               className={inputClasses}
             />
           </Field>
+          <Field
+            id="settings-whatsapp"
+            label="WhatsApp"
+            error={errors.whatsapp}
+            hint="Número para el botón de WhatsApp de la web. Vacío = sin botón."
+          >
+            <input
+              id="settings-whatsapp"
+              name="whatsapp"
+              type="tel"
+              maxLength={40}
+              defaultValue={settings.whatsapp}
+              className={inputClasses}
+            />
+          </Field>
           <Field id="settings-email" label="Correo" error={errors.email}>
             <input
               id="settings-email"
@@ -47,6 +63,19 @@ export function SettingsForm({ settings }: { settings: AgencySettings }) {
             />
           </Field>
         </div>
+      </FormSection>
+
+      <FormSection title="Foto de portada">
+        <p className="mb-4 text-sm text-stone-600">
+          Fondo del buscador en la página de inicio. Mejor en horizontal; sin foto se muestra un
+          fondo de color.
+        </p>
+        <ImageUpload
+          name="hero_image_url"
+          folder="portada"
+          initial={settings.hero_image_url ? [settings.hero_image_url] : []}
+        />
+        {errors.hero_image_url && <p className="mt-2 text-sm text-red-700">{errors.hero_image_url}</p>}
       </FormSection>
 
       <FormSection title="Horarios">

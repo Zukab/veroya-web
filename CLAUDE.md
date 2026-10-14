@@ -137,6 +137,8 @@ Opcionales (ver `.env.example`): `SITE_URL` (enlaces absolutos del QR y del corr
 ## Alcance
 
 Parte pública:
+- Botón flotante de WhatsApp en todas las páginas y contacto en el pie (datos de
+  `/admin/ajustes`; `whatsappUrl()` en `src/lib/data/settings.ts`).
 - `/` inicio (portada, ciudades y apartamentos destacados: los 6 mejor valorados; los que
   no tienen valoraciones van al final)
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
@@ -195,7 +197,8 @@ Panel de administración (`/admin`):
   - Pagos: se registran (importe, fecha, forma, nota) o se borran; la ficha muestra total,
     pagado y pendiente.
 
-- `/admin/ajustes`: contacto de la agencia (teléfono y correo), horas de entrada y salida,
+- `/admin/ajustes`: contacto de la agencia (teléfono, correo y WhatsApp), foto de portada del
+  inicio (carpeta `portada/` de `media`), horas de entrada y salida,
   normas (una por línea) y política de cancelación. Los usan el voucher y el correo; se leen
   con `getAgencySettings()` (`src/lib/data/settings.ts`, etiqueta `settings`). Los textos
   van solo en español, también en los vouchers en inglés.
@@ -311,7 +314,8 @@ bloquear reservas por cruce de fechas.
   `otro`), `note`, `created_by` y `created_at` (los fija el trigger). Solo se registran o
   se borran; no se editan.
 - `admins`: `user_id` (PK, FK → auth.users), `created_at` — lista de administradores
-- `agency_settings`: una sola fila (`id = true`) con `phone`, `email`, `check_in_time`,
+- `agency_settings`: una sola fila (`id = true`) con `phone`, `email`, `whatsapp` (vacío = sin
+  botones), `hero_image_url`, `check_in_time`,
   `check_out_time`, `house_rules` y `cancellation_policy`. Lectura pública; solo los
   administradores la editan (no se crean ni borran filas).
 - `private.rate_limit_hits` + `public.check_rate_limit(bucket, key_hash, max, ventana_s)`:

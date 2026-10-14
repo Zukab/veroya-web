@@ -22,7 +22,8 @@
     "explore": "Explora",
     "language": "Idioma",
     "rights": "Euronest Apartamentos. Todos los derechos reservados.",
-    "verify": "Consultar una reserva"
+    "verify": "Consultar una reserva",
+    "contact": "Contacto"
   },
   "Amenities": {
     "wifi": "Wifi",
@@ -297,5 +298,11 @@
     "verifyNote": "Puedes consultar el estado de tu reserva cuando quieras con este enlace o con el código QR del voucher.",
     "help": "¿Tienes alguna pregunta? Responde a este correo o llámanos al {phone}.",
     "signature": "El equipo de Euronest Apartamentos"
+  },
+  "WhatsApp": {
+    "floating": "Escríbenos por WhatsApp",
+    "general": "Hola, tengo una consulta sobre Euronest Apartamentos.",
+    "apartment": "Hola, me interesa el apartamento «{name}»: {url}",
+    "ask": "Preguntar por WhatsApp"
   }
 }

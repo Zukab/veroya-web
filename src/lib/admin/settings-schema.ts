@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isMediaUrl } from "@/lib/media";
 
 // Validación de los ajustes de la agencia (/admin/ajustes). Mensajes en español.
 
@@ -16,6 +17,18 @@ const text = (max: number) =>
 
 export const settingsSchema = z.object({
   phone: text(40).regex(/^\+?[0-9 ()-]{6,}$/, { error: "Introduce un teléfono válido, con prefijo." }),
+  // Vacío = sin botones de WhatsApp en la web.
+  whatsapp: z
+    .string()
+    .trim()
+    .max(40, { error: "Máximo 40 caracteres." })
+    .refine((value) => value === "" || /^\+?[0-9 ()-]{6,}$/.test(value), {
+      error: "Introduce un número válido, con prefijo (p. ej. +34 600 000 000).",
+    }),
+  hero_image_url: z
+    .string()
+    .refine((value) => value === "" || isMediaUrl(value), { error: "La foto debe estar subida al almacenamiento." })
+    .transform((value) => value || null),
   email: z.string().trim().max(254, { error: "Máximo 254 caracteres." }).pipe(z.email({ error: "Correo no válido." })),
   check_in_time: time,
   check_out_time: time,
