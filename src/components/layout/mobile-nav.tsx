@@ -3,6 +3,7 @@
 import { Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
+import { buttonClasses } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { navLinks } from "./nav-links";
 
@@ -17,7 +18,7 @@ export function MobileNav() {
   }
 
   return (
-    <details ref={detailsRef} className="group md:hidden">
+    <details ref={detailsRef} className="group lg:hidden">
       <summary
         aria-label={t("menu")}
         className="flex size-10 cursor-pointer list-none items-center justify-center rounded-full text-ink hover:bg-sand-100 [&::-webkit-details-marker]:hidden"
@@ -41,6 +42,11 @@ export function MobileNav() {
               </Link>
             </li>
           ))}
+          <li className="py-3">
+            <Link href="/solicitud" onClick={close} className={buttonClasses({ className: "w-full" })}>
+              {t("request")}
+            </Link>
+          </li>
         </ul>
       </nav>
     </details>

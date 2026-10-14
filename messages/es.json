@@ -10,7 +10,8 @@
     "longStays": "Estancias largas",
     "owners": "Propietarios",
     "menu": "Menú",
-    "mainNavigation": "Navegación principal"
+    "mainNavigation": "Navegación principal",
+    "request": "Solicitar reserva"
   },
   "LocaleSwitcher": {
     "label": "Cambiar idioma",
@@ -121,7 +122,8 @@
     "apartmentNotFound": "Este apartamento ya no está disponible.",
     "rateLimited": "Has enviado demasiadas solicitudes. Inténtalo de nuevo más tarde.",
     "unexpected": "No hemos podido enviar la solicitud. Inténtalo de nuevo en unos minutos.",
-    "unavailable": "Este apartamento ya está reservado en esas fechas. Prueba con otras fechas o envíanos una solicitud."
+    "unavailable": "Este apartamento ya está reservado en esas fechas. Prueba con otras fechas o envíanos una solicitud.",
+    "cityNotFound": "Elige una ciudad de la lista."
   },
   "Home": {
     "heroTitle": "Tu apartamento, por unos días o una temporada",
@@ -325,5 +327,36 @@
     "requestText": "Cuéntanos tus fechas y te proponemos las mejores opciones disponibles.",
     "requestCta": "Enviar una solicitud",
     "seeAllCities": "Ver todas las ciudades"
+  },
+  "RequestForm": {
+    "metaTitle": "Solicitud de reserva",
+    "title": "Solicitud de reserva",
+    "intro": "Cuéntanos dónde y cuándo quieres alojarte. Te confirmamos la disponibilidad y te proponemos las mejores opciones.",
+    "stay": "Datos de la estancia",
+    "contact": "Tus datos de contacto",
+    "city": "Ciudad",
+    "cityPlaceholder": "Selecciona una ciudad…",
+    "checkIn": "Entrada",
+    "checkOut": "Salida",
+    "guests": "Huéspedes",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "WhatsApp / Teléfono",
+    "country": "País de residencia",
+    "message": "Mensaje (opcional)",
+    "messagePlaceholder": "¿Algo que debamos saber? Hora de llegada, motivo del viaje…",
+    "summaryEmpty": "Selecciona un destino",
+    "summaryEmptyText": "Completaremos este resumen con tu selección.",
+    "summaryNote": "El equipo te enviará las mejores opciones disponibles para tu selección.",
+    "nights": "{count, plural, one {# noche} other {# noches}}",
+    "guestsCount": "{count, plural, one {# huésped} other {# huéspedes}}",
+    "submit": "Enviar solicitud",
+    "submitting": "Enviando…",
+    "successTitle": "¡Solicitud enviada!",
+    "successText": "Te escribiremos con las opciones disponibles. Guarda el localizador y el PIN para consultar el estado de tu solicitud.",
+    "checkStatus": "Consultar el estado",
+    "newRequest": "Hacer otra solicitud",
+    "orWhatsApp": "¿Prefieres hablar con nosotros?",
+    "whatsApp": "Escríbenos por WhatsApp"
   }
 }

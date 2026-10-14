@@ -1,7 +1,7 @@
 "use server";
 
 import { isApartmentAvailable } from "@/lib/bookings/availability";
-import { MAX_CODE_ATTEMPTS, generateBookingCode, generateBookingPin, isDuplicateBookingCode } from "@/lib/bookings/codes";
+import { PUBLIC_BOOKING_RATE_LIMIT, insertPublicBooking } from "@/lib/bookings/create-public";
 import { nightsBetween, todayInSpain } from "@/lib/bookings/dates";
 import {
   PUBLIC_BOOKING_TEXT_FIELDS,
@@ -10,10 +10,6 @@ import {
 import { fieldErrorsFrom, publicBookingSchema, publicStayErrors } from "@/lib/bookings/schema";
 import { checkRateLimit, clientIpKey } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
-
-// Límite del formulario público: 30 envíos por hora y por IP (el equipo del
-// cliente puede registrar muchas reservas seguidas desde el mismo equipo).
-const RATE_LIMIT = { bucket: "reserva-web", max: 30, windowSeconds: 60 * 60 };
 
 // Crea una solicitud de reserva (estado Pendiente) desde el formulario público.
 // Inserta con la clave secreta: bookings no tiene acceso público. El trigger de la
@@ -60,7 +56,7 @@ export async function createBookingRequest(
   const stayErrors = publicStayErrors(input, apartment, todayInSpain());
   if (Object.keys(stayErrors).length > 0) return fail({ fieldErrors: stayErrors });
 
-  const allowed = await checkRateLimit({ ...RATE_LIMIT, key: await clientIpKey() });
+  const allowed = await checkRateLimit({ ...PUBLIC_BOOKING_RATE_LIMIT, key: await clientIpKey() });
   if (!allowed) return fail({ formError: "rateLimited" });
 
   // Fechas ya ocupadas por una reserva confirmada (las pendientes no bloquean).
@@ -73,45 +69,30 @@ export async function createBookingRequest(
     return fail({ formError: "unexpected" });
   }
 
-  for (let attempt = 1; attempt <= MAX_CODE_ATTEMPTS; attempt++) {
-    const code = generateBookingCode();
-    const pin = generateBookingPin();
+  const saved = await insertPublicBooking({
+    user_name: input.user_name,
+    user_email: input.user_email,
+    user_phone: input.user_phone,
+    user_country: input.user_country,
+    guests: input.guests,
+    check_in: input.check_in,
+    check_out: input.check_out,
+    message: input.message,
+    locale: input.locale,
+    apartment_id: apartment.id,
+    apartment_name: apartment.name,
+    city_name: apartment.city.name,
+    // Total propuesto; el equipo puede ajustarlo desde el panel.
+    total_amount: apartment.price * nightsBetween(input.check_in, input.check_out),
+  });
+  if (!saved) return fail({ formError: "unexpected" });
 
-    const { error } = await supabase.from("bookings").insert({
-      booking_code: code,
-      booking_pin: pin,
-      user_name: input.user_name,
-      user_email: input.user_email,
-      user_phone: input.user_phone,
-      user_country: input.user_country,
-      guests: input.guests,
-      check_in: input.check_in,
-      check_out: input.check_out,
-      message: input.message,
-      locale: input.locale,
-      apartment_id: apartment.id,
-      apartment_name: apartment.name,
-      city_name: apartment.city.name,
-      // Total propuesto; el equipo puede ajustarlo desde el panel.
-      total_amount: apartment.price * nightsBetween(input.check_in, input.check_out),
-    });
-
-    if (!error) {
-      return {
-        status: "success",
-        code,
-        pin,
-        checkIn: input.check_in,
-        checkOut: input.check_out,
-        guests: input.guests,
-      };
-    }
-    if (!isDuplicateBookingCode(error)) {
-      console.error("Reserva: error al guardar", error);
-      return fail({ formError: "unexpected" });
-    }
-  }
-
-  console.error(`Reserva: ${MAX_CODE_ATTEMPTS} localizadores repetidos seguidos`);
-  return fail({ formError: "unexpected" });
+  return {
+    status: "success",
+    code: saved.code,
+    pin: saved.pin,
+    checkIn: input.check_in,
+    checkOut: input.check_out,
+    guests: input.guests,
+  };
 }

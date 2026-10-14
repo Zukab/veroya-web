@@ -20,6 +20,7 @@ export type PublicBookingState =
 
 // Campos de texto del formulario que se devuelven para no perderlos si hay errores.
 export const PUBLIC_BOOKING_TEXT_FIELDS = [
+  "city",
   "user_name",
   "user_email",
   "user_phone",

@@ -151,6 +151,10 @@ Parte pública:
   Google Maps, `src/lib/maps.ts`) y formulario de reserva
 - `/como-funciona`, `/estancias-largas`, `/propietarios` (páginas de contenido; usa textos
   provisionales claros que el cliente reemplazará)
+- `/solicitud`: solicitud general sin elegir apartamento (ciudad, fechas, huéspedes y datos;
+  llega rellena desde el buscador). Se guarda como Pendiente con `apartment_id` null y la
+  ciudad en `city_name`; el equipo asigna el apartamento en el panel y la confirma. Botón
+  "Solicitar reserva" en la cabecera. Inserción común en `src/lib/bookings/create-public.ts`.
 - `/verificar` (consulta con localizador y PIN, 10 intentos cada 15 minutos por IP) y
   `/verificar/[token]` (destino del QR): estado actual, localizador, apartamento y fechas.
   Sin caché, `noindex`. Lecturas en `src/lib/bookings/verification.ts` con la clave secreta,
@@ -226,8 +230,10 @@ distinto del de confirmación de reserva.
 Reglas aprobadas por el cliente (2026-10-13). Sustituyen a la regla anterior de no
 bloquear reservas por cruce de fechas.
 
-1. **Origen de las reservas:** el formulario público y el equipo del cliente desde el panel
-   (botón "Crear reserva" en `/admin/reservas`).
+1. **Origen de las reservas:** el formulario de cada apartamento, la solicitud general
+   (`/solicitud`) y el equipo del cliente desde el panel (botón "Crear reserva" en
+   `/admin/reservas`). El cliente a veces usa el formulario público por los huéspedes que le
+   escriben por WhatsApp.
 2. **Pagos:** el administrador registra el pago en el panel (monto, fecha y forma de pago).
    El voucher dice "Total pagado" solo si hay un pago registrado; si no, dice "Pendiente de
    pago" o "Pago al llegar".

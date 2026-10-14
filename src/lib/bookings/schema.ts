@@ -17,6 +17,7 @@ export const BOOKING_ERROR_KEYS = [
   "minNights",
   "maxGuests",
   "apartmentNotFound",
+  "cityNotFound",
   "unavailable",
   "rateLimited",
   "unexpected",
@@ -74,6 +75,13 @@ export const publicBookingSchema = z.object({
 });
 
 export type PublicBookingInput = z.infer<typeof publicBookingSchema>;
+
+// Solicitud general (/solicitud): sin apartamento, solo la ciudad.
+export const generalRequestSchema = z.object({
+  city: z.string().trim().min(1, { error: "cityNotFound" }).max(80, { error: "cityNotFound" }),
+  locale: z.enum(["es", "en"]),
+  ...guestFields,
+});
 
 // Errores por campo a partir de un ZodError (solo el primero de cada campo).
 export function fieldErrorsFrom(error: z.ZodError) {
