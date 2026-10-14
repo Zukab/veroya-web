@@ -28,9 +28,14 @@
     "air_conditioning": "Aire acondicionado",
     "heating": "Calefacción",
     "kitchen": "Cocina equipada",
+    "coffee_maker": "Cafetera",
     "washer": "Lavadora",
     "dishwasher": "Lavavajillas",
     "tv": "Televisión",
+    "bed_linen": "Ropa de cama y toallas",
+    "hair_dryer": "Secador de pelo",
+    "safe": "Caja fuerte",
+    "self_check_in": "Check-in autónomo",
     "elevator": "Ascensor",
     "crib": "Cuna",
     "balcony": "Balcón",
@@ -51,7 +56,10 @@
     "reviews": "{count, plural, one {# reseña} other {# reseñas}}",
     "ratingLabel": "Valoración: {rating} de 5",
     "new": "Nuevo",
-    "longStay": "Estancia larga"
+    "longStay": "Estancia larga",
+    "bedsDouble": "{count, plural, one {# cama doble} other {# camas dobles}}",
+    "bedsSingle": "{count, plural, one {# cama individual} other {# camas individuales}}",
+    "sofaBeds": "{count, plural, one {# sofá cama} other {# sofás cama}}"
   },
   "ApartmentPage": {
     "breadcrumb": "Ciudades",
@@ -64,7 +72,9 @@
     "photoAlt": "{name}, foto {index} de {total}",
     "closeGallery": "Cerrar galería",
     "gallery": "Fotos de {name}",
-    "metaDescription": "{name} en {location}. Desde {price} por noche."
+    "metaDescription": "{name} en {location}. Desde {price} por noche.",
+    "location": "Ubicación",
+    "openMap": "Ver en Google Maps"
   },
   "BookingForm": {
     "title": "Solicita tu reserva",

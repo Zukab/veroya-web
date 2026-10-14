@@ -28,9 +28,14 @@
     "air_conditioning": "Air conditioning",
     "heating": "Heating",
     "kitchen": "Fully equipped kitchen",
+    "coffee_maker": "Coffee maker",
     "washer": "Washing machine",
     "dishwasher": "Dishwasher",
     "tv": "TV",
+    "bed_linen": "Bed linen and towels",
+    "hair_dryer": "Hair dryer",
+    "safe": "Safe",
+    "self_check_in": "Self check-in",
     "elevator": "Elevator",
     "crib": "Crib",
     "balcony": "Balcony",
@@ -51,7 +56,10 @@
     "reviews": "{count, plural, one {# review} other {# reviews}}",
     "ratingLabel": "Rating: {rating} out of 5",
     "new": "New",
-    "longStay": "Long stay"
+    "longStay": "Long stay",
+    "bedsDouble": "{count, plural, one {# double bed} other {# double beds}}",
+    "bedsSingle": "{count, plural, one {# single bed} other {# single beds}}",
+    "sofaBeds": "{count, plural, one {# sofa bed} other {# sofa beds}}"
   },
   "ApartmentPage": {
     "breadcrumb": "Cities",
@@ -64,7 +72,9 @@
     "photoAlt": "{name}, photo {index} of {total}",
     "closeGallery": "Close gallery",
     "gallery": "Photos of {name}",
-    "metaDescription": "{name} in {location}. From {price} per night."
+    "metaDescription": "{name} in {location}. From {price} per night.",
+    "location": "Location",
+    "openMap": "View on Google Maps"
   },
   "BookingForm": {
     "title": "Request a booking",

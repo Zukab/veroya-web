@@ -31,8 +31,11 @@ export type Database = {
       }
       apartments: {
         Row: {
+          address: string
           amenities: string[]
           baths: number
+          beds_double: number
+          beds_single: number
           city_slug: string
           created_at: string
           description: string
@@ -47,10 +50,14 @@ export type Database = {
           reviews: number
           rooms: number
           size: number | null
+          sofa_beds: number
         }
         Insert: {
+          address?: string
           amenities?: string[]
           baths?: number
+          beds_double?: number
+          beds_single?: number
           city_slug: string
           created_at?: string
           description?: string
@@ -65,10 +72,14 @@ export type Database = {
           reviews?: number
           rooms?: number
           size?: number | null
+          sofa_beds?: number
         }
         Update: {
+          address?: string
           amenities?: string[]
           baths?: number
+          beds_double?: number
+          beds_single?: number
           city_slug?: string
           created_at?: string
           description?: string
@@ -83,6 +94,7 @@ export type Database = {
           reviews?: number
           rooms?: number
           size?: number | null
+          sofa_beds?: number
         }
         Relationships: [
           {

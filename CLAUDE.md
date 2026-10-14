@@ -1,6 +1,8 @@
 # Euronest Apartamentos — página web
 
 Página web de **Euronest Apartamentos**, negocio de alquiler de apartamentos en España.
+El cliente (en Colombia) es el único propietario de todos los apartamentos; compra y vende
+pisos con frecuencia, así que los crea y borra él mismo desde el panel.
 La marca se llamaba antes "Veroya" (cambio del 2026-10-13). Los nombres técnicos de la
 infraestructura conservan "veroya" y no se renombran: repositorio `veroya-web`, proyecto
 de Supabase `veroya`, cuenta `veroyaproyecto@gmail.com`, `package.json` y
@@ -22,16 +24,23 @@ dirección de prueba.
   (`supabase/migrations/`). Tipos en `src/types/database.ts`.
 - Datos de ejemplo cargados en el proyecto real (ver "Datos de ejemplo").
 - Usuario administrador creado: `veroyaproyecto@gmail.com` (en `public.admins`).
-**Bloque 2 — páginas públicas: pasos 1–5 terminados (2026-10-13).**
-- Base visual, inicio, `/ciudades`, `/ciudades/[ciudad]`, `/apartamento/[id]` (galería y
-  comodidades) y las tres páginas de contenido con textos provisionales.
+**Bloque 2 — páginas públicas: terminado (2026-10-13).**
+- Base visual, inicio, `/ciudades`, `/ciudades/[ciudad]`, `/apartamento/[id]` (galería,
+  comodidades y formulario de reserva) y las tres páginas de contenido con textos
+  provisionales.
 - Comodidades pasadas a claves fijas (migración `..._comodidades_a_claves` aplicada).
-- El formulario de reserva público **no está hecho**: el detalle del apartamento solo muestra
-  el resumen de precio (comentario "Paso 6" en `src/app/[locale]/apartamento/[id]/page.tsx`).
-  Se rehace dentro del plan de "Reservas y voucher".
 
-**Siguientes bloques:** reservas y voucher (formulario público, panel de reservas, pagos,
-PDF, verificación y correo) y el resto del panel de administración.
+**Bloque 3 — panel de administración: terminado (2026-10-13).** Login, sesión en el proxy,
+ciudades y apartamentos con fotos, y reservas con pagos.
+
+**Bloque 4 — voucher: en curso.** Diseño aprobado por el cliente (2026-10-13); ver
+"Reservas y voucher". Pasos:
+1. Apartamentos con dirección (web con enlace a Google Maps y voucher), camas y comodidades
+   nuevas (migración `..._apartamentos_direccion_y_camas`).
+2. Ajustes de la agencia en `/admin/ajustes`.
+3. Página pública de verificación.
+4. Voucher en PDF generado en el servidor y botón "Descargar voucher" en el panel.
+5. Correo al confirmar, con el PDF adjunto y el enlace de verificación.
 
 Pendiente de verificar:
 - Escrituras con sesión iniciada contra RLS: `bookings`, `booking_payments` y
@@ -126,7 +135,8 @@ Parte pública:
 - `/` inicio (portada, ciudades y apartamentos destacados: los 6 mejor valorados; los que
   no tienen valoraciones van al final)
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
-- `/apartamento/[id]` detalle con galería, comodidades y formulario de reserva
+- `/apartamento/[id]` detalle con galería, camas, comodidades, dirección (con enlace a
+  Google Maps, `src/lib/maps.ts`) y formulario de reserva
 - `/como-funciona`, `/estancias-largas`, `/propietarios` (páginas de contenido; usa textos
   provisionales claros que el cliente reemplazará)
 
@@ -204,15 +214,24 @@ bloquear reservas por cruce de fechas.
    aplica al pasar a `Confirmada`. Las fechas son intervalos [entrada, salida): si una
    reserva sale el mismo día que entra otra, no se cruzan. Si el cliente tiene varios
    apartamentos iguales, cada uno se registra como una unidad (un apartamento) distinta.
-4. **Voucher en PDF** solo con la marca Euronest Apartamentos, inspirado en el diseño de
-   referencia del cliente (`referencias/`, fuera del repositorio) pero sin copiar marcas
-   ajenas ni los datos personales que aparecen en él. Incluye un QR que lleva a la página pública de
-   verificación de la reserva.
-5. **Página de verificación:** muestra el estado real (confirmada o no, fechas, apartamento
-   y si el pago está registrado). Se accede con el enlace del QR o con localizador y PIN, y
-   no muestra más datos personales de los necesarios.
-6. **Correo de confirmación:** al confirmar una reserva se envía un correo al huésped con el
-   PDF adjunto y el enlace de verificación.
+4. **Voucher en PDF** solo con la marca Euronest Apartamentos. Diseño aprobado por el
+   cliente: maqueta en `referencias/maqueta-voucher/` (fuera del repositorio). Una página A4:
+   - Localizador, fecha de emisión y estado en la fecha de emisión.
+   - Apartamento: nombre, dirección y enlace a Google Maps; habitaciones, baños, m², camas
+     y comodidades.
+   - Entrada y salida con sus horas, noches y número de huéspedes.
+   - Titular abreviado: nombre e inicial del apellido ("Laura Martín G.").
+   - Pago: total y "Pagado", "Pendiente de pago" o "Pago al llegar".
+   - QR a la página de verificación, información de la estancia (horarios, normas y
+     cancelación) y contacto de la agencia, sacados de los ajustes de la agencia.
+   - **No incluye:** correo ni teléfono del huésped, forma de pago ni datos de tarjeta, ni
+     el PIN.
+5. **Página de verificación:** muestra solo el estado actual (confirmada, pendiente o
+   cancelada), el localizador, el apartamento y las fechas; ningún dato personal ni importe.
+   Se accede con el enlace del QR o con localizador y PIN.
+6. **Correo de confirmación:** al confirmar una reserva en el panel se envía un correo al
+   huésped con el PDF adjunto y el enlace de verificación. Con huéspedes reales funciona
+   solo cuando el dominio esté verificado en Resend.
 7. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
    VALIDEZ" y datos `@example.com`.
 
@@ -237,7 +256,10 @@ bloquear reservas por cruce de fechas.
   restrict, on update cascade), `name`, `price` (entero, euros por noche), `rooms`,
   `baths`, `size` (m², opcional), `max_guests`, `rating` (numeric 3,2; null = sin
   valoraciones), `reviews`, `min_nights`, `neighborhood`, `description`,
-  `images` (text[] con URLs de Storage), `amenities` (text[]), `created_at`
+  `images` (text[] con URLs de Storage), `amenities` (text[]), `created_at`, y desde
+  `..._apartamentos_direccion_y_camas`: `address` (texto, `''` en los apartamentos
+  anteriores; el panel la exige), `beds_double`, `beds_single` y `sofa_beds` (enteros, 0 por
+  defecto)
 - `bookings`: `id` (uuid), `booking_code` (único, `ENA-XXXXX`), `booking_pin`,
   `created_at`, `status` (enum: Pendiente, Confirmada, Cancelada), `user_name`,
   `user_email`, `user_phone`, `user_country`, `guests`, `check_in` (date), `check_out`

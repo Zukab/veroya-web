@@ -74,6 +74,26 @@ values
    '{}', array['wifi', 'air_conditioning', 'heating', 'kitchen', 'washer', 'workspace', 'terrace'])
 on conflict (id) do nothing;
 
+-- Dirección (inventada) y camas. Solo se rellenan si el apartamento aún no tiene
+-- dirección, así funciona también con los que ya estaban cargados.
+update public.apartments a
+set address = v.address,
+    beds_double = v.beds_double,
+    beds_single = v.beds_single,
+    sofa_beds = v.sofa_beds
+from (values
+  ('ejemplo-madrid-loft-malasana',   'Calle de Ejemplo 12, 2.º A, 28004 Madrid',    1, 0, 0),
+  ('ejemplo-madrid-familiar-retiro', 'Calle de Ejemplo 45, 3.º B, 28009 Madrid',    2, 2, 0),
+  ('ejemplo-barcelona-gracia',       'Carrer d''Exemple 8, 1.º 2.ª, 08012 Barcelona', 1, 2, 0),
+  ('ejemplo-barcelona-barceloneta',  'Carrer d''Exemple 3, bajo, 08003 Barcelona',  1, 0, 0),
+  ('ejemplo-valencia-ruzafa',        'Calle de Ejemplo 20, 4.º, 46005 Valencia',    2, 0, 0),
+  ('ejemplo-valencia-malvarrosa',    'Calle de Ejemplo 7, ático, 46011 Valencia',   2, 0, 1),
+  ('ejemplo-malaga-centro',          'Calle de Ejemplo 15, 1.º, 29008 Málaga',      1, 0, 1),
+  ('ejemplo-malaga-estancia-larga',  'Calle de Ejemplo 30, 2.º C, 29016 Málaga',    1, 1, 0)
+) as v (id, address, beds_double, beds_single, sofa_beds)
+where a.id = v.id
+  and a.address = '';
+
 -- ---------------------------------------------------------------------------
 -- Reservas: los tres estados, dos que se solapan en el mismo apartamento y
 -- una de un apartamento que ya no existe (apartment_id null).

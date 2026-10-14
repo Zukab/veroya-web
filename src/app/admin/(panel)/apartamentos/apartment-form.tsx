@@ -28,7 +28,14 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
   const numberField = (
     name: keyof Apartment,
     label: string,
-    options: { min?: number; max?: number; step?: string; required?: boolean; hint?: string } = {},
+    options: {
+      min?: number;
+      max?: number;
+      step?: string;
+      required?: boolean;
+      hint?: string;
+      initial?: string;
+    } = {},
   ) => (
     <Field id={`apartment-${name}`} label={label} error={errors[name]} hint={options.hint}>
       <input
@@ -40,7 +47,7 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
         max={options.max}
         step={options.step ?? "1"}
         required={options.required ?? true}
-        defaultValue={apartment?.[name] == null ? "" : String(apartment[name])}
+        defaultValue={apartment?.[name] == null ? (options.initial ?? "") : String(apartment[name])}
         className={inputClasses}
       />
     </Field>
@@ -104,6 +111,23 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
               ))}
             </select>
           </Field>
+          <Field
+            id="apartment-address"
+            label="Dirección"
+            error={errors.address}
+            hint="Calle, número, piso y código postal. Se muestra en la web, con enlace a Google Maps, y en el voucher."
+            className="sm:col-span-2"
+          >
+            <input
+              id="apartment-address"
+              name="address"
+              required
+              maxLength={300}
+              autoComplete="off"
+              defaultValue={apartment?.address}
+              className={inputClasses}
+            />
+          </Field>
           <Field id="apartment-neighborhood" label="Barrio" error={errors.neighborhood} className="sm:col-span-2">
             <input
               id="apartment-neighborhood"
@@ -124,6 +148,14 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
           {numberField("rooms", "Habitaciones", { min: 0, max: 50, hint: "0 = estudio" })}
           {numberField("baths", "Baños", { min: 0, max: 50 })}
           {numberField("size", "Superficie (m²)", { min: 1, required: false, hint: "Opcional" })}
+        </div>
+      </FormSection>
+
+      <FormSection title="Camas">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          {numberField("beds_double", "Camas dobles", { min: 0, max: 50, initial: "0" })}
+          {numberField("beds_single", "Camas individuales", { min: 0, max: 50, initial: "0" })}
+          {numberField("sofa_beds", "Sofás cama", { min: 0, max: 50, initial: "0" })}
         </div>
       </FormSection>
 

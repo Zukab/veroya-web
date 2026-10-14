@@ -1,4 +1,16 @@
-import { Bath, BedDouble, ChevronRight, MapPin, Moon, Ruler, Users } from "lucide-react";
+import {
+  Bath,
+  BedDouble,
+  BedSingle,
+  ChevronRight,
+  DoorOpen,
+  ExternalLink,
+  MapPin,
+  Moon,
+  Ruler,
+  Sofa,
+  Users,
+} from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
@@ -13,6 +25,7 @@ import { Link } from "@/i18n/navigation";
 import { knownAmenities } from "@/lib/amenities";
 import { getApartment, getApartmentIds } from "@/lib/data/catalog";
 import { priceFormat } from "@/lib/format";
+import { googleMapsUrl } from "@/lib/maps";
 
 // Se prerenderizan los apartamentos que existen al compilar; los nuevos se
 // generan en la primera visita. Con Cache Components hace falta al menos un valor.
@@ -70,9 +83,18 @@ async function ApartmentContent({
   const location = [apartment.neighborhood, apartment.city.name].filter(Boolean).join(", ");
   const facts = [
     { icon: Users, label: t("maxGuests", { count: apartment.max_guests }) },
-    { icon: BedDouble, label: tApartment("rooms", { count: apartment.rooms }) },
+    { icon: DoorOpen, label: tApartment("rooms", { count: apartment.rooms }) },
     { icon: Bath, label: tApartment("baths", { count: apartment.baths }) },
     ...(apartment.size ? [{ icon: Ruler, label: tApartment("size", { size: apartment.size }) }] : []),
+    ...(apartment.beds_double > 0
+      ? [{ icon: BedDouble, label: tApartment("bedsDouble", { count: apartment.beds_double }) }]
+      : []),
+    ...(apartment.beds_single > 0
+      ? [{ icon: BedSingle, label: tApartment("bedsSingle", { count: apartment.beds_single }) }]
+      : []),
+    ...(apartment.sofa_beds > 0
+      ? [{ icon: Sofa, label: tApartment("sofaBeds", { count: apartment.sofa_beds }) }]
+      : []),
     { icon: Moon, label: tApartment("minNights", { count: apartment.min_nights }) },
   ];
 
@@ -140,6 +162,28 @@ async function ApartmentContent({
                     </li>
                   ))}
                 </ul>
+              </section>
+            )}
+
+            {apartment.address && (
+              <section>
+                <h2 className="font-serif text-2xl font-semibold">{t("location")}</h2>
+                <p className="mt-3 flex items-start gap-3 text-stone-700">
+                  <MapPin aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-terracotta-600" />
+                  <span>
+                    {apartment.address}
+                    <span className="block text-sm text-stone-500">{location}</span>
+                  </span>
+                </p>
+                <a
+                  href={googleMapsUrl(apartment.address, apartment.city.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 ml-8 inline-flex items-center gap-1.5 text-sm font-medium text-terracotta-700 hover:text-terracotta-600"
+                >
+                  {t("openMap")}
+                  <ExternalLink aria-hidden="true" className="size-3.5" />
+                </a>
               </section>
             )}
           </div>
