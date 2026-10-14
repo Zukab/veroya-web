@@ -21,7 +21,8 @@
     "tagline": "Apartamentos cuidados en las mejores ciudades de España, para unos días o para varios meses.",
     "explore": "Explora",
     "language": "Idioma",
-    "rights": "Euronest Apartamentos. Todos los derechos reservados."
+    "rights": "Euronest Apartamentos. Todos los derechos reservados.",
+    "verify": "Consultar una reserva"
   },
   "Amenities": {
     "wifi": "Wifi",
@@ -100,7 +101,8 @@
     "pin": "PIN",
     "stay": "{checkIn} → {checkOut} · {guests, plural, one {# huésped} other {# huéspedes}}",
     "newRequest": "Hacer otra solicitud",
-    "mobileCta": "Reservar"
+    "mobileCta": "Reservar",
+    "checkStatus": "Consultar el estado de tu reserva"
   },
   "BookingErrors": {
     "required": "Este campo es obligatorio.",
@@ -206,5 +208,33 @@
     "title": "Página no encontrada",
     "description": "La página que buscas no existe o se ha movido.",
     "backHome": "Volver al inicio"
+  },
+  "Verify": {
+    "metaTitle": "Consultar una reserva",
+    "title": "Consulta tu reserva",
+    "intro": "Escribe el localizador y el PIN que recibiste al hacer la solicitud.",
+    "code": "Localizador",
+    "codePlaceholder": "ENA-XXXXX",
+    "pin": "PIN",
+    "submit": "Consultar",
+    "submitting": "Consultando…",
+    "invalid": "Revisa el localizador (ENA-XXXXX) y el PIN de 4 dígitos.",
+    "notFound": "No encontramos ninguna reserva con ese localizador y PIN.",
+    "rateLimited": "Demasiados intentos. Inténtalo de nuevo dentro de 15 minutos.",
+    "unexpected": "No hemos podido consultar la reserva. Inténtalo de nuevo en unos minutos.",
+    "statusConfirmed": "Reserva confirmada",
+    "statusPending": "Pendiente de confirmación",
+    "statusCancelled": "Reserva cancelada",
+    "noteConfirmed": "Esta reserva es válida.",
+    "notePending": "El equipo todavía no ha confirmado esta reserva.",
+    "noteCancelled": "Esta reserva está cancelada y no es válida.",
+    "checkedAt": "Comprobado el {date}",
+    "apartment": "Alojamiento",
+    "checkIn": "Entrada",
+    "checkOut": "Salida",
+    "onlyStatus": "Esta página solo muestra el estado actual de la reserva.",
+    "notFoundTitle": "Reserva no encontrada",
+    "notFoundText": "El enlace no es válido o la reserva ya no existe. Si crees que es un error, contacta con nosotros.",
+    "lookupLink": "Consultar con localizador y PIN"
   }
 }

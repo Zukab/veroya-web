@@ -6,6 +6,7 @@ import { useActionState, useState } from "react";
 import { createBookingRequest } from "@/app/[locale]/apartamento/[id]/actions";
 import { buttonClasses } from "@/components/ui/button";
 import { Field, FormAlert, inputClasses } from "@/components/ui/form";
+import { Link } from "@/i18n/navigation";
 import { addDays, nightsBetween } from "@/lib/bookings/dates";
 import type { PublicBookingState } from "@/lib/bookings/form-state";
 import { priceFormat } from "@/lib/format";
@@ -64,9 +65,14 @@ function BookingForm({ apartmentId, price, maxGuests, onReset }: Props & { onRes
             guests: state.guests,
           })}
         </p>
-        <button type="button" onClick={onReset} className={buttonClasses({ variant: "secondary" })}>
-          {t("newRequest")}
-        </button>
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <button type="button" onClick={onReset} className={buttonClasses({ variant: "secondary" })}>
+            {t("newRequest")}
+          </button>
+          <Link href="/verificar" className="text-sm font-medium text-terracotta-700 hover:text-terracotta-600">
+            {t("checkStatus")}
+          </Link>
+        </div>
       </div>
     );
   }

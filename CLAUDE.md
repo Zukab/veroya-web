@@ -128,6 +128,9 @@ Se usan las claves nuevas de Supabase con los nombres de siempre: en `..._ANON_K
 publishable key (`sb_publishable_...`) y en `..._SERVICE_ROLE_KEY` la secret key
 (`sb_secret_...`). La URL es solo la base (`https://<ref>.supabase.co`, sin `/rest/v1`).
 Se validan con zod en `src/lib/env.ts` y `src/lib/env.server.ts`.
+Opcionales (ver `.env.example`): `SITE_URL` (enlaces absolutos del QR y del correo,
+`src/lib/site-url.ts`; si falta, la dirección de producción de Vercel o localhost),
+`RESEND_API_KEY` y `EMAIL_FROM` (correo de confirmación).
 
 ## Alcance
 
@@ -139,6 +142,10 @@ Parte pública:
   Google Maps, `src/lib/maps.ts`) y formulario de reserva
 - `/como-funciona`, `/estancias-largas`, `/propietarios` (páginas de contenido; usa textos
   provisionales claros que el cliente reemplazará)
+- `/verificar` (consulta con localizador y PIN, 10 intentos cada 15 minutos por IP) y
+  `/verificar/[token]` (destino del QR): estado actual, localizador, apartamento y fechas.
+  Sin caché, `noindex`. Lecturas en `src/lib/bookings/verification.ts` con la clave secreta,
+  solo de esos campos. Enlazada desde el pie y desde el mensaje de solicitud enviada.
 
 Formulario de reserva: nombre, correo, teléfono, país, número de huéspedes, fecha de entrada,
 fecha de salida y mensaje opcional. Al guardar, genera un localizador `ENA-XXXXX`

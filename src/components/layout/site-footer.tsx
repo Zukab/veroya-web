@@ -30,6 +30,11 @@ export function SiteFooter() {
                 </Link>
               </li>
             ))}
+            <li>
+              <Link href="/verificar" className="text-sm text-stone-700 hover:text-terracotta-700">
+                {t("verify")}
+              </Link>
+            </li>
           </ul>
         </div>
 

@@ -21,7 +21,8 @@
     "tagline": "Well-kept apartments in Spain's best cities, for a few days or several months.",
     "explore": "Explore",
     "language": "Language",
-    "rights": "Euronest Apartamentos. All rights reserved."
+    "rights": "Euronest Apartamentos. All rights reserved.",
+    "verify": "Check a booking"
   },
   "Amenities": {
     "wifi": "Wi-Fi",
@@ -100,7 +101,8 @@
     "pin": "PIN",
     "stay": "{checkIn} → {checkOut} · {guests, plural, one {# guest} other {# guests}}",
     "newRequest": "Make another request",
-    "mobileCta": "Book"
+    "mobileCta": "Book",
+    "checkStatus": "Check your booking status"
   },
   "BookingErrors": {
     "required": "This field is required.",
@@ -206,5 +208,33 @@
     "title": "Page not found",
     "description": "The page you are looking for doesn't exist or has moved.",
     "backHome": "Back to home"
+  },
+  "Verify": {
+    "metaTitle": "Check a booking",
+    "title": "Check your booking",
+    "intro": "Enter the booking reference and PIN you received when you sent your request.",
+    "code": "Booking reference",
+    "codePlaceholder": "ENA-XXXXX",
+    "pin": "PIN",
+    "submit": "Check",
+    "submitting": "Checking…",
+    "invalid": "Check the booking reference (ENA-XXXXX) and the 4-digit PIN.",
+    "notFound": "We could not find a booking with that reference and PIN.",
+    "rateLimited": "Too many attempts. Please try again in 15 minutes.",
+    "unexpected": "We could not check the booking. Please try again in a few minutes.",
+    "statusConfirmed": "Booking confirmed",
+    "statusPending": "Awaiting confirmation",
+    "statusCancelled": "Booking cancelled",
+    "noteConfirmed": "This booking is valid.",
+    "notePending": "Our team has not confirmed this booking yet.",
+    "noteCancelled": "This booking has been cancelled and is not valid.",
+    "checkedAt": "Checked on {date}",
+    "apartment": "Accommodation",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "onlyStatus": "This page only shows the current status of the booking.",
+    "notFoundTitle": "Booking not found",
+    "notFoundText": "The link is not valid or the booking no longer exists. If you think this is a mistake, please contact us.",
+    "lookupLink": "Check with reference and PIN"
   }
 }
