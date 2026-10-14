@@ -32,9 +32,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link href="/solicitud" className={buttonClasses({ className: "hidden h-9 px-4 whitespace-nowrap xl:inline-flex" })}>
-            {t("request")}
-          </Link>
+          {/* Envuelto: "hidden" no puede ir junto al inline-flex del botón. */}
+          <div className="hidden xl:block">
+            <Link href="/solicitud" className={buttonClasses({ className: "h-9 px-4 whitespace-nowrap" })}>
+              {t("request")}
+            </Link>
+          </div>
           <Suspense fallback={<LocaleLinks />}>
             <LocaleSwitcher />
           </Suspense>
