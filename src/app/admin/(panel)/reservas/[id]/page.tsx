@@ -4,11 +4,13 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { Notice } from "@/components/admin/form-status";
 import { AdminPageHeader, FormSection } from "@/components/admin/page-header";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { paymentMethodLabels, paymentTermsLabels } from "@/lib/admin/booking-schema";
 import { formatDate, formatDateTime, formatEuros, toCents } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/auth/admin";
 import { todayInSpain } from "@/lib/bookings/dates";
+import { verificationUrl } from "@/lib/site-url";
 import { deleteBooking, deletePayment } from "../actions";
 import { readApartmentOptions } from "../apartment-options";
 import { BookingForm } from "../booking-form";
@@ -27,7 +29,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
     supabase
       .from("bookings")
       .select(
-        "id, booking_code, booking_pin, status, source, created_at, confirmed_at, confirmation_email_sent_at, apartment_id, apartment_name, city_name, check_in, check_out, guests, user_name, user_email, user_phone, user_country, message, locale, payment_terms, total_amount, booking_payments(id, amount, paid_on, method, note, created_at)",
+        "id, booking_code, booking_pin, status, source, created_at, confirmed_at, confirmation_email_sent_at, verification_token, apartment_id, apartment_name, city_name, check_in, check_out, guests, user_name, user_email, user_phone, user_country, message, locale, payment_terms, total_amount, booking_payments(id, amount, paid_on, method, note, created_at)",
       )
       .eq("id", id)
       .maybeSingle(),
@@ -75,6 +77,33 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
         <BookingForm booking={booking} apartments={apartments} />
 
         <div className="mt-10 space-y-6">
+          <FormSection title="Voucher">
+            {booking.status === "Confirmada" ? (
+              <p className="mb-4 text-sm text-stone-600">
+                PDF con los datos de la estancia y un QR que lleva a la página de verificación.
+              </p>
+            ) : (
+              <p className="mb-4 text-sm text-stone-600">
+                El voucher se puede descargar cuando la reserva esté confirmada.
+              </p>
+            )}
+            <div className="flex flex-wrap gap-3">
+              {booking.status === "Confirmada" && (
+                <a href={`/admin/reservas/${booking.id}/voucher`} download className={buttonClasses()}>
+                  Descargar voucher (PDF)
+                </a>
+              )}
+              <a
+                href={verificationUrl(booking.verification_token, booking.locale)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={buttonClasses({ variant: "secondary" })}
+              >
+                Ver página de verificación
+              </a>
+            </div>
+          </FormSection>
+
           <FormSection title="Pagos">
             <dl className="mb-5 grid grid-cols-3 gap-4 text-sm">
               <div>

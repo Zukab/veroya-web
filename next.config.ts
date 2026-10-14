@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  // Fuentes del voucher en PDF, que se leen del disco al generarlo (descarga y
+  // correo de confirmación, ambos en /admin/reservas).
+  outputFileTracingIncludes: {
+    "/admin/reservas/**": ["./src/lib/voucher/fonts/*.ttf"],
+  },
   turbopack: {
     rules: {
       "*.css": {

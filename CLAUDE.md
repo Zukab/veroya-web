@@ -75,7 +75,8 @@ Pendiente de verificar:
 - Supabase en plan gratuito por ahora.
 - Idiomas: español (por defecto) e inglés, con `next-intl` y rutas con prefijo (`/en/...`).
 - Validación de formularios y entradas del servidor con `zod`.
-- Iconos con `lucide-react` (aprobado). Fuentes con `next/font/google`: Geist (texto) y
+- Iconos con `lucide-react` (aprobado). Voucher en PDF con `@react-pdf/renderer` y `qrcode`
+  (aprobados). Fuentes con `next/font/google`: Geist (texto) y
   Fraunces (títulos).
 
 Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
@@ -238,6 +239,16 @@ bloquear reservas por cruce de fechas.
      cancelación) y contacto de la agencia, sacados de los ajustes de la agencia.
    - **No incluye:** correo ni teléfono del huésped, forma de pago ni datos de tarjeta, ni
      el PIN.
+   - Código en `src/lib/voucher/`: `data.ts` (lee la reserva con la clave secreta; llamar
+     solo tras `requireAdmin()`), `document.tsx` (`@react-pdf/renderer`, textos en
+     `Voucher` de los mensajes, idioma de la reserva), `render.ts` (QR con `qrcode` y
+     fuentes TTF de `fonts/`, incluidas en el despliegue con `outputFileTracingIncludes`
+     de `next.config.ts`) y `guest-name.ts` (nombre abreviado).
+   - Descarga: `/admin/reservas/[id]/voucher` (solo reservas confirmadas).
+   - Marca de agua en desarrollo (`NODE_ENV` distinto de `production`) y en reservas con
+     correo `@example.com`.
+   - Para moverlo a Cloudflare habría que revisar la lectura de fuentes del disco y la
+     compatibilidad de `@react-pdf/renderer` con Workers.
 5. **Página de verificación:** muestra solo el estado actual (confirmada, pendiente o
    cancelada), el localizador, el apartamento y las fechas; ningún dato personal ni importe.
    Se accede con el enlace del QR o con localizador y PIN.
