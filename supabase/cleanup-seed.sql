@@ -1,18 +1,19 @@
--- Borra los datos de ejemplo de supabase/seed.sql. Ejecutar antes del lanzamiento:
+-- Borra los datos de ejemplo. Ejecutar antes del lanzamiento:
 --   npx supabase db query --linked -f supabase/cleanup-seed.sql
 --
+-- Los ejemplos se crearon desde el panel (ver "Datos de ejemplo" en CLAUDE.md).
+-- Mejor borrar los apartamentos de ejemplo desde el panel: así se borran también
+-- sus fotos de Storage. Este script es la alternativa rápida y NO borra fotos (se
+-- quedan huérfanas en Storage → media/apartamentos; no afectan a la web).
+--
 -- Borra:
---   - reservas con correo @example.com (incluidas las de prueba hechas a mano)
---     y cualquier reserva hecha sobre un apartamento de ejemplo
+--   - reservas con correo @example.com y cualquier reserva de un apartamento de
+--     ejemplo (incluida la de prueba con veroyaproyecto@gmail.com)
 --   - apartamentos cuyo id empieza por "ejemplo-"
---   - ciudades cuyo slug empieza por "ejemplo-"
+--   - ciudades cuyo slug empieza por "ejemplo-" (las actuales —Madrid, Barcelona,
+--     París y Lisboa— son reales y no se borran)
 --
--- Todo va en una transacción: si algo falla, no se borra nada. Por ejemplo, si
--- el cliente creó un apartamento real dentro de una ciudad de ejemplo, el borrado
--- de esa ciudad se bloquea y hay que mover antes el apartamento a otra ciudad.
---
--- No toca Storage: los apartamentos de ejemplo no tienen fotos. Si se les
--- subieron fotos durante las pruebas, se borran a mano en Storage → media.
+-- Todo va en una transacción: si algo falla, no se borra nada.
 
 begin;
 
@@ -30,6 +31,5 @@ commit;
 
 -- Comprobación: todo debe ser 0.
 select
-  (select count(*) from public.cities where slug like 'ejemplo-%')        as ciudades_ejemplo,
-  (select count(*) from public.apartments where id like 'ejemplo-%')      as apartamentos_ejemplo,
+  (select count(*) from public.apartments where id like 'ejemplo-%')            as apartamentos_ejemplo,
   (select count(*) from public.bookings where user_email ilike '%@example.com') as reservas_ejemplo;

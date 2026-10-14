@@ -10,6 +10,13 @@ export class EmailNotConfiguredError extends Error {
   }
 }
 
+// Direcciones de ejemplo (@example.com, datos de prueba): nunca se envían.
+export class ExampleAddressError extends Error {
+  constructor() {
+    super("Correo de ejemplo (@example.com).");
+  }
+}
+
 export class EmailSendError extends Error {
   constructor(
     message: string,
@@ -36,6 +43,7 @@ export async function sendEmail({
 }) {
   const { RESEND_API_KEY, EMAIL_FROM } = serverEnv;
   if (!RESEND_API_KEY || !EMAIL_FROM) throw new EmailNotConfiguredError();
+  if (/@example\.com$/i.test(to.trim())) throw new ExampleAddressError();
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",

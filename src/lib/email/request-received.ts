@@ -7,7 +7,7 @@ import { verificationUrl } from "@/lib/site-url";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { firstName } from "@/lib/voucher/guest-name";
 import { renderEmail } from "./layout";
-import { EmailNotConfiguredError, sendEmail } from "./resend";
+import { EmailNotConfiguredError, ExampleAddressError, sendEmail } from "./resend";
 
 // Acuse de recibo de una solicitud hecha en la web (formulario del apartamento o
 // solicitud general): localizador, PIN, datos y enlace de estado. Sin voucher: el
@@ -64,7 +64,7 @@ export async function sendRequestReceivedEmail(bookingId: string) {
 
     await sendEmail({ to: booking.user_email, replyTo: settings.email, ...email });
   } catch (error) {
-    if (error instanceof EmailNotConfiguredError) return;
+    if (error instanceof EmailNotConfiguredError || error instanceof ExampleAddressError) return;
     console.error("Correo: no se pudo enviar el acuse de la solicitud", bookingId, error);
   }
 }

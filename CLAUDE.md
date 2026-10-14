@@ -22,7 +22,7 @@ dirección de prueba.
   clientes de Supabase (`src/lib/supabase/`).
 - Esquema, RLS, lista de administradores y bucket `media` aplicados en Supabase
   (`supabase/migrations/`). Tipos en `src/types/database.ts`.
-- Datos de ejemplo cargados en el proyecto real (ver "Datos de ejemplo").
+- Datos de ejemplo en el proyecto real, creados desde el panel (ver "Datos de ejemplo").
 - Usuario administrador creado: `veroyaproyecto@gmail.com` (en `public.admins`).
 **Bloque 2 — páginas públicas: terminado (2026-10-13).**
 - Base visual, inicio, `/ciudades`, `/ciudades/[ciudad]`, `/apartamento/[id]` (galería,
@@ -344,12 +344,21 @@ de la base de datos son la última barrera; la validación principal es con zod.
 
 ## Datos de ejemplo
 
-- `supabase/seed.sql` está **cargado en el proyecto real** (no hay Supabase local).
-  Identificables por slugs/ids `ejemplo-...`, correos `@example.com` y códigos `ENA-EJ...`.
-  Se puede volver a ejecutar sin duplicar datos (si se cargara en una base vacía, el
-  trigger pondría a sus reservas la fecha de la carga como `created_at`).
-- **Antes del lanzamiento**, borrarlos con:
-  `npx supabase db query --linked -f supabase/cleanup-seed.sql`
+- Creados **desde el panel y los formularios de la web** (2026-10-13), no por SQL: ya no
+  hay `seed.sql`. Fotos libres de Unsplash (copias en `referencias/fotos-ejemplo/`).
+  - Ciudades reales y reutilizables: Madrid, Barcelona (España), París (Francia) y Lisboa
+    (Portugal), con foto. No son de ejemplo: el cliente puede añadir ahí sus apartamentos.
+  - 8 apartamentos con id `ejemplo-...`, con fotos, dirección inventada ("Calle de
+    Ejemplo…") y valoraciones de muestra.
+  - Reservas: solicitudes web en español, en inglés y general (`@example.com`), una
+    creada confirmada desde el panel con un pago, y una confirmada con correo a
+    `veroyaproyecto@gmail.com` (prueba real del voucher por correo).
+  - Foto de portada en `/admin/ajustes`.
+- Los correos `@example.com` nunca se envían (`ExampleAddressError` en
+  `src/lib/email/resend.ts`).
+- **Antes del lanzamiento:** borrar los apartamentos `ejemplo-...` desde el panel (así se
+  borran también sus fotos de Storage) y sus reservas; o con
+  `npx supabase db query --linked -f supabase/cleanup-seed.sql`, que no borra fotos.
 
 ## Seguridad
 

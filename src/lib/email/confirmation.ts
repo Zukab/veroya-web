@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { loadVoucherData } from "@/lib/voucher/data";
 import { renderVoucherPdf, voucherFileName } from "@/lib/voucher/render";
 import { confirmationEmail } from "./confirmation-template";
-import { EmailNotConfiguredError, EmailSendError, sendEmail } from "./resend";
+import { EmailNotConfiguredError, EmailSendError, ExampleAddressError, sendEmail } from "./resend";
 
 export type EmailResult = { ok: true; to: string } | { ok: false; message: string };
 
@@ -45,6 +45,9 @@ export async function sendConfirmationEmail(bookingId: string): Promise<EmailRes
         ok: false,
         message: "El envío de correos no está configurado (faltan RESEND_API_KEY y EMAIL_FROM).",
       };
+    }
+    if (error instanceof ExampleAddressError) {
+      return { ok: false, message: "Es un correo de ejemplo (@example.com): no se envía." };
     }
     if (error instanceof EmailSendError) {
       console.error("Correo: Resend rechazó el envío", error.status, error.message);
