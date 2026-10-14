@@ -13,7 +13,7 @@ export function SiteHeader() {
   const t = useTranslations("Nav");
 
   return (
-    <header className="sticky top-0 z-40 border-b border-sand-200 bg-sand-50/90 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-sand-200 bg-sand-50/90 backdrop-blur print:hidden">
       <Container className="relative flex h-16 items-center justify-between gap-4">
         <Logo />
 

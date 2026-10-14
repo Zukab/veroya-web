@@ -171,9 +171,9 @@ Parte pública:
   ciudad en `city_name`; el equipo asigna el apartamento en el panel y la confirma. Botón
   "Solicitar reserva" en la cabecera. Inserción común en `src/lib/bookings/create-public.ts`.
 - `/verificar` (consulta con localizador y PIN, 10 intentos cada 15 minutos por IP) y
-  `/verificar/[token]` (destino del QR): estado actual, localizador, apartamento y fechas.
-  Sin caché, `noindex`. Lecturas en `src/lib/bookings/verification.ts` con la clave secreta,
-  solo de esos campos. Enlazada desde el pie y desde el mensaje de solicitud enviada.
+  `/verificar/[token]` (destino del QR; ver "Reservas y voucher", punto 5). Sin caché,
+  `noindex`, imprimible. Lecturas en `src/lib/bookings/verification.ts` con la clave secreta,
+  solo de los campos que muestra. Enlazada desde el pie y desde el mensaje de solicitud enviada.
 
 Formulario de reserva: nombre, correo, teléfono, país, número de huéspedes, fecha de entrada,
 fecha de salida y mensaje opcional. Al guardar, genera un localizador `ENA-XXXXX`
@@ -281,9 +281,19 @@ bloquear reservas por cruce de fechas.
      correo `@example.com`.
    - Para moverlo a Cloudflare habría que revisar la lectura de fuentes del disco y la
      compatibilidad de `@react-pdf/renderer` con Workers.
-5. **Página de verificación:** muestra solo el estado actual (confirmada, pendiente o
-   cancelada), el localizador, el apartamento y las fechas; ningún dato personal ni importe.
-   Se accede con el enlace del QR o con localizador y PIN.
+5. **Página de verificación** (cambio pedido por el cliente el 2026-10-14, inspirado en su
+   referencia): "Verificación oficial" con foto y dirección del apartamento, estado actual,
+   localizador, fechas con horas, huéspedes, titular **abreviado**, valor pagado con sus
+   pagos (fecha y forma), total y pendiente, bienvenida, recomendaciones de llegada y
+   descargas del **voucher** y del **comprobante de pago** en PDF (`/verificar/[token]/voucher`
+   y `/comprobante`, con el token como acceso). No muestra correo, teléfono, PIN ni nombre
+   completo. Se accede con el enlace del QR o con localizador y PIN.
+   - Comprobante de pago (`src/lib/voucher/receipt-document.tsx`): informativo, **no es una
+     factura** (una factura legal exige requisitos fiscales de cada país). También se descarga
+     en el panel (`/admin/reservas/[id]/comprobante`).
+   - El estado del pago se calcula igual en voucher y verificación
+     (`src/lib/bookings/payment-summary.ts`). En el panel, una reserva confirmada sin pagos
+     muestra un aviso y un botón "Pago completo" que rellena el importe pendiente.
 6. **Acuse de recibo:** cada solicitud de la web (apartamento o `/solicitud`) envía al
    huésped un correo con el localizador, el PIN, los datos y el enlace de estado, sin voucher
    (`src/lib/email/request-received.ts`, con `after()` para no retrasar la respuesta; si

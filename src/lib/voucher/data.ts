@@ -1,18 +1,18 @@
 import "server-only";
 import { type AmenityKey, knownAmenities } from "@/lib/amenities";
-import { toCents } from "@/lib/admin/format";
 import { nightsBetween } from "@/lib/bookings/dates";
+import { type PaymentKind, paymentSummary } from "@/lib/bookings/payment-summary";
 import { type AgencySettings, getAgencySettings } from "@/lib/data/settings";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verificationUrl } from "@/lib/site-url";
 import type { Database } from "@/types/database";
 import { abbreviateGuestName } from "./guest-name";
 
-// Datos del voucher y del correo de confirmación de una reserva. Lee con la clave
-// secreta: quien llame debe haber comprobado antes que es un administrador
-// (requireAdmin).
+// Datos del voucher, del comprobante de pago y del correo de confirmación de una
+// reserva. Lee con la clave secreta: quien llame debe haber comprobado antes el
+// acceso (requireAdmin en el panel, o el token del QR en /verificar).
 
-export type PaymentKind = "paid" | "partial" | "pending" | "on_arrival";
+export type { PaymentKind };
 
 export type VoucherData = {
   bookingId: string;
@@ -41,6 +41,7 @@ export type VoucherData = {
   };
   // Importes en euros.
   payment: { kind: PaymentKind; total: number | null; paid: number };
+  payments: { amount: number; paidOn: string; method: Database["public"]["Enums"]["payment_method"] }[];
   verificationUrl: string;
   confirmationEmailSentAt: string | null;
   settings: AgencySettings;
@@ -51,7 +52,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     createAdminClient()
       .from("bookings")
       .select(
-        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount)",
+        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
       )
       .eq("id", bookingId)
       .maybeSingle(),
@@ -62,12 +63,11 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
 
   const locale = booking.locale === "en" ? "en" : "es";
   const apartment = booking.apartment;
-  const paidCents = booking.booking_payments.reduce((sum, payment) => sum + toCents(payment.amount), 0);
-  const totalCents = booking.total_amount == null ? null : toCents(booking.total_amount);
-
-  let kind: PaymentKind;
-  if (paidCents > 0) kind = totalCents == null || paidCents >= totalCents ? "paid" : "partial";
-  else kind = booking.payment_terms === "al_llegar" ? "on_arrival" : "pending";
+  const { kind, total, paid } = paymentSummary({
+    total: booking.total_amount,
+    payments: booking.booking_payments,
+    terms: booking.payment_terms,
+  });
 
   return {
     bookingId: booking.id,
@@ -98,13 +98,24 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
       sofaBeds: apartment?.sofa_beds ?? 0,
       amenities: knownAmenities(apartment?.amenities ?? []),
     },
-    payment: {
-      kind,
-      total: totalCents == null ? null : totalCents / 100,
-      paid: paidCents / 100,
-    },
+    payment: { kind, total, paid },
+    payments: [...booking.booking_payments]
+      .sort((a, b) => a.paid_on.localeCompare(b.paid_on) || a.created_at.localeCompare(b.created_at))
+      .map(({ amount, paid_on, method }) => ({ amount: Number(amount), paidOn: paid_on, method })),
     verificationUrl: verificationUrl(booking.verification_token, locale),
     confirmationEmailSentAt: booking.confirmation_email_sent_at,
     settings,
   };
+}
+
+// Id de la reserva a partir del token del QR (para las descargas públicas).
+export async function bookingIdByToken(token: string) {
+  if (!/^[0-9a-f]{32}$/.test(token)) return null;
+  const { data, error } = await createAdminClient()
+    .from("bookings")
+    .select("id")
+    .eq("verification_token", token)
+    .maybeSingle();
+  if (error) throw new Error(`No se pudo leer la reserva: ${error.message}`);
+  return data?.id ?? null;
 }

@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import { siteUrl } from "@/lib/site-url";
 import type { VoucherData } from "./data";
 import { VoucherDocument } from "./document";
+import { ReceiptDocument } from "./receipt-document";
 
 // Fuentes de la web (Fraunces y Geist, licencia OFL en fonts/). Se leen del disco:
 // next.config.ts las incluye en el despliegue de las rutas /admin/reservas.
@@ -39,4 +40,15 @@ export async function renderVoucherPdf(data: VoucherData) {
 
 export function voucherFileName(code: string) {
   return `voucher-${code}.pdf`;
+}
+
+// Comprobante de pago en PDF (solo si hay pagos registrados).
+export async function renderReceiptPdf(data: VoucherData) {
+  const siteHost = new URL(siteUrl()).host;
+  // ReceiptDocument no usa hooks: se llama directamente para obtener el <Document>.
+  return renderToBuffer(ReceiptDocument({ data, siteHost }));
+}
+
+export function receiptFileName(code: string, locale: "es" | "en") {
+  return `${locale === "en" ? "payment-receipt" : "comprobante-pago"}-${code}.pdf`;
 }

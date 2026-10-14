@@ -14,7 +14,7 @@ export function SiteFooter() {
   const tNav = useTranslations("Nav");
 
   return (
-    <footer className="mt-auto border-t border-sand-200 bg-sand-100">
+    <footer className="mt-auto border-t border-sand-200 bg-sand-100 print:hidden">
       <Container className="grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
         <div className="max-w-sm space-y-3">
           <Logo />
