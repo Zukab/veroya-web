@@ -18,6 +18,14 @@ export function generateBookingPin() {
   return String(randomInt(10_000)).padStart(4, "0");
 }
 
+// Localizador escrito por una persona: acepta "ENA-7K2QM", "ena-7k2qm",
+// "ENA 7K2QM" o solo "7K2QM". Devuelve "ENA-XXXXX" o null si no es válido.
+export function normalizeBookingCode(value: string) {
+  const compact = value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  const suffix = compact.startsWith("ENA") && compact.length === 8 ? compact.slice(3) : compact;
+  return /^[A-Z0-9]{5}$/.test(suffix) ? `ENA-${suffix}` : null;
+}
+
 // Intentos máximos si el localizador generado ya existe (error 23505).
 export const MAX_CODE_ATTEMPTS = 5;
 

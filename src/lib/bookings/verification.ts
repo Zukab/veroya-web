@@ -38,10 +38,3 @@ export async function findVerificationToken(code: string, pin: string) {
   if (error) throw new Error(`No se pudo buscar la reserva: ${error.message}`);
   return data?.verification_token ?? null;
 }
-
-// Acepta "ENA-7K2QM", "ena-7k2qm", "ENA 7K2QM" o solo "7K2QM".
-export function normalizeBookingCode(value: string) {
-  const compact = value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-  const suffix = compact.startsWith("ENA") && compact.length === 8 ? compact.slice(3) : compact;
-  return /^[A-Z0-9]{5}$/.test(suffix) ? `ENA-${suffix}` : null;
-}

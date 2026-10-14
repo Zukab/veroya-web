@@ -47,9 +47,11 @@ Pendiente de verificar:
 - Escrituras con sesión iniciada contra RLS: `bookings`, `booking_payments` y
   `check_rate_limit` **ya probados** (2026-10-13) simulando a `admin-prueba@example.com`
   (admin), `sinpermisos@example.com` (sin permisos), `anon` y `service_role` por SQL dentro
-  de una transacción con `ROLLBACK`. Faltan `cities`, `apartments` y Storage: probarlos
-  igual en el paso del panel de contenidos. Claude no escribe contraseñas (ni de prueba):
-  las pantallas del panel las prueba con la sesión que Sebastián inicie en el navegador.
+  de una transacción con `ROLLBACK`. `cities`, `apartments`, `agency_settings` y Storage
+  **también probados** (2026-10-13): anon rechazado; sin permisos no crea nada y edita o
+  borra 0 filas; admin puede todo (Storage además por su API: anon no sube ni borra).
+  Claude no escribe contraseñas (ni de prueba): las pantallas del panel las prueba con la
+  sesión que Sebastián inicie en el navegador.
 - Protección contra contraseñas filtradas de Supabase Auth: desactivada (aviso de
   `db advisors`); probablemente no disponible en el plan gratuito. Activarla si lo está.
 
@@ -116,6 +118,8 @@ Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
 - `npm run dev` — servidor local
 - `npm run build` — debe pasar sin errores antes de dar una tarea por terminada
 - `npm run lint`
+- `npm test` — pruebas automáticas con Vitest (`tests/`): buscador, reglas de reserva,
+  localizador, voucher, correos y textos legales. Solo lógica, sin base de datos.
 - `npm run db:types` — regenera `src/types/database.ts` tras cada migración
 - `npx supabase migration new <nombre>` — nueva migración en `supabase/migrations/`
 - `npx supabase db push` — aplica las migraciones al proyecto enlazado (mostrar antes las
@@ -342,6 +346,9 @@ bloquear reservas por cruce de fechas.
   `check_out_time`, `house_rules` y `cancellation_policy`. Lectura pública; solo los
   administradores la editan (no se crean ni borran filas). Desde `..._ajustes_datos_legales`:
   `legal_name`, `tax_id` y `legal_address` (datos del titular para los textos legales).
+- `private.purge_old_requests()` + tarea de `pg_cron` `borrar-solicitudes-antiguas` (día 1
+  de cada mes, 04:00 UTC): borra reservas no confirmadas, sin pagos, creadas hace más de 12
+  meses y con la salida ya pasada (lo que promete `/privacidad`).
 - `private.rate_limit_hits` + `public.check_rate_limit(bucket, key_hash, max, ventana_s)`:
   límite de intentos por hash de IP u otra clave; solo lo ejecuta el servidor
   (`service_role`).
@@ -410,7 +417,9 @@ de la base de datos son la última barrera; la validación principal es con zod.
 - Al ejecutar un plan, termina cada paso (build, lint y commit) y espera la confirmación
   de Sebastián antes de empezar el siguiente.
 - Cambios pequeños y un commit por paso lógico, con mensajes en español.
-- Corre `npm run build` y `npm run lint` antes de decir que algo está listo.
+- Corre `npm run build`, `npm run lint` y `npm test` antes de decir que algo está listo.
+- `npm audit` marca vulnerabilidades altas solo en dependencias de desarrollo (`braces`
+  vía `eslint-config-next`); producción tiene 0. Revisar al actualizar Next.
 - Pregunta antes de instalar dependencias que no estén en el stack de arriba.
 - Diseño limpio, moderno y responsive (primero móvil).
 

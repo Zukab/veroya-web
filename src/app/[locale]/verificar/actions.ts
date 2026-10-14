@@ -3,7 +3,8 @@
 import { hasLocale } from "next-intl";
 import { redirect } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
-import { findVerificationToken, normalizeBookingCode } from "@/lib/bookings/verification";
+import { normalizeBookingCode } from "@/lib/bookings/codes";
+import { findVerificationToken } from "@/lib/bookings/verification";
 import { checkRateLimit, clientIpKey } from "@/lib/rate-limit";
 
 // Límite de consultas con localizador y PIN: 10 cada 15 minutos por IP. Con PIN de
