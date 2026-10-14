@@ -118,6 +118,15 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
                   Descargar voucher (PDF)
                 </a>
               )}
+              {payments.length > 0 && (
+                <a
+                  href={`/admin/reservas/${booking.id}/comprobante`}
+                  download
+                  className={buttonClasses({ variant: "secondary" })}
+                >
+                  Comprobante de pago (PDF)
+                </a>
+              )}
               <a
                 href={verificationUrl(booking.verification_token, booking.locale)}
                 target="_blank"
@@ -155,11 +164,18 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
                 </dd>
               </div>
             </dl>
-            {paidCents === 0 && (
-              <p className="mb-5 text-sm text-stone-600">
-                Sin pagos registrados: el voucher dirá «{paymentTermsLabels[booking.payment_terms]}».
-              </p>
-            )}
+            {paidCents === 0 &&
+              (booking.status === "Confirmada" ? (
+                <p className="mb-5 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                  Reserva confirmada sin pagos registrados: el voucher y la página de verificación dicen
+                  «{paymentTermsLabels[booking.payment_terms]}». Si ya está pagada, regístralo aquí
+                  (botón «Pago completo») y saldrá como pagada.
+                </p>
+              ) : (
+                <p className="mb-5 text-sm text-stone-600">
+                  Sin pagos registrados: el voucher dirá «{paymentTermsLabels[booking.payment_terms]}».
+                </p>
+              ))}
 
             {payments.length > 0 && (
               <ul className="mb-6 divide-y divide-sand-200 rounded-xl border border-sand-200">
@@ -185,7 +201,12 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
             )}
 
             {/* La key vacía el formulario después de registrar un pago. */}
-            <PaymentForm key={payments.length} bookingId={booking.id} today={todayInSpain()} />
+            <PaymentForm
+              key={payments.length}
+              bookingId={booking.id}
+              today={todayInSpain()}
+              pendingAmount={totalCents == null ? null : Math.max(0, totalCents - paidCents) / 100}
+            />
           </FormSection>
 
           <FormSection title="Borrar reserva">
