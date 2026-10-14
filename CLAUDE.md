@@ -33,14 +33,15 @@ dirección de prueba.
 **Bloque 3 — panel de administración: terminado (2026-10-13).** Login, sesión en el proxy,
 ciudades y apartamentos con fotos, y reservas con pagos.
 
-**Bloque 4 — voucher: en curso.** Diseño aprobado por el cliente (2026-10-13); ver
-"Reservas y voucher". Pasos:
-1. Apartamentos con dirección (web con enlace a Google Maps y voucher), camas y comodidades
-   nuevas (migración `..._apartamentos_direccion_y_camas`).
-2. Ajustes de la agencia en `/admin/ajustes`.
-3. Página pública de verificación.
-4. Voucher en PDF generado en el servidor y botón "Descargar voucher" en el panel.
-5. Correo al confirmar, con el PDF adjunto y el enlace de verificación.
+**Bloque 4 — voucher: terminado (2026-10-13).** Diseño aprobado por el cliente; ver
+"Reservas y voucher". Dirección, camas y comodidades nuevas en los apartamentos, ajustes de
+la agencia (`/admin/ajustes`), página pública de verificación, voucher en PDF y correo de
+confirmación. Pendiente:
+- Crear la cuenta de Resend y poner `RESEND_API_KEY` y `EMAIL_FROM` en `.env.local` y en
+  Vercel. Hasta entonces el panel avisa de que el correo no está configurado.
+- Probar con la sesión de Sebastián las pantallas del panel de este bloque: formulario de
+  apartamentos (dirección y camas), `/admin/ajustes`, descarga del voucher y envío del
+  correo. El PDF, el QR, el correo y la verificación se probaron en local sin sesión.
 
 Pendiente de verificar:
 - Escrituras con sesión iniciada contra RLS: `bookings`, `booking_payments` y
