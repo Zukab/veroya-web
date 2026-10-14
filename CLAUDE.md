@@ -139,8 +139,13 @@ Opcionales (ver `.env.example`): `SITE_URL` (enlaces absolutos del QR y del corr
 Parte pública:
 - Botón flotante de WhatsApp en todas las páginas y contacto en el pie (datos de
   `/admin/ajustes`; `whatsappUrl()` en `src/lib/data/settings.ts`).
-- `/` inicio (portada, ciudades y apartamentos destacados: los 6 mejor valorados; los que
-  no tienen valoraciones van al final)
+- `/` inicio: portada con buscador (ciudad, entrada, salida, huéspedes; foto de
+  `/admin/ajustes`), ciudades y apartamentos destacados (los 6 mejor valorados; los que no
+  tienen valoraciones van al final)
+- `/buscar?ciudad=&entrada=&salida=&huespedes=`: resultados con capacidad suficiente y, si
+  hay fechas, libres (sin reserva Confirmada que se cruce, `src/lib/bookings/availability.ts`)
+  y con la estancia mínima cumplida. Parámetros en `src/lib/search.ts`; las tarjetas los
+  conservan y el formulario del apartamento llega relleno.
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
 - `/apartamento/[id]` detalle con galería, camas, comodidades, dirección (con enlace a
   Google Maps, `src/lib/maps.ts`) y formulario de reserva
@@ -231,6 +236,8 @@ bloquear reservas por cruce de fechas.
    aplica al pasar a `Confirmada`. Las fechas son intervalos [entrada, salida): si una
    reserva sale el mismo día que entra otra, no se cruzan. Si el cliente tiene varios
    apartamentos iguales, cada uno se registra como una unidad (un apartamento) distinta.
+   El formulario público no acepta solicitudes que se crucen con una reserva Confirmada
+   del mismo apartamento (error `unavailable`); el panel sí puede crearlas como Pendiente.
 4. **Voucher en PDF** solo con la marca Euronest Apartamentos. Diseño aprobado por el
    cliente: maqueta en `referencias/maqueta-voucher/` (fuera del repositorio). Una página A4:
    - Localizador, fecha de emisión y estado en la fecha de emisión.

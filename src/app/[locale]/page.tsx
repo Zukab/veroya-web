@@ -1,22 +1,34 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Moon } from "lucide-react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { ApartmentGrid } from "@/components/apartments/apartment-grid";
 import { CityGrid } from "@/components/cities/city-grid";
+import { SearchForm } from "@/components/search/search-form";
 import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
-import { PhotoPlaceholder } from "@/components/ui/photo-placeholder";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Link } from "@/i18n/navigation";
-import { getCities, getFeaturedApartments } from "@/lib/data/catalog";
+import { getAllApartments, getCities, getFeaturedApartments } from "@/lib/data/catalog";
+import { getAgencySettings } from "@/lib/data/settings";
+import { MAX_SEARCH_GUESTS } from "@/lib/search";
 
 const HOME_CITIES_LIMIT = 4;
 
 export default async function HomePage() {
-  const t = await getTranslations("Home");
-  const [cities, featured] = await Promise.all([getCities(), getFeaturedApartments()]);
-  const heroImage = cities.find((city) => city.image_url)?.image_url;
+  const [t, tSearch] = await Promise.all([getTranslations("Home"), getTranslations("Search")]);
+  const [cities, featured, apartments, settings] = await Promise.all([
+    getCities(),
+    getFeaturedApartments(),
+    getAllApartments(),
+    getAgencySettings(),
+  ]);
+  const heroImage = settings.hero_image_url;
+  const minStay = apartments.length > 0 ? Math.min(...apartments.map((apartment) => apartment.min_nights)) : null;
+  const maxGuests = Math.min(
+    MAX_SEARCH_GUESTS,
+    Math.max(2, ...apartments.map((apartment) => apartment.max_guests)),
+  );
 
   const steps = [
     { title: t("howStep1Title"), text: t("howStep1Text") },
@@ -26,50 +38,46 @@ export default async function HomePage() {
 
   return (
     <main>
-      {/* Portada */}
-      <section className="overflow-hidden">
-        <Container className="grid items-center gap-10 py-12 sm:py-16 lg:grid-cols-2 lg:gap-16 lg:py-24">
-          <div>
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-terracotta-600">
-              {t("heroEyebrow")}
-            </p>
-            <h1 className="mt-4 font-serif text-4xl font-semibold leading-[1.1] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+      {/* Portada con buscador. Foto de /admin/ajustes; sin foto, un degradado. */}
+      <section className="relative isolate overflow-hidden bg-olive-700">
+        {heroImage ? (
+          <Image src={heroImage} alt="" fill priority sizes="100vw" className="-z-10 object-cover" />
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--color-terracotta-600),transparent_60%),linear-gradient(135deg,var(--color-olive-700),var(--color-ink))]"
+          />
+        )}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-linear-to-r from-stone-950/75 via-stone-950/45 to-stone-950/15"
+        />
+        <Container className="py-16 sm:py-24 lg:py-28">
+          <div className="max-w-3xl text-white">
+            {minStay && (
+              <p className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider backdrop-blur">
+                <Moon aria-hidden="true" className="size-3.5" />
+                {tSearch("minStay", { count: minStay })}
+              </p>
+            )}
+            <h1 className="mt-5 font-serif text-4xl font-semibold leading-[1.05] tracking-tight text-balance sm:text-6xl lg:text-7xl">
               {t("heroTitle")}
             </h1>
-            <p className="mt-5 max-w-xl text-lg text-stone-600">{t("heroSubtitle")}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/ciudades" className={buttonClasses({ size: "lg" })}>
-                {t("heroCtaCities")}
-                <ArrowRight aria-hidden="true" className="size-4" />
-              </Link>
-              <Link
-                href="/estancias-largas"
-                className={buttonClasses({ variant: "secondary", size: "lg" })}
-              >
-                {t("heroCtaLongStays")}
-              </Link>
-            </div>
+            <p className="mt-5 max-w-xl text-lg text-white/85">{t("heroSubtitle")}</p>
           </div>
-
-          {/* Sin foto, el marcador solo se muestra en pantallas grandes para no ocupar el móvil. */}
-          <div
-            className={`relative aspect-4/3 overflow-hidden rounded-3xl bg-sand-100 shadow-xl shadow-stone-900/5 lg:aspect-4/5 ${
-              heroImage ? "" : "hidden sm:block"
-            }`}
+          <div className="mt-10 max-w-5xl">
+            <SearchForm
+              cities={cities.map(({ slug, name, country }) => ({ slug, name, country }))}
+              maxGuests={maxGuests}
+            />
+          </div>
+          <Link
+            href="/ciudades"
+            className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-white/85 hover:text-white"
           >
-            {heroImage ? (
-              <Image
-                src={heroImage}
-                alt=""
-                fill
-                priority
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
-              />
-            ) : (
-              <PhotoPlaceholder />
-            )}
-          </div>
+            {tSearch("seeAllCities")}
+            <ArrowRight aria-hidden="true" className="size-4" />
+          </Link>
         </Container>
       </section>
 

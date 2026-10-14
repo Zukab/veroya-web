@@ -1,5 +1,6 @@
 "use server";
 
+import { isApartmentAvailable } from "@/lib/bookings/availability";
 import { MAX_CODE_ATTEMPTS, generateBookingCode, generateBookingPin, isDuplicateBookingCode } from "@/lib/bookings/codes";
 import { nightsBetween, todayInSpain } from "@/lib/bookings/dates";
 import {
@@ -61,6 +62,16 @@ export async function createBookingRequest(
 
   const allowed = await checkRateLimit({ ...RATE_LIMIT, key: await clientIpKey() });
   if (!allowed) return fail({ formError: "rateLimited" });
+
+  // Fechas ya ocupadas por una reserva confirmada (las pendientes no bloquean).
+  try {
+    if (!(await isApartmentAvailable(apartment.id, input.check_in, input.check_out))) {
+      return fail({ formError: "unavailable" });
+    }
+  } catch (error) {
+    console.error("Reserva: error al comprobar la disponibilidad", error);
+    return fail({ formError: "unexpected" });
+  }
 
   for (let attempt = 1; attempt <= MAX_CODE_ATTEMPTS; attempt++) {
     const code = generateBookingCode();

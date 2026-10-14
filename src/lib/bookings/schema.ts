@@ -17,6 +17,7 @@ export const BOOKING_ERROR_KEYS = [
   "minNights",
   "maxGuests",
   "apartmentNotFound",
+  "unavailable",
   "rateLimited",
   "unexpected",
 ] as const;

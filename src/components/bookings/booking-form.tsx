@@ -2,14 +2,16 @@
 
 import { CircleCheck } from "lucide-react";
 import { useFormatter, useLocale, useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { useActionState, useState } from "react";
 import { createBookingRequest } from "@/app/[locale]/apartamento/[id]/actions";
 import { buttonClasses } from "@/components/ui/button";
 import { Field, FormAlert, inputClasses } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
-import { addDays, nightsBetween } from "@/lib/bookings/dates";
+import { addDays, nightsBetween, todayInSpain } from "@/lib/bookings/dates";
 import type { PublicBookingState } from "@/lib/bookings/form-state";
 import { priceFormat } from "@/lib/format";
+import { type SearchParams, parseSearchParams } from "@/lib/search";
 
 type Props = {
   apartmentId: string;
@@ -21,12 +23,24 @@ const initialState: PublicBookingState = { status: "idle" };
 
 // Formulario público de solicitud de reserva. Tras un envío correcto muestra el
 // localizador y el PIN; "Hacer otra solicitud" lo vuelve a montar vacío.
+// Las fechas y los huéspedes llegan rellenos desde el buscador (?entrada=…); por
+// leer la URL, la página lo envuelve en <Suspense>.
 export function BookingWidget(props: Props) {
   const [formKey, setFormKey] = useState(0);
-  return <BookingForm key={formKey} {...props} onReset={() => setFormKey((key) => key + 1)} />;
+  const searchParams = useSearchParams();
+  const initial = parseSearchParams((name) => searchParams.get(name), todayInSpain());
+  return (
+    <BookingForm key={formKey} {...props} initial={initial} onReset={() => setFormKey((key) => key + 1)} />
+  );
 }
 
-function BookingForm({ apartmentId, price, maxGuests, onReset }: Props & { onReset: () => void }) {
+function BookingForm({
+  apartmentId,
+  price,
+  maxGuests,
+  initial,
+  onReset,
+}: Props & { initial: SearchParams; onReset: () => void }) {
   const t = useTranslations("BookingForm");
   const tError = useTranslations("BookingErrors");
   const format = useFormatter();
@@ -34,8 +48,8 @@ function BookingForm({ apartmentId, price, maxGuests, onReset }: Props & { onRes
   const [state, formAction, pending] = useActionState(createBookingRequest, initialState);
 
   // Las fechas son controladas para calcular las noches y el precio orientativo.
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
+  const [checkIn, setCheckIn] = useState(initial.checkIn ?? "");
+  const [checkOut, setCheckOut] = useState(initial.checkOut ?? "");
 
   if (state.status === "success") {
     const date = (value: string) =>
@@ -148,7 +162,7 @@ function BookingForm({ apartmentId, price, maxGuests, onReset }: Props & { onRes
       <Field id="booking-guests" label={t("guests")} error={errorText("guests")}>
         <select
           {...inputProps("guests")}
-          defaultValue={values.guests || String(Math.min(2, maxGuests))}
+          defaultValue={values.guests || String(Math.min(initial.guests ?? 2, maxGuests))}
           className={inputClasses}
         >
           {Array.from({ length: maxGuests }, (_, index) => index + 1).map((count) => (

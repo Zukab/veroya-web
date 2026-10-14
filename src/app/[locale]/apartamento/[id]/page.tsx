@@ -201,11 +201,13 @@ async function ApartmentContent({
                 <li>{t("maxGuests", { count: apartment.max_guests })}</li>
               </ul>
               <hr className="my-5 border-sand-200" />
-              <BookingWidget
-                apartmentId={apartment.id}
-                price={apartment.price}
-                maxGuests={apartment.max_guests}
-              />
+              <Suspense fallback={<div className="h-96 animate-pulse rounded-2xl bg-sand-100" />}>
+                <BookingWidget
+                  apartmentId={apartment.id}
+                  price={apartment.price}
+                  maxGuests={apartment.max_guests}
+                />
+              </Suspense>
             </div>
           </aside>
         </div>

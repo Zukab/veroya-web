@@ -61,7 +61,8 @@
     "longStay": "Estancia larga",
     "bedsDouble": "{count, plural, one {# cama doble} other {# camas dobles}}",
     "bedsSingle": "{count, plural, one {# cama individual} other {# camas individuales}}",
-    "sofaBeds": "{count, plural, one {# sofá cama} other {# sofás cama}}"
+    "sofaBeds": "{count, plural, one {# sofá cama} other {# sofás cama}}",
+    "totalFor": "{nights, plural, one {# noche} other {# noches}}: {total} aprox."
   },
   "ApartmentPage": {
     "breadcrumb": "Ciudades",
@@ -119,14 +120,12 @@
     "maxGuests": "Este apartamento admite como máximo {count, plural, one {# huésped} other {# huéspedes}}.",
     "apartmentNotFound": "Este apartamento ya no está disponible.",
     "rateLimited": "Has enviado demasiadas solicitudes. Inténtalo de nuevo más tarde.",
-    "unexpected": "No hemos podido enviar la solicitud. Inténtalo de nuevo en unos minutos."
+    "unexpected": "No hemos podido enviar la solicitud. Inténtalo de nuevo en unos minutos.",
+    "unavailable": "Este apartamento ya está reservado en esas fechas. Prueba con otras fechas o envíanos una solicitud."
   },
   "Home": {
-    "heroEyebrow": "Apartamentos amueblados",
     "heroTitle": "Tu apartamento, por unos días o una temporada",
-    "heroSubtitle": "Apartamentos cuidados en buenos barrios, con un equipo cercano que te acompaña antes y durante tu estancia.",
-    "heroCtaCities": "Ver ciudades",
-    "heroCtaLongStays": "Estancias largas",
+    "heroSubtitle": "Apartamentos amueblados en las mejores ciudades, para una escapada o una estancia larga. Elige tus fechas y te confirmamos la disponibilidad.",
     "citiesTitle": "Elige tu ciudad",
     "citiesSubtitle": "Apartamentos seleccionados en ciudades con mucha vida.",
     "seeAllCities": "Ver todas las ciudades",
@@ -304,5 +303,27 @@
     "general": "Hola, tengo una consulta sobre Euronest Apartamentos.",
     "apartment": "Hola, me interesa el apartamento «{name}»: {url}",
     "ask": "Preguntar por WhatsApp"
+  },
+  "Search": {
+    "city": "Ciudad",
+    "anyCity": "Todas las ciudades",
+    "checkIn": "Entrada",
+    "checkOut": "Salida",
+    "guests": "Huéspedes",
+    "guestsOption": "{count, plural, one {# huésped} other {# huéspedes}}",
+    "submit": "Buscar",
+    "minStay": "Estancias desde {count, plural, one {# noche} other {# noches}}",
+    "metaTitle": "Buscar apartamentos",
+    "title": "Apartamentos disponibles",
+    "titleAll": "Apartamentos",
+    "resultsCount": "{count, plural, =0 {Ningún apartamento} one {# apartamento} other {# apartamentos}}",
+    "stay": "{checkIn} → {checkOut} · {nights, plural, one {# noche} other {# noches}}",
+    "noDates": "Elige las fechas para ver qué apartamentos están libres.",
+    "empty": "No hay apartamentos libres con estos criterios. Prueba con otras fechas u otra ciudad, o envíanos una solicitud.",
+    "tooShort": "{count, plural, one {# apartamento más requiere} other {# apartamentos más requieren}} una estancia más larga.",
+    "requestTitle": "¿No encuentras lo que buscas?",
+    "requestText": "Cuéntanos tus fechas y te proponemos las mejores opciones disponibles.",
+    "requestCta": "Enviar una solicitud",
+    "seeAllCities": "Ver todas las ciudades"
   }
 }

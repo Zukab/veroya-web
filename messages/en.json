@@ -61,7 +61,8 @@
     "longStay": "Long stay",
     "bedsDouble": "{count, plural, one {# double bed} other {# double beds}}",
     "bedsSingle": "{count, plural, one {# single bed} other {# single beds}}",
-    "sofaBeds": "{count, plural, one {# sofa bed} other {# sofa beds}}"
+    "sofaBeds": "{count, plural, one {# sofa bed} other {# sofa beds}}",
+    "totalFor": "{nights, plural, one {# night} other {# nights}}: approx. {total}"
   },
   "ApartmentPage": {
     "breadcrumb": "Cities",
@@ -119,14 +120,12 @@
     "maxGuests": "This apartment allows at most {count, plural, one {# guest} other {# guests}}.",
     "apartmentNotFound": "This apartment is no longer available.",
     "rateLimited": "You've sent too many requests. Please try again later.",
-    "unexpected": "We couldn't send your request. Please try again in a few minutes."
+    "unexpected": "We couldn't send your request. Please try again in a few minutes.",
+    "unavailable": "This apartment is already booked for those dates. Try other dates or send us a request."
   },
   "Home": {
-    "heroEyebrow": "Furnished apartments",
     "heroTitle": "Your apartment, for a few days or a whole season",
-    "heroSubtitle": "Well-kept apartments in great neighbourhoods, with a friendly team that looks after you before and during your stay.",
-    "heroCtaCities": "Browse cities",
-    "heroCtaLongStays": "Long stays",
+    "heroSubtitle": "Furnished apartments in the best cities, for a short break or a long stay. Choose your dates and we will confirm availability.",
     "citiesTitle": "Choose your city",
     "citiesSubtitle": "Hand-picked apartments in lively cities.",
     "seeAllCities": "See all cities",
@@ -304,5 +303,27 @@
     "general": "Hello, I have a question about Euronest Apartamentos.",
     "apartment": "Hello, I am interested in the apartment “{name}”: {url}",
     "ask": "Ask on WhatsApp"
+  },
+  "Search": {
+    "city": "City",
+    "anyCity": "All cities",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Guests",
+    "guestsOption": "{count, plural, one {# guest} other {# guests}}",
+    "submit": "Search",
+    "minStay": "Stays from {count, plural, one {# night} other {# nights}}",
+    "metaTitle": "Search apartments",
+    "title": "Available apartments",
+    "titleAll": "Apartments",
+    "resultsCount": "{count, plural, =0 {No apartments} one {# apartment} other {# apartments}}",
+    "stay": "{checkIn} → {checkOut} · {nights, plural, one {# night} other {# nights}}",
+    "noDates": "Choose your dates to see which apartments are available.",
+    "empty": "There are no apartments available for this search. Try other dates or another city, or send us a request.",
+    "tooShort": "{count, plural, one {# more apartment requires} other {# more apartments require}} a longer stay.",
+    "requestTitle": "Can’t find what you’re looking for?",
+    "requestText": "Tell us your dates and we will suggest the best available options.",
+    "requestCta": "Send a request",
+    "seeAllCities": "See all cities"
   }
 }

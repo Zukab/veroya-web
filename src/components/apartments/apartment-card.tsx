@@ -6,12 +6,18 @@ import type { ApartmentCardData } from "@/lib/data/catalog";
 import { LONG_STAY_MIN_NIGHTS, priceFormat } from "@/lib/format";
 import { Rating } from "./rating";
 
+// query: búsqueda que se conserva al entrar en la ficha ("?entrada=…").
+// nights: si hay fechas, se muestra el precio total orientativo.
 export async function ApartmentCard({
   apartment,
   showCity = true,
+  query = "",
+  nights,
 }: {
   apartment: ApartmentCardData;
   showCity?: boolean;
+  query?: string;
+  nights?: number | null;
 }) {
   const t = await getTranslations("Apartment");
   const format = await getFormatter();
@@ -21,7 +27,7 @@ export async function ApartmentCard({
     .join(" · ");
 
   return (
-    <Link href={`/apartamento/${apartment.id}`} className="group block">
+    <Link href={`/apartamento/${apartment.id}${query}`} className="group block">
       <div className="relative aspect-4/3 overflow-hidden rounded-2xl bg-sand-100">
         {cover ? (
           <Image
@@ -55,6 +61,11 @@ export async function ApartmentCard({
         <span className="font-semibold">{format.number(apartment.price, priceFormat)}</span>{" "}
         <span className="text-sm text-stone-600">{t("perNight")}</span>
       </p>
+      {nights ? (
+        <p className="text-sm text-stone-600">
+          {t("totalFor", { nights, total: format.number(apartment.price * nights, priceFormat) })}
+        </p>
+      ) : null}
     </Link>
   );
 }

@@ -84,6 +84,24 @@ export async function getApartmentsByCity(citySlug: string) {
   return data;
 }
 
+// Todos los apartamentos, para el buscador (que filtra por ciudad, huéspedes,
+// noches mínimas y disponibilidad).
+export async function getAllApartments() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag(CACHE_TAGS.apartments, CACHE_TAGS.cities);
+
+  const { data, error } = await createPublicClient()
+    .from("apartments")
+    .select(APARTMENT_CARD_COLUMNS)
+    .order("rating", { ascending: false, nullsFirst: false })
+    .order("reviews", { ascending: false })
+    .order("id");
+
+  if (error) fail("los apartamentos", error);
+  return data;
+}
+
 export async function getApartment(id: string) {
   "use cache";
   cacheLife("hours");

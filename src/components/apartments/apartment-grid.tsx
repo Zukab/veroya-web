@@ -6,15 +6,19 @@ const gridClasses = "grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3";
 export function ApartmentGrid({
   apartments,
   showCity = true,
+  query,
+  nights,
 }: {
   apartments: ApartmentCardData[];
   showCity?: boolean;
+  query?: string;
+  nights?: number | null;
 }) {
   return (
     <ul className={gridClasses}>
       {apartments.map((apartment) => (
         <li key={apartment.id}>
-          <ApartmentCard apartment={apartment} showCity={showCity} />
+          <ApartmentCard apartment={apartment} showCity={showCity} query={query} nights={nights} />
         </li>
       ))}
     </ul>
