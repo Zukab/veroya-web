@@ -358,5 +358,25 @@
     "newRequest": "Make another request",
     "orWhatsApp": "Would you rather talk to us?",
     "whatsApp": "Message us on WhatsApp"
+  },
+  "RequestEmail": {
+    "subject": "We have received your request {code} · Euronest Apartamentos",
+    "preheader": "We will confirm availability as soon as possible.",
+    "title": "We have received your request",
+    "greeting": "Hello {name},",
+    "intro": "Thank you for your request. Our team will check availability and get back to you as soon as possible. Once the booking is confirmed, we will send you the voucher.",
+    "details": "Request details",
+    "code": "Booking reference",
+    "pin": "PIN",
+    "apartment": "Accommodation",
+    "city": "City",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Guests",
+    "guestsValue": "{count, plural, one {# person} other {# people}}",
+    "statusButton": "View request status",
+    "statusNote": "You can also check it on our website with the booking reference and PIN.",
+    "help": "Any questions? Reply to this email or message us on WhatsApp at {phone}.",
+    "signature": "The Euronest Apartamentos team"
   }
 }

@@ -1,5 +1,6 @@
 "use server";
 
+import { after } from "next/server";
 import { isApartmentAvailable } from "@/lib/bookings/availability";
 import { PUBLIC_BOOKING_RATE_LIMIT, insertPublicBooking } from "@/lib/bookings/create-public";
 import { nightsBetween, todayInSpain } from "@/lib/bookings/dates";
@@ -8,6 +9,7 @@ import {
   type PublicBookingState,
 } from "@/lib/bookings/form-state";
 import { fieldErrorsFrom, publicBookingSchema, publicStayErrors } from "@/lib/bookings/schema";
+import { sendRequestReceivedEmail } from "@/lib/email/request-received";
 import { checkRateLimit, clientIpKey } from "@/lib/rate-limit";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -86,6 +88,8 @@ export async function createBookingRequest(
     total_amount: apartment.price * nightsBetween(input.check_in, input.check_out),
   });
   if (!saved) return fail({ formError: "unexpected" });
+  // Acuse de recibo por correo, después de responder.
+  after(() => sendRequestReceivedEmail(saved.id));
 
   return {
     status: "success",

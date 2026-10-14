@@ -1,10 +1,12 @@
 "use server";
 
+import { after } from "next/server";
 import { PUBLIC_BOOKING_RATE_LIMIT, insertPublicBooking } from "@/lib/bookings/create-public";
 import { todayInSpain } from "@/lib/bookings/dates";
 import { PUBLIC_BOOKING_TEXT_FIELDS, type PublicBookingState } from "@/lib/bookings/form-state";
 import { fieldErrorsFrom, generalRequestSchema, publicStayErrors } from "@/lib/bookings/schema";
 import { getCities } from "@/lib/data/catalog";
+import { sendRequestReceivedEmail } from "@/lib/email/request-received";
 import { checkRateLimit, clientIpKey } from "@/lib/rate-limit";
 
 // Solicitud general desde /solicitud: el huésped indica ciudad, fechas y
@@ -54,6 +56,8 @@ export async function createGeneralRequest(
     city_name: city.name,
   });
   if (!saved) return fail({ formError: "unexpected" });
+  // Acuse de recibo por correo, después de responder.
+  after(() => sendRequestReceivedEmail(saved.id));
 
   return {
     status: "success",

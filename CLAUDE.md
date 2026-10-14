@@ -269,7 +269,11 @@ bloquear reservas por cruce de fechas.
 5. **Página de verificación:** muestra solo el estado actual (confirmada, pendiente o
    cancelada), el localizador, el apartamento y las fechas; ningún dato personal ni importe.
    Se accede con el enlace del QR o con localizador y PIN.
-6. **Correo de confirmación:** al confirmar una reserva en el panel se envía un correo al
+6. **Acuse de recibo:** cada solicitud de la web (apartamento o `/solicitud`) envía al
+   huésped un correo con el localizador, el PIN, los datos y el enlace de estado, sin voucher
+   (`src/lib/email/request-received.ts`, con `after()` para no retrasar la respuesta; si
+   falla solo se registra). Las reservas creadas desde el panel no lo envían.
+7. **Correo de confirmación:** al confirmar una reserva en el panel se envía un correo al
    huésped con el PDF adjunto y el enlace de verificación. Con huéspedes reales funciona
    solo cuando el dominio esté verificado en Resend.
    - Se envía solo la primera vez que una reserva pasa a `Confirmada` (al editarla o al
@@ -278,10 +282,10 @@ bloquear reservas por cruce de fechas.
    - Si el envío falla, la reserva se guarda igual y el panel explica el motivo (sin
      configurar, Resend sin dominio verificado, etc.).
    - Código en `src/lib/email/`: `resend.ts` (API de Resend con `fetch`, sin SDK),
-     `confirmation-template.ts` (HTML y texto, mensajes `ConfirmationEmail`) y
+     `layout.ts` (diseño común), `confirmation-template.ts` (mensajes `ConfirmationEmail`) y
      `confirmation.ts` (`sendConfirmationEmail`, nunca lanza). Responder al correo llega al
      correo de la agencia (`reply_to`).
-7. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
+8. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
    VALIDEZ" y datos `@example.com`.
 
 ## Idiomas
