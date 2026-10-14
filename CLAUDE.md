@@ -255,6 +255,15 @@ bloquear reservas por cruce de fechas.
 6. **Correo de confirmación:** al confirmar una reserva en el panel se envía un correo al
    huésped con el PDF adjunto y el enlace de verificación. Con huéspedes reales funciona
    solo cuando el dominio esté verificado en Resend.
+   - Se envía solo la primera vez que una reserva pasa a `Confirmada` (al editarla o al
+     crearla ya confirmada) y anota `confirmation_email_sent_at`. Para reenviarlo, botón
+     «Enviar / Reenviar por correo» en la sección «Voucher» de la ficha.
+   - Si el envío falla, la reserva se guarda igual y el panel explica el motivo (sin
+     configurar, Resend sin dominio verificado, etc.).
+   - Código en `src/lib/email/`: `resend.ts` (API de Resend con `fetch`, sin SDK),
+     `confirmation-template.ts` (HTML y texto, mensajes `ConfirmationEmail`) y
+     `confirmation.ts` (`sendConfirmationEmail`, nunca lanza). Responder al correo llega al
+     correo de la agencia (`reply_to`).
 7. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
    VALIDEZ" y datos `@example.com`.
 

@@ -15,6 +15,7 @@ import {
 } from "@/lib/bookings/codes";
 import { nightsBetween } from "@/lib/bookings/dates";
 import { stayDateErrors } from "@/lib/bookings/schema";
+import { sendConfirmationEmail } from "@/lib/email/confirmation";
 import type { Database } from "@/types/database";
 
 type Client = SupabaseClient<Database>;
@@ -136,7 +137,15 @@ export async function createBooking(_previous: AdminFormState, formData: FormDat
       .select("id")
       .single();
 
-    if (!error) redirect(`/admin/reservas/${data.id}?creada=1`);
+    if (!error) {
+      // Creada ya confirmada: se envía el correo de confirmación con el voucher.
+      let email = "";
+      if (booking.status === "Confirmada") {
+        const result = await sendConfirmationEmail(data.id);
+        email = `&correo=${result.ok ? "enviado" : "fallido"}`;
+      }
+      redirect(`/admin/reservas/${data.id}?creada=1${email}`);
+    }
     if (!isDuplicateBookingCode(error)) return databaseErrorState(supabase, error, booking);
   }
 
@@ -153,7 +162,7 @@ export async function updateBooking(_previous: AdminFormState, formData: FormDat
 
   const { data: current, error: readError } = await supabase
     .from("bookings")
-    .select("apartment_id")
+    .select("apartment_id, status, confirmation_email_sent_at")
     .eq("id", id)
     .maybeSingle();
   if (readError) return databaseErrorState(supabase, readError, booking, id);
@@ -176,8 +185,30 @@ export async function updateBooking(_previous: AdminFormState, formData: FormDat
   if (error) return databaseErrorState(supabase, error, booking, id);
   if (!updated?.length) return errorState("La reserva ya no existe.");
 
+  // Al confirmarla por primera vez se envía el correo de confirmación con el
+  // voucher. Después se reenvía con el botón de la sección «Voucher».
+  const justConfirmed =
+    booking.status === "Confirmada" && current.status !== "Confirmada" && !current.confirmation_email_sent_at;
+  const email = justConfirmed ? await sendConfirmationEmail(id) : null;
+
   refresh();
-  return { status: "success", message: "Cambios guardados." };
+  if (!email) return { status: "success", message: "Cambios guardados." };
+  if (email.ok) return { status: "success", message: `Cambios guardados. Correo de confirmación enviado a ${email.to}.` };
+  return errorState(
+    `Cambios guardados, pero no se envió el correo de confirmación. ${email.message} Puedes reenviarlo desde la sección «Voucher».`,
+  );
+}
+
+// Envía (o reenvía) al huésped el correo de confirmación con el voucher.
+export async function sendVoucherEmail(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
+  await requireAdmin();
+  const id = String(formData.get("booking_id") ?? "");
+
+  const email = await sendConfirmationEmail(id);
+  refresh();
+  return email.ok
+    ? { status: "success", message: `Correo enviado a ${email.to}.` }
+    : errorState(`No se envió el correo. ${email.message}`);
 }
 
 export async function deleteBooking(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {

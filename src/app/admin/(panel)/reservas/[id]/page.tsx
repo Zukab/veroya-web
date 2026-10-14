@@ -15,6 +15,7 @@ import { deleteBooking, deletePayment } from "../actions";
 import { readApartmentOptions } from "../apartment-options";
 import { BookingForm } from "../booking-form";
 import { PaymentForm } from "../payment-form";
+import { SendVoucherButton } from "../send-voucher-button";
 
 export const metadata: Metadata = { title: "Reserva" };
 
@@ -22,7 +23,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export default async function BookingPage({ params, searchParams }: PageProps<"/admin/reservas/[id]">) {
   const { supabase } = await requireAdmin();
-  const [{ id }, { creada }] = await Promise.all([params, searchParams]);
+  const [{ id }, { creada, correo }] = await Promise.all([params, searchParams]);
   if (!UUID.test(id)) notFound();
 
   const [bookingResult, apartments] = await Promise.all([
@@ -53,7 +54,18 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
           back={{ href: "/admin/reservas", label: "Reservas" }}
           actions={<StatusBadge status={booking.status} />}
         />
-        {creada && <Notice>Reserva creada.</Notice>}
+        {creada && (
+          <Notice>
+            Reserva creada.
+            {correo === "enviado" && ` Correo de confirmación enviado a ${booking.user_email}.`}
+          </Notice>
+        )}
+        {correo === "fallido" && (
+          <p role="alert" className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            No se pudo enviar el correo de confirmación. Usa «Enviar por correo» en la sección
+            «Voucher» para reintentarlo y ver el motivo.
+          </p>
+        )}
 
         <dl className="mb-8 grid grid-cols-2 gap-4 rounded-2xl border border-sand-200 bg-white p-5 text-sm sm:grid-cols-4">
           <div>
@@ -80,14 +92,24 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
           <FormSection title="Voucher">
             {booking.status === "Confirmada" ? (
               <p className="mb-4 text-sm text-stone-600">
-                PDF con los datos de la estancia y un QR que lleva a la página de verificación.
+                PDF con los datos de la estancia y un QR que lleva a la página de verificación. Al
+                confirmar la reserva se envía automáticamente por correo al huésped.
+                <span className="mt-1 block">
+                  Correo de confirmación:{" "}
+                  <strong>
+                    {booking.confirmation_email_sent_at
+                      ? `enviado el ${formatDateTime(booking.confirmation_email_sent_at)}`
+                      : "no enviado"}
+                  </strong>
+                </span>
               </p>
             ) : (
               <p className="mb-4 text-sm text-stone-600">
-                El voucher se puede descargar cuando la reserva esté confirmada.
+                El voucher se puede descargar y enviar cuando la reserva esté confirmada. Al
+                confirmarla, se envía automáticamente por correo al huésped.
               </p>
             )}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap items-start gap-3">
               {booking.status === "Confirmada" && (
                 <a href={`/admin/reservas/${booking.id}/voucher`} download className={buttonClasses()}>
                   Descargar voucher (PDF)
@@ -101,6 +123,13 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
               >
                 Ver página de verificación
               </a>
+              {booking.status === "Confirmada" && (
+                <SendVoucherButton
+                  bookingId={booking.id}
+                  email={booking.user_email}
+                  sent={Boolean(booking.confirmation_email_sent_at)}
+                />
+              )}
             </div>
           </FormSection>
 

@@ -276,5 +276,26 @@
     "cancellation": "Cancelación",
     "help": "¿Necesitas ayuda?",
     "watermark": "DOCUMENTO DE PRUEBA · SIN VALIDEZ"
+  },
+  "ConfirmationEmail": {
+    "subject": "Reserva confirmada {code} · Euronest Apartamentos",
+    "preheader": "Tu reserva está confirmada. El voucher va adjunto en PDF.",
+    "title": "Tu reserva está confirmada",
+    "greeting": "Hola, {name}:",
+    "intro": "Tu reserva en {apartment} está confirmada. Te adjuntamos el voucher en PDF: preséntalo junto con un documento de identidad al llegar.",
+    "details": "Datos de la reserva",
+    "code": "Localizador",
+    "apartment": "Alojamiento",
+    "address": "Dirección",
+    "checkIn": "Entrada",
+    "checkOut": "Salida",
+    "guests": "Huéspedes",
+    "checkInValue": "{date}, a partir de las {time}",
+    "checkOutValue": "{date}, antes de las {time}",
+    "guestsValue": "{count, plural, one {# persona} other {# personas}}",
+    "verifyButton": "Ver el estado de la reserva",
+    "verifyNote": "Puedes consultar el estado de tu reserva cuando quieras con este enlace o con el código QR del voucher.",
+    "help": "¿Tienes alguna pregunta? Responde a este correo o llámanos al {phone}.",
+    "signature": "El equipo de Euronest Apartamentos"
   }
 }

@@ -276,5 +276,26 @@
     "cancellation": "Cancellation",
     "help": "Need help?",
     "watermark": "TEST DOCUMENT · NOT VALID"
+  },
+  "ConfirmationEmail": {
+    "subject": "Booking confirmed {code} · Euronest Apartamentos",
+    "preheader": "Your booking is confirmed. Your voucher is attached as a PDF.",
+    "title": "Your booking is confirmed",
+    "greeting": "Hello {name},",
+    "intro": "Your booking at {apartment} is confirmed. Your voucher is attached as a PDF: please show it with a valid ID on arrival.",
+    "details": "Booking details",
+    "code": "Booking reference",
+    "apartment": "Accommodation",
+    "address": "Address",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "guests": "Guests",
+    "checkInValue": "{date}, from {time}",
+    "checkOutValue": "{date}, by {time}",
+    "guestsValue": "{count, plural, one {# person} other {# people}}",
+    "verifyButton": "View booking status",
+    "verifyNote": "You can check the status of your booking at any time with this link or with the QR code on the voucher.",
+    "help": "Any questions? Reply to this email or call us on {phone}.",
+    "signature": "The Euronest Apartamentos team"
   }
 }
