@@ -87,9 +87,8 @@ Spaceship (cuenta `veroyaproyecto@gmail.com`) antes del 2027-10-15.
 **Entrega al cliente (2026-10-15):** marca de agua comprobada en producción: un voucher de
 una reserva real sale sin ella; solo la llevan las reservas `@example.com` y lo generado en
 desarrollo. Todo el catálogo sigue siendo de ejemplo (8 apartamentos `ejemplo-...` con
-valoraciones inventadas). Las 8 reservas de prueba se borraron el 2026-10-15; queda
-`ENA-G9GI5` (confirmada, con pago, en un apartamento de ejemplo), pendiente de que Sebastián
-confirme si también es de prueba. El cliente debe
+valoraciones inventadas). Las 9 reservas de prueba (con sus pagos) se borraron el
+2026-10-15: la base de datos queda sin reservas. El cliente debe
 crear apartamentos nuevos (no editar los de ejemplo: el id `ejemplo-...` no cambia y sale
 en la URL) y después borrar los de ejemplo. Faltan en `/admin/ajustes` los datos legales
 del titular (nombre, NIF/NIT y dirección).
