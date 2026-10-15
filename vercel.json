@@ -1,4 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["pdx1"]
+  "regions": ["pdx1"],
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "veroya-web-6h67.vercel.app" }],
+      "destination": "https://euronestapartamentos.com/$1",
+      "permanent": true
+    }
+  ]
 }
