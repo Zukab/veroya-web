@@ -41,6 +41,7 @@ describe("correos", () => {
     expect(html).not.toContain("<b>Laura</b>");
     expect(html).toContain("&lt;b&gt;Laura&lt;/b&gt;");
     expect(text).toContain("Localizador: ENA-7K2QM");
+    expect(html).toContain('src="https://ejemplo.test/brand/euronest-arco.png"');
   });
 });
 

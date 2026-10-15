@@ -28,6 +28,9 @@ export function renderEmail(content: EmailContent) {
   const { locale, subject, preheader, title, paragraphs, detailsTitle, rows, button, note, closing, contact } =
     content;
   const e = escapeHtml;
+  // El símbolo de la marca se sirve desde la misma web a la que lleva el botón
+  // (public/brand). En PNG: Gmail no muestra SVG.
+  const logoUrl = `${new URL(button.href).origin}/brand/euronest-arco.png`;
 
   const html = `<!doctype html>
 <html lang="${e(locale)}">
@@ -38,8 +41,13 @@ export function renderEmail(content: EmailContent) {
 <tr><td align="center">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #e8dfd2;border-radius:16px;">
 <tr><td style="padding:28px 28px 8px;">
+<table role="presentation" cellpadding="0" cellspacing="0"><tr>
+<td style="padding-right:10px;vertical-align:middle;"><img src="${e(logoUrl)}" width="30" height="34" alt="" style="display:block;border:0;"></td>
+<td style="vertical-align:middle;">
 <div style="font-family:Georgia,serif;font-size:24px;font-weight:bold;">Euronest</div>
 <div style="font-size:10px;font-weight:bold;letter-spacing:3px;color:#b4532a;">APARTAMENTOS</div>
+</td>
+</tr></table>
 </td></tr>
 <tr><td style="padding:16px 28px 0;">
 <h1 style="margin:0 0 16px;font-family:Georgia,serif;font-size:22px;color:#4a5740;">${e(title)}</h1>

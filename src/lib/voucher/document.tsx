@@ -7,6 +7,7 @@ import es from "../../../messages/es.json";
 import { houseRulesList } from "@/lib/data/settings";
 import { fullAddress } from "./address";
 import type { PaymentKind, VoucherData } from "./data";
+import { PdfBrandMark } from "./brand-mark";
 
 // Voucher en PDF (una página A4), con el diseño aprobado por el cliente
 // (maqueta en referencias/maqueta-voucher/). Las fuentes se registran en render.ts.
@@ -78,6 +79,7 @@ const s = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: color.sand300,
   },
+  brand: { flexDirection: "row", alignItems: "center" },
   logo: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 22, lineHeight: 1 },
   logoSub: { marginTop: 5, fontSize: 6.8, fontWeight: 600, letterSpacing: 1.7, color: color.terra600 },
   docTitle: { fontSize: 7.6, fontWeight: 600, letterSpacing: 1.3, textTransform: "uppercase", color: color.muted },
@@ -326,9 +328,12 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
         )}
 
         <View style={s.header}>
-          <View>
-            <Text style={s.logo}>Euronest</Text>
-            <Text style={s.logoSub}>APARTAMENTOS</Text>
+          <View style={s.brand}>
+            <PdfBrandMark />
+            <View>
+              <Text style={s.logo}>Euronest</Text>
+              <Text style={s.logoSub}>APARTAMENTOS</Text>
+            </View>
           </View>
           <View style={{ alignItems: "flex-end" }}>
             <Text style={s.docTitle}>{t("title")}</Text>

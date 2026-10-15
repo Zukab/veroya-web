@@ -4,6 +4,7 @@ import { AGENCY_TIME_ZONE } from "@/lib/bookings/dates";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
 import type { VoucherData } from "./data";
+import { PdfBrandMark } from "./brand-mark";
 
 // Comprobante de pago en PDF (una página A4): valor pagado, datos de la reserva y
 // pagos registrados. Informativo, no es una factura. Las fuentes se registran en
@@ -34,6 +35,7 @@ const s = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: color.terra600,
   },
+  brand: { flexDirection: "row", alignItems: "center" },
   logo: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 22, lineHeight: 1 },
   logoSub: { marginTop: 5, fontSize: 6.8, fontWeight: 600, letterSpacing: 1.7, color: color.terra600 },
   title: { fontSize: 10, fontWeight: 600, letterSpacing: 1.4, textTransform: "uppercase", textAlign: "right" },
@@ -115,9 +117,12 @@ export function ReceiptDocument({ data, siteHost }: { data: VoucherData; siteHos
     <Document title={`${t("title")} ${data.code}`} author="Euronest Apartamentos" language={locale}>
       <Page size="A4" style={s.page}>
         <View style={s.header}>
-          <View>
-            <Text style={s.logo}>Euronest</Text>
-            <Text style={s.logoSub}>APARTAMENTOS</Text>
+          <View style={s.brand}>
+            <PdfBrandMark />
+            <View>
+              <Text style={s.logo}>Euronest</Text>
+              <Text style={s.logoSub}>APARTAMENTOS</Text>
+            </View>
           </View>
           <View>
             <Text style={s.title}>{t("title")}</Text>
