@@ -61,7 +61,10 @@ cliente pague; entonces se compra el dominio. Mientras tanto los correos automá
 llegan a `veroyaproyecto@gmail.com` (Resend no permite verificar `vercel.app`): el equipo
 descarga el voucher en el panel y lo envía por WhatsApp. `veroya-web.vercel.app` (sin
 sufijo) es una web antigua con la marca anterior: pendiente de borrar en Vercel.
-1. Comprar el dominio (en Vercel → Settings → Domains).
+1. Comprar el dominio. Decisión (2026-10-15): el cliente ya pagó; se compra en
+   **Spaceship** con la cuenta `veroyaproyecto@gmail.com` (2,90 $ el primer año con el
+   código `COMPROS`, unos 10 $/año después), con renovación automática. Los DNS se
+   gestionan en Spaceship (no en Vercel), para no atar el dominio a Vercel.
 2. Conectarlo a Vercel y poner `SITE_URL` con el dominio (hasta entonces, la dirección de
    Vercel).
 3. Verificarlo en Resend (registros DNS) y cambiar `EMAIL_FROM` a una dirección del dominio.
@@ -113,8 +116,8 @@ Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
   `veroyaproyecto@gmail.com`. Registro público de Auth desactivado.
 - Las funciones de Vercel corren en **`pdx1`** (Oregón), la misma zona que Supabase, fijado
   en `vercel.json`. Si Supabase cambia de región, cambia también `vercel.json`.
-- Dominio: `euronestapartamentos.com`, que se compra al final (ver "Pendiente para el
-  final"). Mientras tanto se usa la dirección de prueba de Vercel.
+- Dominio: `euronestapartamentos.com`, registrado en Spaceship (ver "Pendiente para el
+  final"). Hasta conectarlo se usa la dirección de prueba de Vercel.
 - Sebastián administra todas las cuentas. Nunca escribas claves, contraseñas ni tokens en el
   código, en commits ni en archivos versionados; todo va en `.env.local`.
 
