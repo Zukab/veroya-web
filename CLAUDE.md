@@ -69,8 +69,10 @@ Pendiente de verificar:
 - `vercel.json` redirige `veroya-web-6h67.vercel.app` al dominio (los QR de vouchers
   antiguos siguen funcionando). `metadataBase`, `canonical` y `hreflang` en
   `src/lib/seo.ts` (`localeAlternates()` en cada página pública indexable).
-- Pendiente: probar un correo a un huésped real ya en producción. `veroya-web.vercel.app`
-  (sin sufijo) es una web antigua con la marca anterior: pendiente de borrar en Vercel.
+- Correo a una dirección real probado en producción (2026-10-15, solicitud `ENA-KNSI9`):
+  llegó a la bandeja de entrada de Gmail desde `reservas@euronestapartamentos.com`, con el
+  enlace al dominio. Pendiente: borrar en Vercel `veroya-web.vercel.app` (sin sufijo), una
+  web antigua con la marca anterior.
 
 ## Stack
 
