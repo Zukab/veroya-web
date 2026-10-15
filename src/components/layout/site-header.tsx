@@ -39,11 +39,12 @@ export function SiteHeader() {
               el texto: solo el icono (el menú tiene el botón con texto). */}
           <Link
             href="/verificar"
+            aria-label={t("checkBooking")}
             title={t("checkBooking")}
             className={buttonClasses({ variant: "secondary", className: "h-9 px-2.5 whitespace-nowrap sm:px-4" })}
           >
             <TicketCheck aria-hidden className="size-4 shrink-0" />
-            <span className="sr-only sm:not-sr-only">{t("myBooking")}</span>
+            <span className="hidden sm:inline">{t("myBooking")}</span>
           </Link>
           {/* Envuelto: "hidden" no puede ir junto al inline-flex del botón. */}
           <div className="hidden xl:block">
