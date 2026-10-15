@@ -180,8 +180,8 @@ Parte pública:
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
 - `/apartamento/[id]` detalle con galería, camas, comodidades, dirección (con enlace a
   Google Maps, `src/lib/maps.ts`) y formulario de reserva
-- `/como-funciona`, `/estancias-largas`, `/propietarios`: textos recomendados (2026-10-13),
-  pendientes de aprobación del cliente. Propietarios va dirigida a quien quiere vender o
+- `/como-funciona`, `/estancias-largas`, `/propietarios`: textos aprobados por el cliente
+  (2026-10-15), igual que sus ajustes en `/admin/ajustes`. Propietarios va dirigida a quien quiere vender o
   alquilar su piso (el cliente compra apartamentos), con botones de WhatsApp y correo.
 - `/aviso-legal`, `/privacidad`, `/cookies`: textos en `src/lib/legal/content.ts` (es/en),
   pensados para varios países (RGPD y Ley 1581 de Colombia). Usan los datos del titular de
@@ -475,9 +475,16 @@ de la base de datos son la última barrera; la validación principal es con zod.
 
 ## Diseño
 
-- Colores **provisionales** hasta que el cliente confirme los suyos: arena (fondos),
-  terracota (acento) y oliva (secundario), definidos en `@theme` de `src/app/globals.css`.
-- Solo tema claro. Logotipo de texto provisional en `src/components/layout/logo.tsx`.
+- Colores **definitivos** (2026-10-15; el cliente no tenía marca y los aceptó): arena
+  (fondos), terracota (acento) y oliva (secundario), definidos en `@theme` de
+  `src/app/globals.css`.
+- Solo tema claro.
+- Logotipo (elegido el 2026-10-15): arco mediterráneo con puerta en terracota + "Euronest" en
+  Fraunces y "APARTAMENTOS". Formas en `src/lib/brand.ts`; lo usan `logo.tsx` (cabecera y
+  pie), el voucher y el comprobante (`src/lib/voucher/brand-mark.tsx`). Los iconos
+  (`src/app/icon.svg`, `favicon.ico`, `apple-icon.png`) y el PNG de los correos
+  (`public/brand/euronest-arco.png`) se generan con `node scripts/brand-assets.mjs`: si
+  cambian las formas, actualizar el script y volver a ejecutarlo.
 - Sin fotos se muestra un marcador (`PhotoPlaceholder`); las páginas deben verse bien así.
 - Las tarjetas marcan "Estancia larga" a partir de 28 noches mínimas
   (`LONG_STAY_MIN_NIGHTS` en `src/lib/format.ts`).
