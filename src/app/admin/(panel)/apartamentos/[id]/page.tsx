@@ -6,6 +6,7 @@ import { DeleteButton } from "@/components/admin/delete-button";
 import { Notice } from "@/components/admin/form-status";
 import { AdminPageHeader, FormSection } from "@/components/admin/page-header";
 import { Container } from "@/components/ui/container";
+import { formatDate } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/auth/admin";
 import { deleteApartment } from "../actions";
 import { ApartmentForm } from "../apartment-form";
@@ -22,7 +23,7 @@ export default async function EditApartmentPage({
   const { supabase } = await requireAdmin();
   const [{ id }, { creado }] = await Promise.all([params, searchParams]);
 
-  const [apartmentResult, citiesResult] = await Promise.all([
+  const [apartmentResult, citiesResult, confirmedResult] = await Promise.all([
     supabase
       .from("apartments")
       .select(
@@ -31,11 +32,20 @@ export default async function EditApartmentPage({
       .eq("id", id)
       .maybeSingle(),
     supabase.from("cities").select("slug, name").order("name"),
+    // Las reservas confirmadas impiden borrar el apartamento: se listan para resolverlas.
+    supabase
+      .from("bookings")
+      .select("id, booking_code, user_name, check_in, check_out")
+      .eq("apartment_id", id)
+      .eq("status", "Confirmada")
+      .order("check_in"),
   ]);
   if (apartmentResult.error) throw new Error(`No se pudo leer el apartamento: ${apartmentResult.error.message}`);
   if (citiesResult.error) throw new Error(`No se pudieron leer las ciudades: ${citiesResult.error.message}`);
+  if (confirmedResult.error) throw new Error(`No se pudieron leer las reservas: ${confirmedResult.error.message}`);
   const apartment = apartmentResult.data;
   if (!apartment) notFound();
+  const confirmed = confirmedResult.data;
 
   return (
     <main className="flex-1 py-10">
@@ -60,16 +70,45 @@ export default async function EditApartmentPage({
 
         <div className="mt-10">
           <FormSection title="Borrar apartamento">
-            <p className="mb-4 text-sm text-stone-600">
-              No se puede borrar si tiene reservas confirmadas. Las reservas pendientes o
-              canceladas se conservan con el nombre del apartamento. También se borran sus fotos.
-            </p>
-            <DeleteButton
-              action={deleteApartment}
-              fields={{ id: apartment.id }}
-              confirmMessage={`¿Borrar el apartamento "${apartment.name}"? No se puede deshacer.`}
-              label="Borrar apartamento"
-            />
+            {confirmed.length > 0 ? (
+              <>
+                <p className="mb-3 text-sm text-stone-600">
+                  Tiene {confirmed.length === 1 ? "1 reserva confirmada" : `${confirmed.length} reservas confirmadas`}.
+                  Para poder borrarlo, abre cada una y cancélala, pásala a otro apartamento o bórrala:
+                </p>
+                <ul className="divide-y divide-sand-200 rounded-xl border border-sand-200 bg-white text-sm">
+                  {confirmed.map((booking) => (
+                    <li key={booking.id}>
+                      <Link
+                        href={`/admin/reservas/${booking.id}`}
+                        className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-3 hover:bg-sand-50"
+                      >
+                        <span>
+                          <span className="font-mono font-medium text-ink">{booking.booking_code}</span>
+                          <span className="text-stone-600"> · {booking.user_name}</span>
+                        </span>
+                        <span className="text-stone-500">
+                          {formatDate(booking.check_in)} – {formatDate(booking.check_out)}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            ) : (
+              <>
+                <p className="mb-4 text-sm text-stone-600">
+                  Las reservas pendientes o canceladas se conservan con el nombre del apartamento.
+                  También se borran sus fotos.
+                </p>
+                <DeleteButton
+                  action={deleteApartment}
+                  fields={{ id: apartment.id }}
+                  confirmMessage={`¿Borrar el apartamento "${apartment.name}"? No se puede deshacer.`}
+                  label="Borrar apartamento"
+                />
+              </>
+            )}
           </FormSection>
         </div>
       </Container>
