@@ -11,7 +11,9 @@
     "owners": "Propietarios",
     "menu": "Menú",
     "mainNavigation": "Navegación principal",
-    "request": "Solicitar reserva"
+    "request": "Solicitar reserva",
+    "myBooking": "Mi reserva",
+    "checkBooking": "Consultar mi reserva"
   },
   "LocaleSwitcher": {
     "label": "Cambiar idioma",
@@ -150,6 +152,7 @@
     "privacyRequired": "Para enviar la solicitud tienes que aceptar la política de privacidad."
   },
   "Home": {
+    "checkBooking": "¿Ya tienes una solicitud? Consulta tu reserva",
     "heroTitle": "Tu apartamento, por unos días o una temporada",
     "heroSubtitle": "Apartamentos amueblados en las mejores ciudades, para una escapada o una estancia larga. Elige tus fechas y te confirmamos la disponibilidad.",
     "citiesTitle": "Elige tu ciudad",

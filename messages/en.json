@@ -11,7 +11,9 @@
     "owners": "Owners",
     "menu": "Menu",
     "mainNavigation": "Main navigation",
-    "request": "Request a booking"
+    "request": "Request a booking",
+    "myBooking": "My booking",
+    "checkBooking": "Check my booking"
   },
   "LocaleSwitcher": {
     "label": "Change language",
@@ -150,6 +152,7 @@
     "privacyRequired": "To send the request you must accept the privacy policy."
   },
   "Home": {
+    "checkBooking": "Already sent a request? Check your booking",
     "heroTitle": "Your apartment, for a few days or a whole season",
     "heroSubtitle": "Furnished apartments in the best cities, for a short break or a long stay. Choose your dates and we will confirm availability.",
     "citiesTitle": "Choose your city",

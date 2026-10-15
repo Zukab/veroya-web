@@ -1,4 +1,4 @@
-import { ArrowRight, Moon } from "lucide-react";
+import { ArrowRight, Moon, TicketCheck } from "lucide-react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
@@ -77,13 +77,22 @@ export default async function HomePage() {
               maxGuests={maxGuests}
             />
           </div>
-          <Link
-            href="/ciudades"
-            className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-white/85 hover:text-white"
-          >
-            {tSearch("seeAllCities")}
-            <ArrowRight aria-hidden="true" className="size-4" />
-          </Link>
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+            <Link
+              href="/ciudades"
+              className="inline-flex items-center gap-1 text-sm font-medium text-white/85 hover:text-white"
+            >
+              {tSearch("seeAllCities")}
+              <ArrowRight aria-hidden="true" className="size-4" />
+            </Link>
+            <Link
+              href="/verificar"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-white/85 hover:text-white"
+            >
+              <TicketCheck aria-hidden="true" className="size-4" />
+              {t("checkBooking")}
+            </Link>
+          </div>
         </Container>
       </section>
 

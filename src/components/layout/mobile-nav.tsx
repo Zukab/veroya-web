@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import { Menu, TicketCheck, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { buttonClasses } from "@/components/ui/button";
@@ -45,6 +45,16 @@ export function MobileNav() {
           <li className="py-3">
             <Link href="/solicitud" onClick={close} className={buttonClasses({ className: "w-full" })}>
               {t("request")}
+            </Link>
+          </li>
+          <li className="pb-3">
+            <Link
+              href="/verificar"
+              onClick={close}
+              className={buttonClasses({ variant: "secondary", className: "w-full" })}
+            >
+              <TicketCheck aria-hidden className="size-4" />
+              {t("checkBooking")}
             </Link>
           </li>
         </ul>
