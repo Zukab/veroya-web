@@ -71,8 +71,11 @@ Pendiente de verificar:
   `src/lib/seo.ts` (`localeAlternates()` en cada página pública indexable).
 - Correo a una dirección real probado en producción (2026-10-15, solicitud `ENA-KNSI9`):
   llegó a la bandeja de entrada de Gmail desde `reservas@euronestapartamentos.com`, con el
-  enlace al dominio. Pendiente: borrar en Vercel `veroya-web.vercel.app` (sin sufijo), una
-  web antigua con la marca anterior.
+  enlace al dominio (la reserva de prueba se borró después).
+- Contacto del dominio verificado ante ICANN (`beerfx357@gmail.com`, de Sebastián), con
+  renovación automática y privacidad WHOIS activadas.
+- `veroya-web.vercel.app` (sin sufijo, proyecto antiguo con la marca anterior) se conserva
+  por decisión de Sebastián (2026-10-15): no borrarlo.
 
 ## Stack
 
