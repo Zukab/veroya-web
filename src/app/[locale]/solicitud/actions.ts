@@ -2,7 +2,7 @@
 
 import { after } from "next/server";
 import { PUBLIC_BOOKING_RATE_LIMIT, insertPublicBooking } from "@/lib/bookings/create-public";
-import { todayInSpain } from "@/lib/bookings/dates";
+import { todayInAgency } from "@/lib/bookings/dates";
 import { PUBLIC_BOOKING_TEXT_FIELDS, type PublicBookingState } from "@/lib/bookings/form-state";
 import { fieldErrorsFrom, generalRequestSchema, publicStayErrors } from "@/lib/bookings/schema";
 import { getCities } from "@/lib/data/catalog";
@@ -39,7 +39,7 @@ export async function createGeneralRequest(
   if (!city) return fail({ fieldErrors: { city: { key: "cityNotFound" } } });
 
   // Sin apartamento no hay estancia mínima ni capacidad que comprobar.
-  const stayErrors = publicStayErrors(input, { min_nights: 1, max_guests: 50 }, todayInSpain());
+  const stayErrors = publicStayErrors(input, { min_nights: 1, max_guests: 50 }, todayInAgency());
   if (Object.keys(stayErrors).length > 0) return fail({ fieldErrors: stayErrors });
 
   const allowed = await checkRateLimit({ ...PUBLIC_BOOKING_RATE_LIMIT, key: await clientIpKey() });

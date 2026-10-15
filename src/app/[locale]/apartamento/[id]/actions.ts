@@ -3,7 +3,7 @@
 import { after } from "next/server";
 import { isApartmentAvailable } from "@/lib/bookings/availability";
 import { PUBLIC_BOOKING_RATE_LIMIT, insertPublicBooking } from "@/lib/bookings/create-public";
-import { nightsBetween, todayInSpain } from "@/lib/bookings/dates";
+import { nightsBetween, todayInAgency } from "@/lib/bookings/dates";
 import {
   PUBLIC_BOOKING_TEXT_FIELDS,
   type PublicBookingState,
@@ -56,7 +56,7 @@ export async function createBookingRequest(
   }
   if (!apartment) return fail({ formError: "apartmentNotFound" });
 
-  const stayErrors = publicStayErrors(input, apartment, todayInSpain());
+  const stayErrors = publicStayErrors(input, apartment, todayInAgency());
   if (Object.keys(stayErrors).length > 0) return fail({ fieldErrors: stayErrors });
 
   const allowed = await checkRateLimit({ ...PUBLIC_BOOKING_RATE_LIMIT, key: await clientIpKey() });

@@ -9,7 +9,7 @@ import { Container } from "@/components/ui/container";
 import { paymentMethodLabels, paymentTermsLabels } from "@/lib/admin/booking-schema";
 import { formatDate, formatDateTime, formatEuros, toCents } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/auth/admin";
-import { todayInSpain } from "@/lib/bookings/dates";
+import { todayInAgency } from "@/lib/bookings/dates";
 import { verificationUrl } from "@/lib/site-url";
 import { deleteBooking, deletePayment } from "../actions";
 import { readApartmentOptions } from "../apartment-options";
@@ -204,7 +204,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
             <PaymentForm
               key={payments.length}
               bookingId={booking.id}
-              today={todayInSpain()}
+              today={todayInAgency()}
               pendingAmount={totalCents == null ? null : Math.max(0, totalCents - paidCents) / 100}
             />
           </FormSection>

@@ -3,7 +3,7 @@
 import { CalendarDays, MapPin, Search, Users } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState, useSyncExternalStore } from "react";
-import { addDays, todayInSpain } from "@/lib/bookings/dates";
+import { addDays, todayInAgency } from "@/lib/bookings/dates";
 import type { SearchParams } from "@/lib/search";
 
 const noSubscribe = () => () => {};
@@ -26,7 +26,7 @@ export function SearchForm({
   const t = useTranslations("Search");
   const locale = useLocale();
   // La fecha de hoy se calcula en el navegador: la portada se prerenderiza.
-  const today = useSyncExternalStore(noSubscribe, todayInSpain, () => undefined);
+  const today = useSyncExternalStore(noSubscribe, todayInAgency, () => undefined);
   const [checkIn, setCheckIn] = useState(defaults?.checkIn ?? "");
   const [checkOut, setCheckOut] = useState(defaults?.checkOut ?? "");
 

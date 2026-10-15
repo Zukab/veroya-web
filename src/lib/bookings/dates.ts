@@ -20,10 +20,15 @@ export function addDays(date: string, days: number) {
   return fromUtc(toUtc(date) + days * DAY_MS);
 }
 
-// Fecha de hoy en España (Europe/Madrid), que es la que cuenta para las reservas.
-export function todayInSpain(now = new Date()) {
+// Zona horaria de la agencia (el cliente trabaja desde Colombia): la usan el "hoy"
+// de las reservas, las horas del panel y la fecha de emisión del voucher y del
+// comprobante. Para cambiarla basta con tocar esta constante.
+export const AGENCY_TIME_ZONE = "America/Bogota";
+
+// Fecha de hoy en la zona horaria de la agencia ("YYYY-MM-DD").
+export function todayInAgency(now = new Date()) {
   return new Intl.DateTimeFormat("en-CA", {
-    timeZone: "Europe/Madrid",
+    timeZone: AGENCY_TIME_ZONE,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",

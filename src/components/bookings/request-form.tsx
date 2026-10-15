@@ -9,7 +9,7 @@ import { createGeneralRequest } from "@/app/[locale]/solicitud/actions";
 import { buttonClasses } from "@/components/ui/button";
 import { Field, FormAlert, inputClasses } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
-import { addDays, nightsBetween, todayInSpain } from "@/lib/bookings/dates";
+import { addDays, nightsBetween, todayInAgency } from "@/lib/bookings/dates";
 import type { PublicBookingState } from "@/lib/bookings/form-state";
 import { MAX_SEARCH_GUESTS, parseSearchParams } from "@/lib/search";
 import { PrivacyConsent } from "./privacy-consent";
@@ -48,7 +48,7 @@ function RequestFormInner({
   const format = useFormatter();
   const locale = useLocale();
   const searchParams = useSearchParams();
-  const today = todayInSpain();
+  const today = todayInAgency();
   const initial = parseSearchParams((name) => searchParams.get(name), today);
   const [state, formAction, pending] = useActionState(createGeneralRequest, initialState);
 

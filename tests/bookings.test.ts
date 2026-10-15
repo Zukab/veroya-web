@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { generateBookingCode, generateBookingPin, normalizeBookingCode } from "@/lib/bookings/codes";
-import { addDays, nightsBetween } from "@/lib/bookings/dates";
+import { addDays, nightsBetween, todayInAgency } from "@/lib/bookings/dates";
 import { generalRequestSchema, publicBookingSchema, publicStayErrors } from "@/lib/bookings/schema";
 
 const TODAY = "2026-10-13";
@@ -36,6 +36,12 @@ describe("localizador y PIN", () => {
 });
 
 describe("fechas", () => {
+  it("el día de hoy es el de Colombia (zona de la agencia)", () => {
+    // 22:47 del 14 de octubre en Bogotá = 03:47 del 15 en UTC (05:47 en España).
+    expect(todayInAgency(new Date("2026-10-15T03:47:00Z"))).toBe("2026-10-14");
+    expect(todayInAgency(new Date("2026-10-15T12:00:00Z"))).toBe("2026-10-15");
+  });
+
   it("cuenta noches y suma días, también cambiando de año", () => {
     expect(nightsBetween("2026-12-27", "2027-01-02")).toBe(6);
     expect(addDays("2026-12-31", 1)).toBe("2027-01-01");

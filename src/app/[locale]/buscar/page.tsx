@@ -10,7 +10,7 @@ import { Container } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Link } from "@/i18n/navigation";
 import { getBlockedApartmentIds } from "@/lib/bookings/availability";
-import { todayInSpain } from "@/lib/bookings/dates";
+import { todayInAgency } from "@/lib/bookings/dates";
 import { getAllApartments, getCities } from "@/lib/data/catalog";
 import { MAX_SEARCH_GUESTS, parseSearchParams, searchNights, searchQueryString } from "@/lib/search";
 
@@ -36,7 +36,7 @@ export default function SearchPage({ searchParams }: PageProps<"/[locale]/buscar
 async function SearchResults({ searchParams }: Pick<PageProps<"/[locale]/buscar">, "searchParams">) {
   const params = await searchParams;
   await connection();
-  const search = parseSearchParams((name) => params[name], todayInSpain());
+  const search = parseSearchParams((name) => params[name], todayInAgency());
   const nights = searchNights(search);
 
   const [t, format, cities, apartments] = await Promise.all([

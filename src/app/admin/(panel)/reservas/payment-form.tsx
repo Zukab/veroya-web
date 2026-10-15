@@ -10,7 +10,7 @@ import { idleState } from "@/lib/admin/form";
 import { addPayment } from "./actions";
 
 // Registrar un pago (importe, fecha y forma de pago). La fecha por defecto la
-// calcula el servidor (hoy en España) para no depender del reloj del navegador.
+// calcula el servidor (hoy en la zona de la agencia) para no depender del reloj del navegador.
 // pendingAmount: lo que falta por pagar; el botón «Pago completo» lo escribe en el importe.
 export function PaymentForm({
   bookingId,

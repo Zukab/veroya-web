@@ -1,4 +1,6 @@
-// Formatos del panel (siempre en español).
+import { AGENCY_TIME_ZONE } from "@/lib/bookings/dates";
+
+// Formatos del panel (siempre en español; horas en la zona de la agencia).
 
 const euros = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR" });
 const shortDate = new Intl.DateTimeFormat("es-ES", {
@@ -13,7 +15,7 @@ const dateTime = new Intl.DateTimeFormat("es-ES", {
   year: "numeric",
   hour: "2-digit",
   minute: "2-digit",
-  timeZone: "Europe/Madrid",
+  timeZone: AGENCY_TIME_ZONE,
 });
 
 export function formatEuros(value: number) {

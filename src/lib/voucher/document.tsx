@@ -1,5 +1,6 @@
 import { Circle, Document, Image, Link, Page, Path, StyleSheet, Svg, Text, View } from "@react-pdf/renderer";
 import { createTranslator } from "next-intl";
+import { AGENCY_TIME_ZONE } from "@/lib/bookings/dates";
 import type { ReactNode } from "react";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
@@ -274,7 +275,7 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
     day: "numeric",
     month: "short",
     year: "numeric",
-    timeZone: "Europe/Madrid",
+    timeZone: AGENCY_TIME_ZONE,
   }).format(data.issuedAt);
   const euros = new Intl.NumberFormat(intlLocale, { style: "currency", currency: "EUR" });
 

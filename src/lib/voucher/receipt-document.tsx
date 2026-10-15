@@ -1,5 +1,6 @@
 import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { createTranslator } from "next-intl";
+import { AGENCY_TIME_ZONE } from "@/lib/bookings/dates";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
 import type { VoucherData } from "./data";
@@ -91,7 +92,7 @@ export function ReceiptDocument({ data, siteHost }: { data: VoucherData; siteHos
     day: "numeric",
     month: "long",
     year: "numeric",
-    timeZone: "Europe/Madrid",
+    timeZone: AGENCY_TIME_ZONE,
   }).format(data.issuedAt);
   const euros = new Intl.NumberFormat(intlLocale, { style: "currency", currency: "EUR" });
 

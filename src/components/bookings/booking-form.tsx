@@ -9,7 +9,7 @@ import { buttonClasses } from "@/components/ui/button";
 import { Field, FormAlert, inputClasses } from "@/components/ui/form";
 import { Link } from "@/i18n/navigation";
 import { PrivacyConsent } from "./privacy-consent";
-import { addDays, nightsBetween, todayInSpain } from "@/lib/bookings/dates";
+import { addDays, nightsBetween, todayInAgency } from "@/lib/bookings/dates";
 import type { PublicBookingState } from "@/lib/bookings/form-state";
 import { priceFormat } from "@/lib/format";
 import { type SearchParams, parseSearchParams } from "@/lib/search";
@@ -29,7 +29,7 @@ const initialState: PublicBookingState = { status: "idle" };
 export function BookingWidget(props: Props) {
   const [formKey, setFormKey] = useState(0);
   const searchParams = useSearchParams();
-  const initial = parseSearchParams((name) => searchParams.get(name), todayInSpain());
+  const initial = parseSearchParams((name) => searchParams.get(name), todayInAgency());
   return (
     <BookingForm key={formKey} {...props} initial={initial} onReset={() => setFormKey((key) => key + 1)} />
   );

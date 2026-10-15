@@ -316,6 +316,14 @@ bloquear reservas por cruce de fechas.
 8. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
    VALIDEZ" y datos `@example.com`.
 
+## Zona horaria
+
+- La agencia trabaja en **hora de Colombia** (`AGENCY_TIME_ZONE = "America/Bogota"` en
+  `src/lib/bookings/dates.ts`, decisión del 2026-10-14): el "hoy" de las reservas
+  (`todayInAgency()`), las horas del panel y la fecha de emisión del voucher y del
+  comprobante. La página del QR muestra "Comprobado el…" con la hora del dispositivo.
+- Las fechas de estancia son días sin hora (`YYYY-MM-DD`) y no dependen de la zona.
+
 ## Idiomas
 
 - Español sin prefijo (`/ciudades`) e inglés con prefijo (`/en/ciudades`). Las rutas en
