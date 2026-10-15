@@ -2,10 +2,15 @@ import { CalendarRange, Headset, House, Wallet } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ContentPage } from "@/components/content/content-page";
+import { localeAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("LongStaysPage");
-  return { title: t("title"), description: t("intro") };
+  return {
+    title: t("title"),
+    description: t("intro"),
+    alternates: await localeAlternates("/estancias-largas"),
+  };
 }
 
 export default async function LongStaysPage() {

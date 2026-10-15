@@ -5,6 +5,7 @@ import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { WhatsAppFloatingButton } from "@/components/layout/whatsapp-button";
 import { routing } from "@/i18n/routing";
+import { siteUrl } from "@/lib/site-url";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -16,6 +17,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Metadata");
 
   return {
+    // Base de las URL absolutas de canonical, hreflang y Open Graph.
+    metadataBase: new URL(siteUrl()),
     title: {
       default: t("title"),
       template: `%s · ${t("title")}`,

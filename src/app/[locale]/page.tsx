@@ -1,4 +1,5 @@
 import { ArrowRight, Moon } from "lucide-react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { ApartmentGrid } from "@/components/apartments/apartment-grid";
@@ -12,8 +13,13 @@ import { Link } from "@/i18n/navigation";
 import { getAllApartments, getCities, getFeaturedApartments } from "@/lib/data/catalog";
 import { getAgencySettings } from "@/lib/data/settings";
 import { MAX_SEARCH_GUESTS } from "@/lib/search";
+import { localeAlternates } from "@/lib/seo";
 
 const HOME_CITIES_LIMIT = 4;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { alternates: await localeAlternates("/") };
+}
 
 export default async function HomePage() {
   const [t, tSearch] = await Promise.all([getTranslations("Home"), getTranslations("Search")]);

@@ -3,10 +3,15 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ContentPage } from "@/components/content/content-page";
 import { getAgencySettings, whatsappUrl } from "@/lib/data/settings";
+import { localeAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("OwnersPage");
-  return { title: t("title"), description: t("intro") };
+  return {
+    title: t("title"),
+    description: t("intro"),
+    alternates: await localeAlternates("/propietarios"),
+  };
 }
 
 export default async function OwnersPage() {

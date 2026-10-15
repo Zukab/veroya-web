@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { PhotoPlaceholder } from "@/components/ui/photo-placeholder";
 import { Link } from "@/i18n/navigation";
 import { getApartmentsByCity, getCity, getCitySlugs } from "@/lib/data/catalog";
+import { localeAlternates } from "@/lib/seo";
 
 // Se prerenderizan las ciudades que existen al compilar; las nuevas se generan
 // en la primera visita. Con Cache Components hace falta al menos un valor.
@@ -31,6 +32,7 @@ export async function generateMetadata({
   return {
     title: city.name,
     description: t("metaDescription", { city: city.name }),
+    alternates: await localeAlternates(`/ciudades/${city.slug}`),
   };
 }
 

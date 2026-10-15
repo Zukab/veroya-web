@@ -33,6 +33,7 @@ import { getApartment, getApartmentIds, getApartmentsByCity } from "@/lib/data/c
 import { getAgencySettings, houseRulesList, whatsappUrl } from "@/lib/data/settings";
 import { LONG_STAY_MIN_NIGHTS, priceFormat } from "@/lib/format";
 import { googleMapsUrl } from "@/lib/maps";
+import { localeAlternates } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
 const SIMILAR_LIMIT = 3;
@@ -63,6 +64,7 @@ export async function generateMetadata({
       price: format.number(apartment.price, priceFormat),
     }),
     openGraph: cover ? { images: [cover] } : undefined,
+    alternates: await localeAlternates(`/apartamento/${apartment.id}`),
   };
 }
 

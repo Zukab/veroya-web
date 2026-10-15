@@ -5,10 +5,11 @@ import { RequestForm } from "@/components/bookings/request-form";
 import { Container } from "@/components/ui/container";
 import { getCities } from "@/lib/data/catalog";
 import { getAgencySettings, whatsappUrl } from "@/lib/data/settings";
+import { localeAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("RequestForm");
-  return { title: t("metaTitle") };
+  return { title: t("metaTitle"), alternates: await localeAlternates("/solicitud") };
 }
 
 // Solicitud general de reserva, sin elegir apartamento.

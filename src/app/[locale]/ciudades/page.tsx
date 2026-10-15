@@ -5,10 +5,15 @@ import { Container } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getCities } from "@/lib/data/catalog";
+import { localeAlternates } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Cities");
-  return { title: t("title"), description: t("subtitle") };
+  return {
+    title: t("title"),
+    description: t("subtitle"),
+    alternates: await localeAlternates("/ciudades"),
+  };
 }
 
 export default async function CitiesPage() {
