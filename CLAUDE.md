@@ -37,8 +37,6 @@ ciudades y apartamentos con fotos, y reservas con pagos.
 "Reservas y voucher". Dirección, camas y comodidades nuevas en los apartamentos, ajustes de
 la agencia (`/admin/ajustes`), página pública de verificación, voucher en PDF y correo de
 confirmación. Pendiente:
-- Crear la cuenta de Resend y poner `RESEND_API_KEY` y `EMAIL_FROM` en `.env.local` y en
-  Vercel. Hasta entonces el panel avisa de que el correo no está configurado.
 - Probar con la sesión de Sebastián las pantallas del panel de este bloque: formulario de
   apartamentos (dirección y camas), `/admin/ajustes`, descarga del voucher y envío del
   correo. El PDF, el QR, el correo y la verificación se probaron en local sin sesión.
@@ -55,25 +53,24 @@ Pendiente de verificar:
 - Protección contra contraseñas filtradas de Supabase Auth: desactivada (aviso de
   `db advisors`); probablemente no disponible en el plan gratuito. Activarla si lo está.
 
-**Pendiente para el final (depende del dominio `euronestapartamentos.com`):**
-Decisión (2026-10-14): se trabaja en `https://veroya-web-6h67.vercel.app` hasta que el
-cliente pague; entonces se compra el dominio. Mientras tanto los correos automáticos solo
-llegan a `veroyaproyecto@gmail.com` (Resend no permite verificar `vercel.app`): el equipo
-descarga el voucher en el panel y lo envía por WhatsApp. `veroya-web.vercel.app` (sin
-sufijo) es una web antigua con la marca anterior: pendiente de borrar en Vercel.
-1. Comprar el dominio. Decisión (2026-10-15): el cliente ya pagó; se compra en
-   **Spaceship** con la cuenta `veroyaproyecto@gmail.com` (2,90 $ el primer año con el
-   código `COMPROS`, unos 10 $/año después), con renovación automática. Los DNS se
-   gestionan en Spaceship (no en Vercel), para no atar el dominio a Vercel.
-2. Conectarlo a Vercel y poner `SITE_URL` con el dominio (hasta entonces, la dirección de
-   Vercel).
-3. Verificarlo en Resend (registros DNS) y cambiar `EMAIL_FROM` a una dirección del dominio.
-4. Probar el envío de correos a huéspedes reales (antes, Resend solo envía a la dirección
-   de la cuenta).
-5. Revisar que los QR de los vouchers apunten al dominio definitivo. Los vouchers enviados
-   antes llevan la dirección de Vercel: mantenerla activa o redirigirla al dominio.
-6. Añadir `metadataBase`, `canonical` y `hreflang` (es/en), que Next solo genera con la
-   URL definitiva.
+**Dominio `euronestapartamentos.com`: conectado (2026-10-15).**
+- Comprado en **Spaceship** (cuenta `veroyaproyecto@gmail.com`, 2,90 $ el primer año con
+  el código `COMPROS`; renueva por unos 10 $/año, caduca el 2027-10-15: tener activada la
+  renovación automática). Los DNS se gestionan en Spaceship (no en Vercel): `A @` y
+  `CNAME www` de Vercel, y DKIM (`resend._domainkey`), `send`, `rsend` y `_dmarc` de
+  Resend. Sin MX: el dominio no recibe correo (las respuestas van al `reply_to` de la
+  agencia).
+- Vercel: dominio principal sin `www` (`www` redirige con 308). `SITE_URL` y `EMAIL_FROM`
+  (`Euronest Apartamentos <reservas@euronestapartamentos.com>`) solo en **Production**;
+  Preview, Development y `.env.local` siguen con la dirección de pruebas de Resend, que solo
+  envía a `veroyaproyecto@gmail.com` (la base de datos es la real).
+- Resend: dominio en la región São Paulo (`sa-east-1`), sin seguimiento de aperturas ni
+  clics. La `RESEND_API_KEY` solo permite enviar (no gestiona dominios).
+- `vercel.json` redirige `veroya-web-6h67.vercel.app` al dominio (los QR de vouchers
+  antiguos siguen funcionando). `metadataBase`, `canonical` y `hreflang` en
+  `src/lib/seo.ts` (`localeAlternates()` en cada página pública indexable).
+- Pendiente: probar un correo a un huésped real ya en producción. `veroya-web.vercel.app`
+  (sin sufijo) es una web antigua con la marca anterior: pendiente de borrar en Vercel.
 
 ## Stack
 
@@ -116,8 +113,8 @@ Particularidades de Next.js 16 (lee `AGENTS.md` y la documentación en
   `veroyaproyecto@gmail.com`. Registro público de Auth desactivado.
 - Las funciones de Vercel corren en **`pdx1`** (Oregón), la misma zona que Supabase, fijado
   en `vercel.json`. Si Supabase cambia de región, cambia también `vercel.json`.
-- Dominio: `euronestapartamentos.com`, registrado en Spaceship (ver "Pendiente para el
-  final"). Hasta conectarlo se usa la dirección de prueba de Vercel.
+- Dominio: `https://euronestapartamentos.com`, registrado en Spaceship y conectado a
+  Vercel y a Resend (ver "Dominio" en "Estado del proyecto").
 - Sebastián administra todas las cuentas. Nunca escribas claves, contraseñas ni tokens en el
   código, en commits ni en archivos versionados; todo va en `.env.local`.
 
