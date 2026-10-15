@@ -72,11 +72,11 @@ Pendiente de verificar:
 - Correo a una dirección real probado en producción (2026-10-15, solicitud `ENA-KNSI9`):
   llegó a la bandeja de entrada de Gmail desde `reservas@euronestapartamentos.com`, con el
   enlace al dominio (la reserva de prueba se borró después).
-- Contacto del dominio verificado ante ICANN (`beerfx357@gmail.com`, de Sebastián), con
-  renovación automática y privacidad WHOIS activadas. Pendiente (2026-10-15): pasar el
-  titular a los datos del cliente con `veroyaproyecto@gmail.com` (falta que el cliente
-  envíe nombre, dirección y teléfono) y que Sebastián cambie el correo de acceso de la
-  cuenta de Spaceship a `veroyaproyecto@gmail.com`.
+- Cuenta de Spaceship con el correo `veroyaproyecto@gmail.com`. Titular y contactos
+  (administrativo, técnico y facturación) del dominio: el cliente, Miguel Antonio Canizalez
+  Cubillos (Cali, Colombia), con `veroyaproyecto@gmail.com`, desde el 2026-10-15; es el
+  contacto predeterminado de la libreta de direcciones. Renovación automática y privacidad
+  WHOIS activadas. El contacto anterior (Sebastián) queda en la libreta, sin usar.
 - **Sin tarjeta en Spaceship** (Sebastián quitó la suya): el cliente debe poner la suya
   antes del 2027-10-15 o la renovación automática fallará.
 - Sebastián mantiene la web: Vercel y GitHub siguen en sus cuentas personales.
