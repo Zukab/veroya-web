@@ -87,7 +87,9 @@ Spaceship (cuenta `veroyaproyecto@gmail.com`) antes del 2027-10-15.
 **Entrega al cliente (2026-10-15):** marca de agua comprobada en producción: un voucher de
 una reserva real sale sin ella; solo la llevan las reservas `@example.com` y lo generado en
 desarrollo. Todo el catálogo sigue siendo de ejemplo (8 apartamentos `ejemplo-...` con
-valoraciones inventadas y 8 reservas de prueba, 5 confirmadas con pagos). El cliente debe
+valoraciones inventadas). Las 8 reservas de prueba se borraron el 2026-10-15; queda
+`ENA-G9GI5` (confirmada, con pago, en un apartamento de ejemplo), pendiente de que Sebastián
+confirme si también es de prueba. El cliente debe
 crear apartamentos nuevos (no editar los de ejemplo: el id `ejemplo-...` no cambia y sale
 en la URL) y después borrar los de ejemplo. Faltan en `/admin/ajustes` los datos legales
 del titular (nombre, NIF/NIT y dirección).
@@ -228,7 +230,9 @@ Panel de administración (`/admin`):
   una ciudad con apartamentos está bloqueado en la base de datos (error `23503`): el panel
   debe mostrar un mensaje claro. Borrar un apartamento con reservas `Confirmada` también
   falla (error `23514`, regla `bookings_confirmed_requires_apartment`): el panel debe
-  explicar que hay que cancelar o mover antes esas reservas.
+  explicar que hay que cancelar o mover antes esas reservas. La sección «Borrar apartamento»
+  de la ficha lista esas reservas confirmadas con enlace a cada una y no muestra el botón
+  mientras existan (el mensaje de error queda por si cambian entre medias).
 - `/admin/reservas`: listado (más recientes primero), filtro por estado, botón "Crear
   reserva", cambiar estado (`Pendiente`, `Confirmada`, `Cancelada`), registrar pagos y
   borrar. Ver "Reservas y voucher".
