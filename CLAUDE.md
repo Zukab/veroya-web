@@ -78,8 +78,19 @@ Pendiente de verificar:
   contacto predeterminado de la libreta de direcciones. Renovación automática y privacidad
   WHOIS activadas. El contacto anterior (Sebastián) queda en la libreta, sin usar.
 - **Sin tarjeta en Spaceship** (Sebastián quitó la suya): el cliente debe poner la suya
-  antes del 2027-10-15 o la renovación automática fallará.
+  antes del 2027-10-15 o la renovación automática fallará. Va en el manual de usuario.
 - Sebastián mantiene la web: Vercel y GitHub siguen en sus cuentas personales.
+
+**Manual de usuario (pendiente, más adelante):** incluir que el cliente ponga su tarjeta en
+Spaceship (cuenta `veroyaproyecto@gmail.com`) antes del 2027-10-15.
+
+**Entrega al cliente (2026-10-15):** marca de agua comprobada en producción: un voucher de
+una reserva real sale sin ella; solo la llevan las reservas `@example.com` y lo generado en
+desarrollo. Todo el catálogo sigue siendo de ejemplo (8 apartamentos `ejemplo-...` con
+valoraciones inventadas y 8 reservas de prueba, 5 confirmadas con pagos). El cliente debe
+crear apartamentos nuevos (no editar los de ejemplo: el id `ejemplo-...` no cambia y sale
+en la URL) y después borrar los de ejemplo. Faltan en `/admin/ajustes` los datos legales
+del titular (nombre, NIF/NIT y dirección).
 - `veroya-web.vercel.app` (sin sufijo, proyecto antiguo con la marca anterior) se conserva
   por decisión de Sebastián (2026-10-15): no borrarlo.
 
