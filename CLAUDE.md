@@ -73,7 +73,13 @@ Pendiente de verificar:
   llegó a la bandeja de entrada de Gmail desde `reservas@euronestapartamentos.com`, con el
   enlace al dominio (la reserva de prueba se borró después).
 - Contacto del dominio verificado ante ICANN (`beerfx357@gmail.com`, de Sebastián), con
-  renovación automática y privacidad WHOIS activadas.
+  renovación automática y privacidad WHOIS activadas. Pendiente (2026-10-15): pasar el
+  titular a los datos del cliente con `veroyaproyecto@gmail.com` (falta que el cliente
+  envíe nombre, dirección y teléfono) y que Sebastián cambie el correo de acceso de la
+  cuenta de Spaceship a `veroyaproyecto@gmail.com`.
+- **Sin tarjeta en Spaceship** (Sebastián quitó la suya): el cliente debe poner la suya
+  antes del 2027-10-15 o la renovación automática fallará.
+- Sebastián mantiene la web: Vercel y GitHub siguen en sus cuentas personales.
 - `veroya-web.vercel.app` (sin sufijo, proyecto antiguo con la marca anterior) se conserva
   por decisión de Sebastián (2026-10-15): no borrarlo.
 
@@ -178,7 +184,9 @@ Parte pública:
 - `/verificar` (consulta con localizador y PIN, 10 intentos cada 15 minutos por IP) y
   `/verificar/[token]` (destino del QR; ver "Reservas y voucher", punto 5). Sin caché,
   `noindex`, imprimible. Lecturas en `src/lib/bookings/verification.ts` con la clave secreta,
-  solo de los campos que muestra. Enlazada desde el pie y desde el mensaje de solicitud enviada.
+  solo de los campos que muestra. Enlazada desde el pie, el mensaje de solicitud enviada, el
+  botón «Mi reserva» de la cabecera (en móvil solo el icono; texto en el menú) y un enlace
+  bajo el buscador del inicio (pedido por el cliente el 2026-10-15). Sigue pidiendo el PIN.
 
 Formulario de reserva: nombre, correo, teléfono, país, número de huéspedes, fecha de entrada,
 fecha de salida y mensaje opcional. Al guardar, genera un localizador `ENA-XXXXX`
