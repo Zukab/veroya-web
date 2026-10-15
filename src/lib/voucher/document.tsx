@@ -389,7 +389,7 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
           <View style={s.facts}>
             <Fact first>
               <Text style={s.label}>{t("holder")}</Text>
-              <Text style={s.factValue}>{data.guest.voucherName}</Text>
+              <Text style={s.factValue}>{data.guest.fullName}</Text>
               <Text style={s.note}>{t("holderNote")}</Text>
             </Fact>
 

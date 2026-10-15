@@ -101,7 +101,7 @@ export function ReceiptDocument({ data, siteHost }: { data: VoucherData; siteHos
 
   const cells: [string, string][] = [
     [t("code"), data.code],
-    [t("holder"), data.guest.voucherName],
+    [t("holder"), data.guest.fullName],
     [t("accommodation"), apartment.name],
     [t("destination"), destination],
     [t("checkIn"), day(data.checkIn)],

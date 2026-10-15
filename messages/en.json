@@ -254,7 +254,7 @@
     "noteConfirmed": "This booking is valid.",
     "notePending": "Our team has not confirmed this booking yet.",
     "noteCancelled": "This booking has been cancelled and is not valid.",
-    "checkedAt": "Checked on {date}",
+    "checkedAt": "Checked on",
     "apartment": "Accommodation",
     "checkIn": "Check-in",
     "checkOut": "Check-out",
@@ -274,7 +274,7 @@
     "methods": {
       "efectivo": "Cash",
       "transferencia": "Bank transfer",
-      "tarjeta": "Card",
+      "tarjeta": "Credit/debit card",
       "bizum": "Bizum",
       "otro": "Other"
     },
@@ -459,7 +459,7 @@
     "methods": {
       "efectivo": "Cash",
       "transferencia": "Bank transfer",
-      "tarjeta": "Card",
+      "tarjeta": "Credit/debit card",
       "bizum": "Bizum",
       "otro": "Other"
     }

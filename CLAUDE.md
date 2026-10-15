@@ -265,7 +265,8 @@ bloquear reservas por cruce de fechas.
    - Apartamento: nombre, dirección y enlace a Google Maps; habitaciones, baños, m², camas
      y comodidades.
    - Entrada y salida con sus horas, noches y número de huéspedes.
-   - Titular abreviado: nombre e inicial del apellido ("Laura Martín G.").
+   - Titular con el **nombre completo** (pedido por el cliente el 2026-10-14; antes iba
+     abreviado).
    - Pago: total y "Pagado", "Pendiente de pago" o "Pago al llegar".
    - QR a la página de verificación, información de la estancia (horarios, normas y
      cancelación) y contacto de la agencia, sacados de los ajustes de la agencia.
@@ -275,7 +276,7 @@ bloquear reservas por cruce de fechas.
      solo tras `requireAdmin()`), `document.tsx` (`@react-pdf/renderer`, textos en
      `Voucher` de los mensajes, idioma de la reserva), `render.ts` (QR con `qrcode` y
      fuentes TTF de `fonts/`, incluidas en el despliegue con `outputFileTracingIncludes`
-     de `next.config.ts`) y `guest-name.ts` (nombre abreviado).
+     de `next.config.ts`) y `guest-name.ts` (nombre de pila para los correos).
    - Descarga: `/admin/reservas/[id]/voucher` (solo reservas confirmadas).
    - Marca de agua en desarrollo (`NODE_ENV` distinto de `production`) y en reservas con
      correo `@example.com`.
@@ -283,11 +284,13 @@ bloquear reservas por cruce de fechas.
      compatibilidad de `@react-pdf/renderer` con Workers.
 5. **Página de verificación** (cambio pedido por el cliente el 2026-10-14, inspirado en su
    referencia): "Verificación oficial" con foto y dirección del apartamento, estado actual,
-   localizador, fechas con horas, huéspedes, titular **abreviado**, valor pagado con sus
+   localizador, fechas con horas, huéspedes, titular (nombre completo), valor pagado con sus
    pagos (fecha y forma), total y pendiente, bienvenida, recomendaciones de llegada y
    descargas del **voucher** y del **comprobante de pago** en PDF (`/verificar/[token]/voucher`
-   y `/comprobante`, con el token como acceso). No muestra correo, teléfono, PIN ni nombre
-   completo. Se accede con el enlace del QR o con localizador y PIN.
+   y `/comprobante`, con el token como acceso). No muestra correo, teléfono ni PIN.
+   "Comprobado el…" se escribe en el navegador con la hora del dispositivo
+   (`LocalTime`): el cliente y muchos huéspedes están en Colombia, no en España.
+   Se accede con el enlace del QR o con localizador y PIN.
    - Comprobante de pago (`src/lib/voucher/receipt-document.tsx`): informativo, **no es una
      factura** (una factura legal exige requisitos fiscales de cada país). También se descarga
      en el panel (`/admin/reservas/[id]/comprobante`).

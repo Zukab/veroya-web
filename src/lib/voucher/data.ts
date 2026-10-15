@@ -6,7 +6,6 @@ import { type AgencySettings, getAgencySettings } from "@/lib/data/settings";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verificationUrl } from "@/lib/site-url";
 import type { Database } from "@/types/database";
-import { abbreviateGuestName } from "./guest-name";
 
 // Datos del voucher, del comprobante de pago y del correo de confirmación de una
 // reserva. Lee con la clave secreta: quien llame debe haber comprobado antes el
@@ -22,7 +21,7 @@ export type VoucherData = {
   issuedAt: Date;
   // Marca de agua "DOCUMENTO DE PRUEBA": en desarrollo y con correos @example.com.
   test: boolean;
-  guest: { fullName: string; voucherName: string; email: string; count: number };
+  guest: { fullName: string; email: string; count: number };
   checkIn: string;
   checkOut: string;
   nights: number;
@@ -77,8 +76,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     issuedAt: new Date(),
     test: process.env.NODE_ENV !== "production" || booking.user_email.toLowerCase().endsWith("@example.com"),
     guest: {
-      fullName: booking.user_name,
-      voucherName: abbreviateGuestName(booking.user_name),
+      fullName: booking.user_name.trim(),
       email: booking.user_email,
       count: booking.guests,
     },

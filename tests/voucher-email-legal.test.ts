@@ -2,17 +2,9 @@ import { describe, expect, it } from "vitest";
 import { escapeHtml, renderEmail } from "@/lib/email/layout";
 import { cookiesPolicy, legalNotice, privacyPolicy } from "@/lib/legal/content";
 import { fullAddress } from "@/lib/voucher/address";
-import { abbreviateGuestName, firstName } from "@/lib/voucher/guest-name";
+import { firstName } from "@/lib/voucher/guest-name";
 
-describe("nombre del titular en el voucher", () => {
-  it("abrevia el nombre para no publicarlo completo", () => {
-    expect(abbreviateGuestName("Laura Martín Gómez")).toBe("Laura Martín G.");
-    expect(abbreviateGuestName("María José García López")).toBe("María José G. L.");
-    expect(abbreviateGuestName("Juan de la Cruz")).toBe("Juan C.");
-    expect(abbreviateGuestName("John Smith")).toBe("John S.");
-    expect(abbreviateGuestName("  Ana  ")).toBe("Ana");
-  });
-
+describe("nombre del huésped", () => {
   it("saca el nombre de pila para el saludo del correo", () => {
     expect(firstName("Laura Martín Gómez")).toBe("Laura");
   });

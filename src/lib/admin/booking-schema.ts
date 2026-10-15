@@ -27,7 +27,7 @@ export const paymentTermsLabels: Record<Enums["payment_terms"], string> = {
 export const paymentMethodLabels: Record<Enums["payment_method"], string> = {
   efectivo: "Efectivo",
   transferencia: "Transferencia",
-  tarjeta: "Tarjeta",
+  tarjeta: "Tarjeta de crédito/débito",
   bizum: "Bizum",
   otro: "Otra",
 };

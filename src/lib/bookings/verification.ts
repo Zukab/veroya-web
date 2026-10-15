@@ -2,14 +2,12 @@ import "server-only";
 import { paymentSummary } from "@/lib/bookings/payment-summary";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { fullAddress } from "@/lib/voucher/address";
-import { abbreviateGuestName } from "@/lib/voucher/guest-name";
 
 // Lecturas de la página pública de verificación. bookings no tiene acceso
 // público, así que se lee con la clave secreta y solo se devuelven los campos que
-// la página muestra: estado, fechas, apartamento, titular abreviado y resumen de
-// compra (total y pagos con fecha y forma de pago). Ni correo, ni teléfono, ni PIN,
-// ni nombre completo. Solo se llega con el token del QR (128 bits) o con
-// localizador y PIN.
+// la página muestra: estado, fechas, apartamento, titular y resumen de compra
+// (total y pagos con fecha y forma de pago). Ni correo, ni teléfono, ni PIN. Solo
+// se llega con el token del QR (128 bits) o con localizador y PIN.
 
 const TOKEN = /^[0-9a-f]{32}$/;
 
@@ -34,8 +32,8 @@ export async function getVerifiedBooking(token: string) {
   const { booking_payments: payments, total_amount, payment_terms, user_name, apartment, ...booking } = data;
   return {
     ...booking,
-    // Solo el nombre abreviado, como en el voucher: el completo no sale del servidor.
-    holder: abbreviateGuestName(user_name),
+    // Nombre completo del titular, como en el voucher (pedido por el cliente).
+    holder: user_name.trim(),
     cover: apartment?.images[0] ?? null,
     address: apartment?.address
       ? fullAddress({

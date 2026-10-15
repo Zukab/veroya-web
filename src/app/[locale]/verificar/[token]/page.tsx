@@ -5,6 +5,7 @@ import { connection } from "next/server";
 import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { type ReactNode, Suspense } from "react";
 import { CopyButton } from "@/components/bookings/copy-button";
+import { LocalTime } from "@/components/bookings/local-time";
 import { PrintButton } from "@/components/bookings/print-button";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
@@ -95,6 +96,8 @@ async function VerifyContent({ params }: Pick<PageProps<"/[locale]/verificar/[to
   const date = (value: string) => format.dateTime(new Date(`${value}T00:00:00Z`), { dateStyle: "long", timeZone: "UTC" });
   const euros = (value: number) => format.number(value, { style: "currency", currency: "EUR" });
   const nights = nightsBetween(booking.check_in, booking.check_out);
+  // Momento de la consulta; se muestra en la hora del dispositivo de quien mira.
+  const checkedAt = new Date().toISOString();
   const apartment = [booking.apartment_name, booking.city_name].filter(Boolean).join(" · ");
   const base = `${locale === "en" ? "/en" : ""}/verificar/${token}`;
   const methods = [...new Set(booking.payments.map((payment) => t(`methods.${payment.method}`)))].join(", ");
@@ -137,9 +140,7 @@ async function VerifyContent({ params }: Pick<PageProps<"/[locale]/verificar/[to
               <p className="font-serif text-lg font-semibold leading-tight">{t(style.title)}</p>
               <p className="text-xs opacity-80">
                 {t(style.note)}{" "}
-                {t("checkedAt", {
-                  date: format.dateTime(new Date(), { dateStyle: "medium", timeStyle: "short", timeZone: "Europe/Madrid" }),
-                })}
+                <LocalTime iso={checkedAt} locale={locale} label={t("checkedAt")} />
               </p>
             </div>
           </div>

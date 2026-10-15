@@ -254,7 +254,7 @@
     "noteConfirmed": "Esta reserva es válida.",
     "notePending": "El equipo todavía no ha confirmado esta reserva.",
     "noteCancelled": "Esta reserva está cancelada y no es válida.",
-    "checkedAt": "Comprobado el {date}",
+    "checkedAt": "Comprobado el",
     "apartment": "Alojamiento",
     "checkIn": "Entrada",
     "checkOut": "Salida",
@@ -274,7 +274,7 @@
     "methods": {
       "efectivo": "Efectivo",
       "transferencia": "Transferencia",
-      "tarjeta": "Tarjeta",
+      "tarjeta": "Tarjeta de crédito/débito",
       "bizum": "Bizum",
       "otro": "Otro"
     },
@@ -459,7 +459,7 @@
     "methods": {
       "efectivo": "Efectivo",
       "transferencia": "Transferencia",
-      "tarjeta": "Tarjeta",
+      "tarjeta": "Tarjeta de crédito/débito",
       "bizum": "Bizum",
       "otro": "Otro"
     }
