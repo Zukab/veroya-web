@@ -147,7 +147,6 @@
     "apartmentNotFound": "Este apartamento ya no está disponible.",
     "rateLimited": "Has enviado demasiadas solicitudes. Inténtalo de nuevo más tarde.",
     "unexpected": "No hemos podido enviar la solicitud. Inténtalo de nuevo en unos minutos.",
-    "unavailable": "Este apartamento ya está reservado en esas fechas. Prueba con otras fechas o envíanos una solicitud.",
     "cityNotFound": "Elige una ciudad de la lista.",
     "privacyRequired": "Para enviar la solicitud tienes que aceptar la política de privacidad."
   },

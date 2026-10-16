@@ -5,7 +5,6 @@ import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
 import { adminBookingSchema, paymentSchema, spanishFieldErrors } from "@/lib/admin/booking-schema";
 import { type AdminFormState, adminFieldErrors, errorState } from "@/lib/admin/form";
-import { formatDate } from "@/lib/admin/format";
 import { requireAdmin } from "@/lib/auth/admin";
 import {
   MAX_CODE_ATTEMPTS,
@@ -42,37 +41,8 @@ function bookingFromForm(formData: FormData) {
   });
 }
 
-// Mensaje claro cuando la base de datos rechaza el cruce de fechas (23P01).
-async function overlapMessage(
-  supabase: Client,
-  booking: { apartment_id: string | null; check_in: string; check_out: string },
-  excludeId?: string,
-) {
-  let query = supabase
-    .from("bookings")
-    .select("booking_code, check_in, check_out")
-    .eq("status", "Confirmada")
-    .eq("apartment_id", booking.apartment_id ?? "")
-    .lt("check_in", booking.check_out)
-    .gt("check_out", booking.check_in)
-    .limit(1);
-  if (excludeId) query = query.neq("id", excludeId);
-  const { data } = await query;
-  const other = data?.[0];
-
-  return other
-    ? `No se puede confirmar: las fechas se cruzan con la reserva confirmada ${other.booking_code} (${formatDate(other.check_in)} – ${formatDate(other.check_out)}) del mismo apartamento.`
-    : "No se puede confirmar: las fechas se cruzan con otra reserva confirmada del mismo apartamento.";
-}
-
 // Errores de la base de datos que el panel explica.
-async function databaseErrorState(
-  supabase: Client,
-  error: { code?: string; message?: string },
-  booking: { apartment_id: string | null; check_in: string; check_out: string },
-  excludeId?: string,
-) {
-  if (error.code === "23P01") return errorState(await overlapMessage(supabase, booking, excludeId));
+function databaseErrorState(error: { code?: string; message?: string }) {
   if (error.code === "23514" && error.message?.includes("bookings_confirmed_requires_apartment")) {
     return errorState(CHECK_FIELDS_ERROR, { apartment_id: "Una reserva confirmada necesita un apartamento." });
   }
@@ -146,7 +116,7 @@ export async function createBooking(_previous: AdminFormState, formData: FormDat
       }
       redirect(`/admin/reservas/${data.id}?creada=1${email}`);
     }
-    if (!isDuplicateBookingCode(error)) return databaseErrorState(supabase, error, booking);
+    if (!isDuplicateBookingCode(error)) return databaseErrorState(error);
   }
 
   console.error(`Panel: ${MAX_CODE_ATTEMPTS} localizadores repetidos seguidos`);
@@ -165,7 +135,7 @@ export async function updateBooking(_previous: AdminFormState, formData: FormDat
     .select("apartment_id, status, confirmation_email_sent_at")
     .eq("id", id)
     .maybeSingle();
-  if (readError) return databaseErrorState(supabase, readError, booking, id);
+  if (readError) return databaseErrorState(readError);
   if (!current) return errorState("La reserva ya no existe.");
 
   // Al cambiar de apartamento se copian su nombre y su ciudad; si no, se conservan
@@ -182,7 +152,7 @@ export async function updateBooking(_previous: AdminFormState, formData: FormDat
     .update({ ...booking, ...names })
     .eq("id", id)
     .select("id");
-  if (error) return databaseErrorState(supabase, error, booking, id);
+  if (error) return databaseErrorState(error);
   if (!updated?.length) return errorState("La reserva ya no existe.");
 
   // Al confirmarla por primera vez se envía el correo de confirmación con el

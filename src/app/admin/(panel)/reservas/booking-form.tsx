@@ -8,7 +8,7 @@ import { buttonClasses } from "@/components/ui/button";
 import { Field, inputClasses } from "@/components/ui/form";
 import { BOOKING_STATUSES, PAYMENT_TERMS, paymentTermsLabels } from "@/lib/admin/booking-schema";
 import { idleState } from "@/lib/admin/form";
-import { formatEuros } from "@/lib/admin/format";
+import { formatDate, formatEuros } from "@/lib/admin/format";
 import { addDays, nightsBetween } from "@/lib/bookings/dates";
 import type { Database } from "@/types/database";
 import { createBooking, updateBooking } from "./actions";
@@ -41,9 +41,26 @@ export type ApartmentOption = {
   max_guests: number;
 };
 
+export type ConfirmedStay = {
+  id: string;
+  booking_code: string;
+  apartment_id: string;
+  check_in: string;
+  check_out: string;
+};
+
 // Crear (sin booking) o editar una reserva desde el panel. Las reglas de noches
-// mínimas y huéspedes máximos solo se avisan: el equipo puede hacer excepciones.
-export function BookingForm({ booking, apartments }: { booking?: Booking; apartments: ApartmentOption[] }) {
+// mínimas y huéspedes máximos y el cruce con otras confirmadas solo se avisan:
+// el equipo puede hacer excepciones (y un apartamento puede tener varias unidades).
+export function BookingForm({
+  booking,
+  apartments,
+  confirmedStays,
+}: {
+  booking?: Booking;
+  apartments: ApartmentOption[];
+  confirmedStays: ConfirmedStay[];
+}) {
   const [state, formAction, pending] = useActionState(booking ? updateBooking : createBooking, idleState);
   const errors = state.fieldErrors ?? {};
 
@@ -56,7 +73,23 @@ export function BookingForm({ booking, apartments }: { booking?: Booking; apartm
   const apartment = apartments.find((item) => item.id === apartmentId);
   const nights = checkIn && checkOut && checkOut > checkIn ? nightsBetween(checkIn, checkOut) : 0;
   const suggested = apartment && nights > 0 ? apartment.price * nights : null;
+  // Fechas [entrada, salida): salir y entrar el mismo día no es un cruce.
+  const overlaps =
+    apartment && nights > 0
+      ? confirmedStays.filter(
+          (stay) =>
+            stay.apartment_id === apartment.id &&
+            stay.id !== booking?.id &&
+            stay.check_in < checkOut &&
+            stay.check_out > checkIn,
+        )
+      : [];
   const warnings = [
+    overlaps.length > 0
+      ? `Este apartamento ya tiene ${overlaps.length === 1 ? "una reserva confirmada" : `${overlaps.length} reservas confirmadas`} en esas fechas: ${overlaps
+          .map((stay) => `${stay.booking_code} (${formatDate(stay.check_in)} – ${formatDate(stay.check_out)})`)
+          .join(", ")}. Se puede guardar igual si tienes otra unidad libre.`
+      : null,
     apartment && nights > 0 && nights < apartment.min_nights
       ? `Este apartamento pide un mínimo de ${apartment.min_nights} noches (esta reserva tiene ${nights}).`
       : null,

@@ -147,7 +147,6 @@
     "apartmentNotFound": "This apartment is no longer available.",
     "rateLimited": "You've sent too many requests. Please try again later.",
     "unexpected": "We couldn't send your request. Please try again in a few minutes.",
-    "unavailable": "This apartment is already booked for those dates. Try other dates or send us a request.",
     "cityNotFound": "Choose a city from the list.",
     "privacyRequired": "To send the request you must accept the privacy policy."
   },

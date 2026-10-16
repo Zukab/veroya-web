@@ -12,7 +12,7 @@ import { requireAdmin } from "@/lib/auth/admin";
 import { todayInAgency } from "@/lib/bookings/dates";
 import { verificationUrl } from "@/lib/site-url";
 import { deleteBooking, deletePayment } from "../actions";
-import { readApartmentOptions } from "../apartment-options";
+import { readApartmentOptions, readConfirmedStays } from "../apartment-options";
 import { BookingForm } from "../booking-form";
 import { PaymentForm } from "../payment-form";
 import { SendVoucherButton } from "../send-voucher-button";
@@ -29,7 +29,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
   const [{ id }, { creada, correo }] = await Promise.all([params, searchParams]);
   if (!UUID.test(id)) notFound();
 
-  const [bookingResult, apartments] = await Promise.all([
+  const [bookingResult, apartments, confirmedStays] = await Promise.all([
     supabase
       .from("bookings")
       .select(
@@ -38,6 +38,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
       .eq("id", id)
       .maybeSingle(),
     readApartmentOptions(supabase),
+    readConfirmedStays(supabase),
   ]);
   if (bookingResult.error) throw new Error(`No se pudo leer la reserva: ${bookingResult.error.message}`);
   const booking = bookingResult.data;
@@ -89,7 +90,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
           </div>
         </dl>
 
-        <BookingForm booking={booking} apartments={apartments} />
+        <BookingForm booking={booking} apartments={apartments} confirmedStays={confirmedStays} />
 
         <div className="mt-10 space-y-6">
           <FormSection title="Voucher">

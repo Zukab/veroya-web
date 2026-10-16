@@ -84,8 +84,8 @@ export async function getApartmentsByCity(citySlug: string) {
   return data;
 }
 
-// Todos los apartamentos, para el buscador (que filtra por ciudad, huéspedes,
-// noches mínimas y disponibilidad).
+// Todos los apartamentos, para el buscador (que filtra por ciudad, huéspedes y
+// noches mínimas).
 export async function getAllApartments() {
   "use cache";
   cacheLife("hours");

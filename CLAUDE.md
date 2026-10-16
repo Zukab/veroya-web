@@ -175,8 +175,8 @@ Parte pública:
   `/admin/ajustes`), ciudades y apartamentos destacados (los 6 mejor valorados; los que no
   tienen valoraciones van al final)
 - `/buscar?ciudad=&entrada=&salida=&huespedes=`: resultados con capacidad suficiente y, si
-  hay fechas, libres (sin reserva Confirmada que se cruce, `src/lib/bookings/availability.ts`)
-  y con la estancia mínima cumplida. Parámetros en `src/lib/search.ts`; las tarjetas los
+  hay fechas, con la estancia mínima cumplida (las reservas no ocultan apartamentos, ver
+  "Reservas y voucher", punto 3). Parámetros en `src/lib/search.ts`; las tarjetas los
   conservan y el formulario del apartamento llega relleno.
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
 - `/apartamento/[id]` detalle con galería, camas, comodidades, dirección (con enlace a
@@ -241,10 +241,10 @@ Panel de administración (`/admin`):
     apartamento se copian su nombre y su ciudad.
   - En el panel, `min_nights` y `max_guests` **solo se avisan** (no bloquean): el equipo
     puede hacer excepciones y registrar reservas pasadas. El formulario público sí los
-    exige.
+    exige. El cruce con otra reserva confirmada del mismo apartamento también se avisa
+    (indica cuáles; `readConfirmedStays()`, las que salieron hace menos de un año).
   - Total: al crear, si se deja vacío se usa precio × noches; el panel propone ese cálculo.
-  - Errores explicados: cruce con otra confirmada (`23P01`, indica qué reserva) y
-    confirmada sin apartamento (`23514`).
+  - Error explicado: confirmada sin apartamento (`23514`).
   - Pagos: se registran (importe, fecha, forma, nota) o se borran; la ficha muestra total,
     pagado y pendiente.
 
@@ -269,8 +269,7 @@ distinto del de confirmación de reserva.
 
 ## Reservas y voucher
 
-Reglas aprobadas por el cliente (2026-10-13). Sustituyen a la regla anterior de no
-bloquear reservas por cruce de fechas.
+Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
 
 1. **Origen de las reservas:** el formulario de cada apartamento, la solicitud general
    (`/solicitud`) y el equipo del cliente desde el panel (botón "Crear reserva" en
@@ -279,13 +278,14 @@ bloquear reservas por cruce de fechas.
 2. **Pagos:** el administrador registra el pago en el panel (monto, fecha y forma de pago).
    El voucher dice "Total pagado" solo si hay un pago registrado; si no, dice "Pendiente de
    pago" o "Pago al llegar".
-3. **Disponibilidad:** no se pueden confirmar dos reservas en el mismo apartamento con
-   fechas que se crucen. Las solicitudes `Pendiente` sí pueden coincidir; el bloqueo se
-   aplica al pasar a `Confirmada`. Las fechas son intervalos [entrada, salida): si una
-   reserva sale el mismo día que entra otra, no se cruzan. Si el cliente tiene varios
-   apartamentos iguales, cada uno se registra como una unidad (un apartamento) distinta.
-   El formulario público no acepta solicitudes que se crucen con una reserva Confirmada
-   del mismo apartamento (error `unavailable`); el panel sí puede crearlas como Pendiente.
+3. **Disponibilidad sin bloqueo** (decisión del 2026-10-16): un apartamento puede tener
+   varias reservas confirmadas con fechas cruzadas (el cliente tiene varias unidades de
+   algunos y no quiso un límite por apartamento). El equipo organiza la disponibilidad al
+   confirmar; el buscador y el formulario público no tienen en cuenta las reservas. El panel
+   solo avisa del cruce con otras confirmadas del mismo apartamento. Las fechas son
+   intervalos [entrada, salida): si una reserva sale el mismo día que entra otra, no se
+   cruzan. Antes (2026-10-13 a 2026-10-16) se bloqueaba con la restricción
+   `bookings_no_overlap_confirmed`, quitada en `..._quitar_bloqueo_por_fechas`.
 4. **Voucher en PDF** solo con la marca Euronest Apartamentos. Diseño aprobado por el
    cliente: maqueta en `referencias/maqueta-voucher/` (fuera del repositorio). Una página A4:
    - Localizador, fecha de emisión y estado en la fecha de emisión.
@@ -387,8 +387,8 @@ bloquear reservas por cruce de fechas.
     `payment_terms` (enum `pendiente`/`al_llegar`), `total_amount` (numeric 10,2, euros;
     null = sin definir), `confirmed_at` (lo mantiene el trigger), `confirmation_email_sent_at`
     (solo lo escribe el servidor) y `updated_at`.
-  - Restricciones: una `Confirmada` exige `apartment_id`; no puede haber dos `Confirmada`
-    del mismo apartamento con fechas cruzadas (exclusión con `btree_gist`, error `23P01`).
+  - Restricción: una `Confirmada` exige `apartment_id`. Varias `Confirmada` del mismo
+    apartamento pueden cruzarse (ver "Reservas y voucher", punto 3).
 - `booking_payments`: `id`, `booking_id` (FK, on delete cascade), `amount` (numeric 10,2,
   > 0), `paid_on` (date), `method` (enum `efectivo`/`transferencia`/`tarjeta`/`bizum`/
   `otro`), `note`, `created_by` y `created_at` (los fija el trigger). Solo se registran o

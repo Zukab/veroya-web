@@ -9,14 +9,13 @@ import { buttonClasses } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Link } from "@/i18n/navigation";
-import { getBlockedApartmentIds } from "@/lib/bookings/availability";
 import { todayInAgency } from "@/lib/bookings/dates";
 import { getAllApartments, getCities } from "@/lib/data/catalog";
 import { MAX_SEARCH_GUESTS, parseSearchParams, searchNights, searchQueryString } from "@/lib/search";
 
 // Resultados del buscador: apartamentos de la ciudad elegida con capacidad para
-// los huéspedes y, si hay fechas, libres en esas fechas y con estancia mínima
-// cumplida. La disponibilidad se lee en cada búsqueda (sin caché).
+// los huéspedes y, si hay fechas, con estancia mínima cumplida. Las reservas no
+// ocultan apartamentos: el equipo decide la disponibilidad al confirmar.
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("Search");
@@ -45,14 +44,12 @@ async function SearchResults({ searchParams }: Pick<PageProps<"/[locale]/buscar"
     getCities(),
     getAllApartments(),
   ]);
-  const blocked = search.checkIn && search.checkOut ? await getBlockedApartmentIds(search.checkIn, search.checkOut) : null;
 
   const city = search.city ? cities.find((item) => item.slug === search.city) : undefined;
   const candidates = apartments.filter(
     (apartment) =>
       (!city || apartment.city.slug === city.slug) &&
-      (!search.guests || apartment.max_guests >= search.guests) &&
-      !blocked?.has(apartment.id),
+      (!search.guests || apartment.max_guests >= search.guests),
   );
   const results = nights ? candidates.filter((apartment) => apartment.min_nights <= nights) : candidates;
   const tooShort = candidates.length - results.length;

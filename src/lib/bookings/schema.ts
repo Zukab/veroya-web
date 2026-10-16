@@ -18,7 +18,6 @@ export const BOOKING_ERROR_KEYS = [
   "maxGuests",
   "apartmentNotFound",
   "cityNotFound",
-  "unavailable",
   "privacyRequired",
   "rateLimited",
   "unexpected",

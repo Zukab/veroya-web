@@ -1,7 +1,6 @@
 "use server";
 
 import { after } from "next/server";
-import { isApartmentAvailable } from "@/lib/bookings/availability";
 import { PUBLIC_BOOKING_RATE_LIMIT, insertPublicBooking } from "@/lib/bookings/create-public";
 import { nightsBetween, todayInAgency } from "@/lib/bookings/dates";
 import {
@@ -61,16 +60,6 @@ export async function createBookingRequest(
 
   const allowed = await checkRateLimit({ ...PUBLIC_BOOKING_RATE_LIMIT, key: await clientIpKey() });
   if (!allowed) return fail({ formError: "rateLimited" });
-
-  // Fechas ya ocupadas por una reserva confirmada (las pendientes no bloquean).
-  try {
-    if (!(await isApartmentAvailable(apartment.id, input.check_in, input.check_out))) {
-      return fail({ formError: "unavailable" });
-    }
-  } catch (error) {
-    console.error("Reserva: error al comprobar la disponibilidad", error);
-    return fail({ formError: "unexpected" });
-  }
 
   const saved = await insertPublicBooking({
     user_name: input.user_name,
