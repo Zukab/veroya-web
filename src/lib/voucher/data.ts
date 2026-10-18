@@ -22,7 +22,7 @@ export type VoucherData = {
   issuedAt: Date;
   // Marca de agua "DOCUMENTO DE PRUEBA": en desarrollo y con correos @example.com.
   test: boolean;
-  guest: { fullName: string; email: string; count: number };
+  guest: { fullName: string; email: string; count: number; companions: string[] };
   checkIn: string;
   checkOut: string;
   nights: number;
@@ -53,7 +53,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     createAdminClient()
       .from("bookings")
       .select(
-        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, latitude, longitude, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
+        "id, booking_code, status, locale, user_name, user_email, guests, companions, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, latitude, longitude, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
       )
       .eq("id", bookingId)
       .maybeSingle(),
@@ -81,6 +81,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
       fullName: booking.user_name.trim(),
       email: booking.user_email,
       count: booking.guests,
+      companions: booking.companions,
     },
     checkIn: booking.check_in,
     checkOut: booking.check_out,

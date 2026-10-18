@@ -33,7 +33,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
     supabase
       .from("bookings")
       .select(
-        "id, booking_code, booking_pin, status, source, created_at, confirmed_at, confirmation_email_sent_at, verification_token, apartment_id, apartment_name, city_name, check_in, check_out, guests, user_name, user_email, user_phone, user_country, message, locale, payment_terms, total_amount, booking_payments(id, amount, paid_on, method, note, created_at)",
+        "id, booking_code, booking_pin, status, source, created_at, confirmed_at, confirmation_email_sent_at, verification_token, apartment_id, apartment_name, city_name, check_in, check_out, guests, user_name, user_email, user_phone, user_country, message, companions, locale, payment_terms, total_amount, booking_payments(id, amount, paid_on, method, note, created_at)",
       )
       .eq("id", id)
       .maybeSingle(),

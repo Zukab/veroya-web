@@ -22,7 +22,7 @@ export async function getVerifiedBooking(token: string) {
   const { data, error } = await createAdminClient()
     .from("bookings")
     .select(
-      "booking_code, status, apartment_name, city_name, check_in, check_out, guests, user_name, total_amount, payment_terms, booking_payments(amount, paid_on, method, created_at), apartment:apartments(images, address, latitude, longitude, city:cities(name, country))",
+      "booking_code, status, apartment_name, city_name, check_in, check_out, guests, user_name, companions, total_amount, payment_terms, booking_payments(amount, paid_on, method, created_at), apartment:apartments(images, address, latitude, longitude, city:cities(name, country))",
     )
     .eq("verification_token", token)
     .maybeSingle();

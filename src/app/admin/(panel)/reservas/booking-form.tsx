@@ -30,6 +30,7 @@ type Booking = Pick<
   | "locale"
   | "payment_terms"
   | "total_amount"
+  | "companions"
 >;
 
 export type ApartmentOption = {
@@ -68,8 +69,10 @@ export function BookingForm({
   const [checkIn, setCheckIn] = useState(booking?.check_in ?? "");
   const [checkOut, setCheckOut] = useState(booking?.check_out ?? "");
   const [guests, setGuests] = useState(String(booking?.guests ?? 2));
+  const [companions, setCompanions] = useState(booking?.companions.join("\n") ?? "");
   const [total, setTotal] = useState(booking?.total_amount == null ? "" : String(booking.total_amount));
 
+  const companionCount = companions.split("\n").filter((line) => line.trim()).length;
   const apartment = apartments.find((item) => item.id === apartmentId);
   const nights = checkIn && checkOut && checkOut > checkIn ? nightsBetween(checkIn, checkOut) : 0;
   const suggested = apartment && nights > 0 ? apartment.price * nights : null;
@@ -195,6 +198,28 @@ export function BookingForm({
               defaultValue={booking?.user_name}
               className={inputClasses}
             />
+          </Field>
+          <Field
+            id="booking-companions"
+            label="Acompañantes (opcional)"
+            error={errors.companions}
+            hint="Nombre y apellidos del resto de huéspedes, uno por línea. Salen en el voucher debajo del titular."
+            className="order-last sm:col-span-2"
+          >
+            <textarea
+              id="booking-companions"
+              name="companions"
+              rows={2}
+              value={companions}
+              onChange={(event) => setCompanions(event.target.value)}
+              className={inputClasses}
+            />
+            {companionCount > 0 && companionCount > Number(guests) - 1 && (
+              <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                Hay {companionCount} acompañantes y la reserva es para {guests}{" "}
+                {Number(guests) === 1 ? "huésped" : "huéspedes"} en total (titular incluido).
+              </p>
+            )}
           </Field>
           <Field id="booking-user_email" label="Correo electrónico" error={errors.user_email}>
             <input

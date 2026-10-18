@@ -175,6 +175,11 @@ async function VerifyContent({ params }: Pick<PageProps<"/[locale]/verificar/[to
             <InfoBox label={t("holder")} className="col-span-2">
               {booking.holder}
             </InfoBox>
+            {booking.companions.length > 0 && (
+              <InfoBox label={t("companions")} className="col-span-2">
+                {booking.companions.join(" · ")}
+              </InfoBox>
+            )}
           </div>
 
           {!cancelled && (

@@ -293,7 +293,11 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
      habitaciones, baños, m², camas y comodidades.
    - Entrada y salida con sus horas, noches y número de huéspedes.
    - Titular con el **nombre completo** (pedido por el cliente el 2026-10-14; antes iba
-     abreviado).
+     abreviado) y, si los hay, **acompañantes** (`bookings.companions`, pedido el
+     2026-10-18): nombres del resto de huéspedes, que el equipo escribe en el panel (uno por
+     línea, máximo 20) y salen en el voucher y en la verificación. Sin documentos de
+     identidad. Con acompañantes no se muestra la nota del documento al llegar (para que
+     quepa en una A4; las normas ya lo piden). Probado con 6 nombres largos.
    - Pago: total y "Pagado", "Pendiente de pago" o "Pago al llegar".
    - QR a la página de verificación, información de la estancia (horarios, normas y
      cancelación) y contacto de la agencia, sacados de los ajustes de la agencia.
@@ -402,7 +406,8 @@ pin en la página del apartamento, la de verificación, la ficha del panel y el 
   `created_at`, `status` (enum: Pendiente, Confirmada, Cancelada), `user_name`,
   `user_email`, `user_phone`, `user_country`, `guests`, `check_in` (date), `check_out`
   (date), `city_name`, `apartment_id` (FK nullable, on delete set null), `apartment_name`,
-  `message`, y desde M1 (`..._reservas_pagos_voucher`):
+  `message`, `companions` (text[], acompañantes; desde `..._reservas_acompanantes`), y desde
+  M1 (`..._reservas_pagos_voucher`):
   - `source` (enum `web`/`panel`), `created_by` (FK → auth.users): los fija el trigger al
     crear según haya sesión o no; no se pueden falsear ni cambiar.
   - `locale` (`es`/`en`), `verification_token` (32 hex, único, para el QR),
@@ -459,7 +464,7 @@ de la base de datos son la última barrera; la validación principal es con zod.
   - `bookings`: sin acceso público. La creación se hace en una Server Action o Route
     Handler del servidor que valida con `zod` y usa la clave secreta. Los administradores
     leen, crean, borran y editan solo estas columnas: `status`, datos del huésped,
-    `guests`, `message`, `locale`, fechas, apartamento (`apartment_id`, `apartment_name`,
+    `guests`, `companions`, `message`, `locale`, fechas, apartamento (`apartment_id`, `apartment_name`,
     `city_name`), `payment_terms` y `total_amount`.
   - `booking_payments`: solo administradores; leer, registrar y borrar (no editar).
   - Storage `media`: lectura pública por URL; subir, reemplazar y borrar solo

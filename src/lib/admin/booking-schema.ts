@@ -41,6 +41,8 @@ const euros = (options: { positive: boolean }) =>
     .transform((value) => Number(value.replace(",", ".")))
     .refine((value) => !options.positive || value > 0, { error: "Debe ser mayor que 0." });
 
+export const MAX_COMPANIONS = 20;
+
 export const adminBookingSchema = z.object({
   ...guestFields,
   apartment_id: z
@@ -52,6 +54,17 @@ export const adminBookingSchema = z.object({
   locale: z.enum(["es", "en"], { error: "Elige un idioma." }),
   // Vacío = sin definir.
   total_amount: z.union([z.literal("").transform(() => null), euros({ positive: false })]),
+  // Un nombre por línea; se ignoran las líneas vacías.
+  companions: z
+    .string()
+    .transform((value) =>
+      value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean),
+    )
+    .refine((names) => names.length <= MAX_COMPANIONS, { error: `Máximo ${MAX_COMPANIONS} acompañantes.` })
+    .refine((names) => names.every((name) => name.length <= 120), { error: "Cada nombre: máximo 120 caracteres." }),
 });
 
 export const paymentSchema = z.object({

@@ -170,7 +170,7 @@ export function privacyPolicy(locale: Locale, owner: LegalOwner): LegalDocument 
         {
           title: "What data we process",
           list: [
-            "Request details: name, email, phone or WhatsApp, country of residence, dates, number of guests, apartment or city and the message you write to us.",
+            "Request details: name, email, phone or WhatsApp, country of residence, dates, number of guests, apartment or city and the message you write to us. If you tell us, the names of the other guests, which appear on the voucher.",
             "Payment records that we enter manually (amount, date and payment method). The website does not take payments and we never store your full card details.",
             "Minimal technical data: your IP address, irreversibly encrypted, to limit abusive submissions. It is deleted after 24 hours.",
             "If you write to us by WhatsApp or email, the content of that conversation.",
@@ -253,7 +253,7 @@ export function privacyPolicy(locale: Locale, owner: LegalOwner): LegalDocument 
       {
         title: "Qué datos tratamos",
         list: [
-          "Datos de la solicitud: nombre, correo, teléfono o WhatsApp, país de residencia, fechas, número de huéspedes, apartamento o ciudad y el mensaje que nos escribas.",
+          "Datos de la solicitud: nombre, correo, teléfono o WhatsApp, país de residencia, fechas, número de huéspedes, apartamento o ciudad y el mensaje que nos escribas. Si nos los indicas, los nombres de los demás huéspedes, que aparecen en el voucher.",
           "Registro de pagos que anotamos a mano (importe, fecha y forma de pago). La web no cobra pagos y nunca guardamos los datos completos de tu tarjeta.",
           "Datos técnicos mínimos: tu dirección IP, cifrada de forma irreversible, para limitar envíos abusivos. Se borra a las 24 horas.",
           "Si nos escribes por WhatsApp o por correo, el contenido de esa conversación.",

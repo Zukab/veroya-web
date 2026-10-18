@@ -38,6 +38,7 @@ function bookingFromForm(formData: FormData) {
     payment_terms: field("payment_terms"),
     locale: field("locale"),
     total_amount: field("total_amount"),
+    companions: field("companions"),
   });
 }
 

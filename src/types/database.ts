@@ -207,6 +207,7 @@ export type Database = {
           check_in: string
           check_out: string
           city_name: string
+          companions: string[]
           confirmation_email_sent_at: string | null
           confirmed_at: string | null
           created_at: string
@@ -234,6 +235,7 @@ export type Database = {
           check_in: string
           check_out: string
           city_name?: string
+          companions?: string[]
           confirmation_email_sent_at?: string | null
           confirmed_at?: string | null
           created_at?: string
@@ -261,6 +263,7 @@ export type Database = {
           check_in?: string
           check_out?: string
           city_name?: string
+          companions?: string[]
           confirmation_email_sent_at?: string | null
           confirmed_at?: string | null
           created_at?: string

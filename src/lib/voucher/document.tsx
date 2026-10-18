@@ -42,7 +42,7 @@ const s = StyleSheet.create({
     fontSize: 9.5,
     lineHeight: 1.4,
     color: color.ink,
-    paddingTop: 30,
+    paddingTop: 24,
     paddingHorizontal: 40,
     paddingBottom: 24,
   },
@@ -89,7 +89,7 @@ const s = StyleSheet.create({
   docIssued: { fontSize: 8, color: color.muted, marginTop: 2 },
 
   status: {
-    marginTop: 10,
+    marginTop: 8,
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 8,
@@ -102,7 +102,7 @@ const s = StyleSheet.create({
   statusTitle: { fontSize: 11, fontWeight: 600, color: color.olive700 },
   statusNote: { fontSize: 8, color: color.olive600 },
 
-  card: { marginTop: 10, borderWidth: 1, borderColor: color.sand300, borderRadius: 8 },
+  card: { marginTop: 8, borderWidth: 1, borderColor: color.sand300, borderRadius: 8 },
   apt: {
     padding: 14,
     backgroundColor: color.sand50,
@@ -140,12 +140,14 @@ const s = StyleSheet.create({
   big: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 12, lineHeight: 1.25, marginTop: 3 },
   small: { fontSize: 7.8, color: color.muted },
 
-  middle: { marginTop: 10, flexDirection: "row" },
+  middle: { marginTop: 8, flexDirection: "row" },
   facts: { flex: 1 },
   fact: { borderWidth: 1, borderColor: color.sand300, borderRadius: 8, paddingVertical: 8, paddingHorizontal: 12 },
   factGap: { marginTop: 8 },
   factValue: { fontSize: 11, fontWeight: 600, marginTop: 3 },
   note: { fontSize: 7.8, color: color.muted, marginTop: 2 },
+  companions: { fontSize: 8.6, lineHeight: 1.35, color: color.body, marginTop: 3 },
+  companionsLabel: { fontWeight: 600, color: color.ink },
   payRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   pill: {
     fontSize: 7.6,
@@ -188,11 +190,11 @@ const s = StyleSheet.create({
   qrNote: { marginTop: 4, fontSize: 7.4, color: color.sand300, textAlign: "center" },
   qrUrl: { marginTop: 6, fontFamily: "GeistMono", fontWeight: 500, fontSize: 6.6, color: color.terra100, textAlign: "center" },
 
-  conditions: { marginTop: 10, paddingTop: 9, borderTopWidth: 1, borderTopColor: color.sand300 },
+  conditions: { marginTop: 8, paddingTop: 8, borderTopWidth: 1, borderTopColor: color.sand300 },
   conditionsTitle: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 12, marginBottom: 8 },
   cols: { flexDirection: "row" },
   col: { flex: 1 },
-  colNarrow: { width: "38%" },
+  colNarrow: { width: "44%" },
   colGap: { marginLeft: 16 },
   colTitle: {
     fontSize: 7.6,
@@ -208,7 +210,7 @@ const s = StyleSheet.create({
 
   footer: {
     marginTop: "auto",
-    paddingTop: 11,
+    paddingTop: 9,
     borderTopWidth: 1,
     borderTopColor: color.sand300,
     flexDirection: "row",
@@ -465,7 +467,15 @@ export function VoucherDocument({
             <Fact first>
               <Text style={s.label}>{t("holder")}</Text>
               <Text style={s.factValue}>{data.guest.fullName}</Text>
-              <Text style={s.note}>{t("holderNote")}</Text>
+              {/* Con acompañantes no cabe la nota (las normas ya piden el documento). */}
+              {data.guest.companions.length > 0 ? (
+                <Text style={s.companions}>
+                  <Text style={s.companionsLabel}>{t("companions")}: </Text>
+                  {data.guest.companions.join(" · ")}
+                </Text>
+              ) : (
+                <Text style={s.note}>{t("holderNote")}</Text>
+              )}
             </Fact>
 
             <Fact>
