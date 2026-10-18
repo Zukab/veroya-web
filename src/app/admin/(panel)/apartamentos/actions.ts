@@ -1,12 +1,19 @@
 "use server";
 
-import { updateTag } from "next/cache";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { refresh, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { apartmentSchema } from "@/lib/admin/content-schema";
 import { type AdminFormState, adminFieldErrors, errorState } from "@/lib/admin/form";
 import { removeMediaUrls } from "@/lib/admin/storage";
 import { requireAdmin } from "@/lib/auth/admin";
 import { CACHE_TAGS } from "@/lib/data/tags";
+import { geocodeAddress } from "@/lib/geocode";
+import { coordinatesOf, sameCoordinates } from "@/lib/maps";
+import { fullAddress } from "@/lib/voucher/address";
+import type { Database } from "@/types/database";
+
+type Client = SupabaseClient<Database>;
 
 const GENERIC_ERROR = "No se pudo guardar. Inténtalo de nuevo en unos minutos.";
 
@@ -34,6 +41,7 @@ function apartmentFromForm(formData: FormData, originalId: string) {
     beds_single: field("beds_single"),
     sofa_beds: field("sofa_beds"),
     address: field("address"),
+    coordinates: field("coordinates"),
     neighborhood: field("neighborhood"),
     description: field("description"),
     images: formData.getAll("images"),
@@ -48,7 +56,25 @@ export async function saveApartment(_previous: AdminFormState, formData: FormDat
 
   const parsed = apartmentFromForm(formData, originalId);
   if (!parsed.success) return errorState("Revisa los campos marcados.", adminFieldErrors(parsed.error));
-  const apartment = parsed.data;
+  const { coordinates: submitted, ...fields } = parsed.data;
+
+  const { data: before } = originalId
+    ? await supabase
+        .from("apartments")
+        .select("images, address, city_slug, latitude, longitude")
+        .eq("id", originalId)
+        .maybeSingle()
+    : { data: null };
+
+  // Coordenadas: las pegadas a mano (distintas de las guardadas) mandan; si no
+  // hay, o cambió la dirección o la ciudad, se calculan a partir de la dirección.
+  const stored = before ? coordinatesOf(before) : null;
+  const addressChanged = !before || before.address !== fields.address || before.city_slug !== fields.city_slug;
+  let coordinates = submitted;
+  if (!submitted || (addressChanged && sameCoordinates(submitted, stored))) {
+    coordinates = await geocodeApartment(supabase, fields.address, fields.city_slug);
+  }
+  const apartment = { ...fields, latitude: coordinates?.latitude ?? null, longitude: coordinates?.longitude ?? null };
 
   if (!originalId) {
     const { error } = await supabase.from("apartments").insert(apartment);
@@ -65,12 +91,6 @@ export async function saveApartment(_previous: AdminFormState, formData: FormDat
     refreshPublicPages();
     redirect(`/admin/apartamentos/${apartment.id}?creado=1`);
   }
-
-  const { data: before } = await supabase
-    .from("apartments")
-    .select("images")
-    .eq("id", originalId)
-    .maybeSingle();
 
   const { data: updated, error } = await supabase
     .from("apartments")
@@ -90,7 +110,21 @@ export async function saveApartment(_previous: AdminFormState, formData: FormDat
   const removed = (before?.images ?? []).filter((url) => !apartment.images.includes(url));
   await removeMediaUrls(supabase, removed);
   refreshPublicPages();
-  return { status: "success", message: "Cambios guardados." };
+  // Vuelve a pintar la ficha con las coordenadas guardadas (mapa y campo).
+  refresh();
+  return {
+    status: "success",
+    message: coordinates ? "Cambios guardados." : `Cambios guardados. ${NO_MAP_NOTE}`,
+  };
+}
+
+const NO_MAP_NOTE =
+  "No se encontró la dirección en el mapa: pega sus coordenadas desde Google Maps en «Coordenadas».";
+
+async function geocodeApartment(supabase: Client, address: string, citySlug: string) {
+  const { data: city } = await supabase.from("cities").select("name, country").eq("slug", citySlug).maybeSingle();
+  if (!city) return null;
+  return geocodeAddress(fullAddress({ address, city: city.name, country: city.country }));
 }
 
 export async function deleteApartment(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {

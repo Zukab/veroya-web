@@ -86,6 +86,8 @@ export type Database = {
           description: string
           id: string
           images: string[]
+          latitude: number | null
+          longitude: number | null
           max_guests: number
           min_nights: number
           name: string
@@ -108,6 +110,8 @@ export type Database = {
           description?: string
           id: string
           images?: string[]
+          latitude?: number | null
+          longitude?: number | null
           max_guests?: number
           min_nights?: number
           name: string
@@ -130,6 +134,8 @@ export type Database = {
           description?: string
           id?: string
           images?: string[]
+          latitude?: number | null
+          longitude?: number | null
           max_guests?: number
           min_nights?: number
           name?: string

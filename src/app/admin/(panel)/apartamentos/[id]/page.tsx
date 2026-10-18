@@ -27,7 +27,7 @@ export default async function EditApartmentPage({
     supabase
       .from("apartments")
       .select(
-        "id, city_slug, name, price, rooms, baths, size, max_guests, rating, reviews, min_nights, beds_double, beds_single, sofa_beds, address, neighborhood, description, images, amenities",
+        "id, city_slug, name, price, rooms, baths, size, max_guests, rating, reviews, min_nights, beds_double, beds_single, sofa_beds, address, latitude, longitude, neighborhood, description, images, amenities",
       )
       .eq("id", id)
       .maybeSingle(),

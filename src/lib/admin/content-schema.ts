@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AMENITY_KEYS } from "@/lib/amenities";
+import { parseCoordinates } from "@/lib/maps";
 import { isMediaUrl } from "@/lib/media";
 
 // Validación de ciudades y apartamentos del panel. Las restricciones de la base de
@@ -68,6 +69,14 @@ export const apartmentSchema = z.object({
   beds_single: integer(0, 50),
   sofa_beds: integer(0, 50),
   address: text(300, true),
+  // "lat, lng" pegado de Google Maps; vacío = se calcula a partir de la dirección.
+  coordinates: z
+    .string()
+    .trim()
+    .refine((value) => value === "" || parseCoordinates(value) !== null, {
+      error: "Pega las coordenadas como las copia Google Maps, p. ej. 40.416775, -3.703790.",
+    })
+    .transform((value) => (value === "" ? null : parseCoordinates(value))),
   neighborhood: text(150),
   description: text(10000),
   images: z.array(mediaUrl).max(40, { error: "Máximo 40 fotos." }),

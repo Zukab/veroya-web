@@ -11,6 +11,8 @@ import { amenityLabels } from "@/lib/admin/amenity-labels";
 import { slugify } from "@/lib/admin/content-schema";
 import { idleState } from "@/lib/admin/form";
 import { AMENITY_KEYS } from "@/lib/amenities";
+import { coordinatesOf, formatCoordinates, googleMapsUrl } from "@/lib/maps";
+import { StaticMap } from "@/components/maps/static-map";
 import type { Database } from "@/types/database";
 import { saveApartment } from "./actions";
 
@@ -23,6 +25,7 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
   const [id, setId] = useState(apartment?.id ?? "");
   const [idTouched, setIdTouched] = useState(editing);
   const errors = state.fieldErrors ?? {};
+  const stored = apartment ? coordinatesOf(apartment) : null;
 
   // Campo numérico con su etiqueta y error.
   const numberField = (
@@ -115,7 +118,7 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
             id="apartment-address"
             label="Dirección"
             error={errors.address}
-            hint="Calle, número, piso y código postal. Se muestra en la web, con enlace a Google Maps, y en el voucher."
+            hint="Calle, número, piso y código postal. Se muestra en la web, con un mapa, y en el voucher."
             className="sm:col-span-2"
           >
             <input
@@ -128,6 +131,43 @@ export function ApartmentForm({ apartment, cities }: { apartment?: Apartment; ci
               className={inputClasses}
             />
           </Field>
+          <Field
+            id="apartment-coordinates"
+            label="Coordenadas del mapa (opcional)"
+            error={errors.coordinates}
+            hint="Vacío = se calculan solas a partir de la dirección al guardar. Si el punto del mapa no es el edificio, en Google Maps haz clic derecho sobre él, pulsa los números para copiarlos y pégalos aquí."
+            className="sm:col-span-2"
+          >
+            {/* La key rellena el campo con las coordenadas recién guardadas. */}
+            <input
+              key={formatCoordinates(stored)}
+              id="apartment-coordinates"
+              name="coordinates"
+              inputMode="decimal"
+              autoComplete="off"
+              placeholder="40.416775, -3.703790"
+              defaultValue={formatCoordinates(stored)}
+              className={inputClasses}
+            />
+          </Field>
+          {editing && (
+            <div className="sm:col-span-2">
+              <p className="mb-1.5 text-sm font-medium text-stone-700">Ubicación en el mapa</p>
+              {stored ? (
+                <StaticMap
+                  coordinates={stored}
+                  href={googleMapsUrl(apartment?.address ?? "", undefined, stored)}
+                  label="Abrir el punto en Google Maps"
+                  className="h-56 rounded-xl border border-sand-200"
+                />
+              ) : (
+                <p className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                  Sin mapa: no se encontró la dirección. Pega las coordenadas desde Google Maps y
+                  guarda. Mientras tanto, la web y el voucher muestran solo la dirección.
+                </p>
+              )}
+            </div>
+          )}
           <Field id="apartment-neighborhood" label="Barrio" error={errors.neighborhood} className="sm:col-span-2">
             <input
               id="apartment-neighborhood"

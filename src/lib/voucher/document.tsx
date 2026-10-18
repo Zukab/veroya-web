@@ -5,8 +5,10 @@ import type { ReactNode } from "react";
 import en from "../../../messages/en.json";
 import es from "../../../messages/es.json";
 import { houseRulesList } from "@/lib/data/settings";
+import { OSM_ATTRIBUTION, TILE_SIZE, googleMapsUrl } from "@/lib/maps";
 import { fullAddress } from "./address";
 import type { PaymentKind, VoucherData } from "./data";
+import { MAP_PIXELS, MAP_SCALE, type PdfMapTile } from "./map";
 import { PdfBrandMark } from "./brand-mark";
 
 // Voucher en PDF (una página A4), con el diseño aprobado por el cliente
@@ -108,6 +110,25 @@ const s = StyleSheet.create({
     borderTopRightRadius: 8,
     borderBottomWidth: 1,
     borderBottomColor: color.sand300,
+  },
+  aptRow: { flexDirection: "row", alignItems: "center" },
+  mapBox: {
+    marginLeft: 14,
+    borderWidth: 1,
+    borderColor: color.sand300,
+    borderRadius: 6,
+    overflow: "hidden",
+    textDecoration: "none",
+  },
+  mapAttribution: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    fontSize: 5,
+    color: color.muted,
+    backgroundColor: "#ffffff",
+    paddingVertical: 1,
+    paddingHorizontal: 3,
   },
   aptName: { fontFamily: "Fraunces", fontWeight: 600, fontSize: 16, lineHeight: 1.2, marginTop: 4, marginBottom: 6 },
   address: { flexDirection: "row", alignItems: "center" },
@@ -257,7 +278,54 @@ function Fact({ children, first }: { children: ReactNode; first?: boolean }) {
   return <View style={first ? s.fact : [s.fact, s.factGap]}>{children}</View>;
 }
 
-export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherData; qrDataUrl: string; siteHost: string }) {
+// Mapa con el pin en el centro (teselas de OpenStreetMap descargadas en map.ts).
+function PdfMap({ tiles, href }: { tiles: PdfMapTile[]; href: string }) {
+  const width = MAP_PIXELS.width * MAP_SCALE;
+  const height = MAP_PIXELS.height * MAP_SCALE;
+  const tileSize = TILE_SIZE * MAP_SCALE;
+  return (
+    <Link src={href} style={s.mapBox}>
+      <View style={{ width, height, overflow: "hidden", position: "relative" }}>
+        {tiles.map((tile, index) => (
+          // eslint-disable-next-line jsx-a11y/alt-text -- Image de react-pdf, no de HTML
+          <Image
+            key={index}
+            src={{ data: tile.data, format: "png" }}
+            style={{
+              position: "absolute",
+              left: tile.left * MAP_SCALE,
+              top: tile.top * MAP_SCALE,
+              width: tileSize,
+              height: tileSize,
+            }}
+          />
+        ))}
+        <Svg viewBox="0 0 32 42" width={15} height={20} style={{ position: "absolute", left: width / 2 - 7.5, top: height / 2 - 20 }}>
+          <Path
+            d="M16 41c-1.2-1.4-14-15.6-14-25a14 14 0 0 1 28 0c0 9.4-12.8 23.6-14 25Z"
+            fill={color.terra600}
+            stroke="#ffffff"
+            strokeWidth={2}
+          />
+          <Circle cx="16" cy="16" r="5.5" fill="#ffffff" />
+        </Svg>
+        <Text style={s.mapAttribution}>{OSM_ATTRIBUTION}</Text>
+      </View>
+    </Link>
+  );
+}
+
+export function VoucherDocument({
+  data,
+  qrDataUrl,
+  siteHost,
+  mapTiles,
+}: {
+  data: VoucherData;
+  qrDataUrl: string;
+  siteHost: string;
+  mapTiles: PdfMapTile[] | null;
+}) {
   const { locale, apartment, payment, settings } = data;
   const messages = (locale === "en" ? en : es) as typeof es;
   const t = createTranslator({ locale, messages, namespace: "Voucher" });
@@ -310,9 +378,7 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
 
   const token = data.verificationUrl.split("/").pop() ?? "";
   const shortPath = `/verificar/${token.slice(0, 4)}…${token.slice(-4)}`;
-  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-    fullAddress(apartment),
-  )}`;
+  const mapsUrl = googleMapsUrl(fullAddress(apartment), undefined, apartment.coordinates);
 
   return (
     <Document title={`${t("title")} ${data.code}`} author="Euronest Apartamentos" language={locale}>
@@ -351,25 +417,28 @@ export function VoucherDocument({ data, qrDataUrl, siteHost }: { data: VoucherDa
         </View>
 
         <View style={s.card}>
-          <View style={s.apt}>
-            <Text style={s.label}>{t("accommodation")}</Text>
-            <Text style={s.aptName}>{apartment.name}</Text>
-            {apartment.address ? (
-              <>
+          <View style={[s.apt, s.aptRow]}>
+            <View style={{ flex: 1 }}>
+              <Text style={s.label}>{t("accommodation")}</Text>
+              <Text style={s.aptName}>{apartment.name}</Text>
+              {apartment.address ? (
+                <>
+                  <View style={s.address}>
+                    <PinIcon />
+                    <Text style={{ flex: 1 }}>{fullAddress(apartment)}</Text>
+                  </View>
+                  <Link src={mapsUrl} style={s.mapLink}>
+                    {t("openMap")}
+                  </Link>
+                </>
+              ) : (
                 <View style={s.address}>
                   <PinIcon />
-                  <Text>{fullAddress(apartment)}</Text>
+                  <Text>{apartment.city}</Text>
                 </View>
-                <Link src={mapsUrl} style={s.mapLink}>
-                  {t("openMap")}
-                </Link>
-              </>
-            ) : (
-              <View style={s.address}>
-                <PinIcon />
-                <Text>{apartment.city}</Text>
-              </View>
-            )}
+              )}
+            </View>
+            {mapTiles && <PdfMap tiles={mapTiles} href={mapsUrl} />}
           </View>
           <View style={s.dates}>
             <DateCell

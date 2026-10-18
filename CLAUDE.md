@@ -179,8 +179,8 @@ Parte pública:
   "Reservas y voucher", punto 3). Parámetros en `src/lib/search.ts`; las tarjetas los
   conservan y el formulario del apartamento llega relleno.
 - `/ciudades` y `/ciudades/[ciudad]` (apartamentos de la ciudad)
-- `/apartamento/[id]` detalle con galería, camas, comodidades, dirección (con enlace a
-  Google Maps, `src/lib/maps.ts`) y formulario de reserva
+- `/apartamento/[id]` detalle con galería, camas, comodidades, dirección con mapa y enlace a
+  Google Maps, y formulario de reserva. Ver "Mapas".
 - `/como-funciona`, `/estancias-largas`, `/propietarios`: textos aprobados por el cliente
   (2026-10-15), igual que sus ajustes en `/admin/ajustes`. Propietarios va dirigida a quien quiere vender o
   alquilar su piso (el cliente compra apartamentos), con botones de WhatsApp y correo.
@@ -289,8 +289,8 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
 4. **Voucher en PDF** solo con la marca Euronest Apartamentos. Diseño aprobado por el
    cliente: maqueta en `referencias/maqueta-voucher/` (fuera del repositorio). Una página A4:
    - Localizador, fecha de emisión y estado en la fecha de emisión.
-   - Apartamento: nombre, dirección y enlace a Google Maps; habitaciones, baños, m², camas
-     y comodidades.
+   - Apartamento: nombre, dirección, mapa (ver "Mapas") y enlace a Google Maps;
+     habitaciones, baños, m², camas y comodidades.
    - Entrada y salida con sus horas, noches y número de huéspedes.
    - Titular con el **nombre completo** (pedido por el cliente el 2026-10-14; antes iba
      abreviado).
@@ -343,6 +343,28 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
 8. **Desarrollo:** los vouchers de prueba llevan la marca de agua "DOCUMENTO DE PRUEBA · SIN
    VALIDEZ" y datos `@example.com`.
 
+## Mapas
+
+Pedido por el cliente el 2026-10-18 (referencia: voucher y web de Roomia). Mapa fijo con
+pin en la página del apartamento, la de verificación, la ficha del panel y el voucher.
+- Sin librería ni clave: teselas de OpenStreetMap colocadas alrededor del punto
+  (`mapTiles()` en `src/lib/maps.ts`, zoom 16). Web: `src/components/maps/static-map.tsx`
+  (el navegador carga las teselas; sin cookies, mencionado en `/privacidad` y `/cookies`).
+  Voucher: `src/lib/voucher/map.ts` las descarga en el servidor; si falla, sale sin mapa.
+  Atribución «© OpenStreetMap» obligatoria. Si el tráfico crece mucho, la política de
+  OpenStreetMap pide pasar a un proveedor de teselas (p. ej. MapTiler, con clave).
+- Coordenadas en `apartments.latitude/longitude` (migración `..._apartamentos_coordenadas`).
+  Al guardar en el panel se calculan con Nominatim (`src/lib/geocode.ts`, 1 petición/s
+  como máximo) si el campo «Coordenadas» está vacío o cambió la dirección o la ciudad; si
+  se pegan a mano desde Google Maps («lat, lng»), mandan esas. Sin coordenadas no hay mapa
+  (el panel lo avisa en la ficha).
+- El 2026-10-18 se calcularon las de los 46 apartamentos existentes: 42 con mapa (varios
+  solo a nivel de calle, sin número); sin mapa `apartamento-plaza-castilla`,
+  `apartamento-sofia` (Nominatim lo situaba en Castellón), `welcome-apartments-salamanca`
+  y `piso-grande-y-luminoso-en-el-casco-viejo-de-bilbao`: el cliente debe pegar sus
+  coordenadas.
+- Los enlaces a Google Maps usan las coordenadas si las hay (`googleMapsUrl()`).
+
 ## Zona horaria
 
 - La agencia trabaja en **hora de Colombia** (`AGENCY_TIME_ZONE = "America/Bogota"` en
@@ -375,7 +397,7 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
   `images` (text[] con URLs de Storage), `amenities` (text[]), `created_at`, y desde
   `..._apartamentos_direccion_y_camas`: `address` (texto, `''` en los apartamentos
   anteriores; el panel la exige), `beds_double`, `beds_single` y `sofa_beds` (enteros, 0 por
-  defecto)
+  defecto), y `latitude`/`longitude` (opcionales, las dos o ninguna; ver "Mapas")
 - `bookings`: `id` (uuid), `booking_code` (único, `ENA-XXXXX`), `booking_pin`,
   `created_at`, `status` (enum: Pendiente, Confirmada, Cancelada), `user_name`,
   `user_email`, `user_phone`, `user_country`, `guests`, `check_in` (date), `check_out`

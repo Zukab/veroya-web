@@ -5,6 +5,7 @@ import QRCode from "qrcode";
 import { siteUrl } from "@/lib/site-url";
 import type { VoucherData } from "./data";
 import { VoucherDocument } from "./document";
+import { loadMapTiles } from "./map";
 import { ReceiptDocument } from "./receipt-document";
 
 // Fuentes de la web (Fraunces y Geist, licencia OFL en fonts/). Se leen del disco:
@@ -27,15 +28,19 @@ Font.registerHyphenationCallback((word) => [word]);
 
 // PDF del voucher de una reserva.
 export async function renderVoucherPdf(data: VoucherData) {
-  const qrDataUrl = await QRCode.toDataURL(data.verificationUrl, {
-    errorCorrectionLevel: "M",
-    margin: 0,
-    width: 480,
-    color: { dark: "#1c1917", light: "#ffffff" },
-  });
+  const coordinates = data.apartment.coordinates;
+  const [qrDataUrl, mapTiles] = await Promise.all([
+    QRCode.toDataURL(data.verificationUrl, {
+      errorCorrectionLevel: "M",
+      margin: 0,
+      width: 480,
+      color: { dark: "#1c1917", light: "#ffffff" },
+    }),
+    coordinates ? loadMapTiles(coordinates) : null,
+  ]);
   const siteHost = new URL(siteUrl()).host;
   // VoucherDocument no usa hooks: se llama directamente para obtener el <Document>.
-  return renderToBuffer(VoucherDocument({ data, qrDataUrl, siteHost }));
+  return renderToBuffer(VoucherDocument({ data, qrDataUrl, siteHost, mapTiles }));
 }
 
 export function voucherFileName(code: string) {

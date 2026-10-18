@@ -7,12 +7,14 @@ import { type ReactNode, Suspense } from "react";
 import { CopyButton } from "@/components/bookings/copy-button";
 import { LocalTime } from "@/components/bookings/local-time";
 import { PrintButton } from "@/components/bookings/print-button";
+import { StaticMap } from "@/components/maps/static-map";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
 import { nightsBetween } from "@/lib/bookings/dates";
 import type { PaymentKind } from "@/lib/bookings/payment-summary";
 import { getVerifiedBooking } from "@/lib/bookings/verification";
 import { getAgencySettings, houseRulesList } from "@/lib/data/settings";
+import { googleMapsUrl } from "@/lib/maps";
 import type { Database } from "@/types/database";
 
 // Página a la que lleva el QR del voucher (verificación oficial): estado actual de
@@ -130,6 +132,14 @@ async function VerifyContent({ params }: Pick<PageProps<"/[locale]/verificar/[to
                   <MapPin aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-terracotta-600" />
                   {booking.address}
                 </p>
+              )}
+              {booking.coordinates && (
+                <StaticMap
+                  coordinates={booking.coordinates}
+                  href={googleMapsUrl(booking.address ?? "", undefined, booking.coordinates)}
+                  label={t("openMap")}
+                  className="mt-3 h-48 rounded-2xl border border-sand-200 sm:h-56"
+                />
               )}
             </div>
           )}

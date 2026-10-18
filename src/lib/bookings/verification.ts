@@ -1,5 +1,6 @@
 import "server-only";
 import { paymentSummary } from "@/lib/bookings/payment-summary";
+import { coordinatesOf } from "@/lib/maps";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { fullAddress } from "@/lib/voucher/address";
 
@@ -21,7 +22,7 @@ export async function getVerifiedBooking(token: string) {
   const { data, error } = await createAdminClient()
     .from("bookings")
     .select(
-      "booking_code, status, apartment_name, city_name, check_in, check_out, guests, user_name, total_amount, payment_terms, booking_payments(amount, paid_on, method, created_at), apartment:apartments(images, address, city:cities(name, country))",
+      "booking_code, status, apartment_name, city_name, check_in, check_out, guests, user_name, total_amount, payment_terms, booking_payments(amount, paid_on, method, created_at), apartment:apartments(images, address, latitude, longitude, city:cities(name, country))",
     )
     .eq("verification_token", token)
     .maybeSingle();
@@ -42,6 +43,7 @@ export async function getVerifiedBooking(token: string) {
           country: apartment.city.country,
         })
       : null,
+    coordinates: apartment ? coordinatesOf(apartment) : null,
     payment: paymentSummary({ total: total_amount, payments, terms: payment_terms }),
     payments: [...payments]
       .sort((a, b) => a.paid_on.localeCompare(b.paid_on) || a.created_at.localeCompare(b.created_at))

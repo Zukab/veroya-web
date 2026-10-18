@@ -3,6 +3,7 @@ import { type AmenityKey, knownAmenities } from "@/lib/amenities";
 import { nightsBetween } from "@/lib/bookings/dates";
 import { type PaymentKind, paymentSummary } from "@/lib/bookings/payment-summary";
 import { type AgencySettings, getAgencySettings } from "@/lib/data/settings";
+import { type Coordinates, coordinatesOf } from "@/lib/maps";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verificationUrl } from "@/lib/site-url";
 import type { Database } from "@/types/database";
@@ -30,6 +31,7 @@ export type VoucherData = {
     city: string;
     country: string;
     address: string;
+    coordinates: Coordinates | null;
     rooms: number | null;
     baths: number | null;
     size: number | null;
@@ -51,7 +53,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     createAdminClient()
       .from("bookings")
       .select(
-        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
+        "id, booking_code, status, locale, user_name, user_email, guests, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, latitude, longitude, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
       )
       .eq("id", bookingId)
       .maybeSingle(),
@@ -88,6 +90,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
       city: apartment?.city.name ?? booking.city_name,
       country: apartment?.city.country ?? "",
       address: apartment?.address ?? "",
+      coordinates: apartment ? coordinatesOf(apartment) : null,
       rooms: apartment?.rooms ?? null,
       baths: apartment?.baths ?? null,
       size: apartment?.size ?? null,

@@ -32,7 +32,8 @@ import { knownAmenities } from "@/lib/amenities";
 import { getApartment, getApartmentIds, getApartmentsByCity } from "@/lib/data/catalog";
 import { getAgencySettings, houseRulesList, whatsappUrl } from "@/lib/data/settings";
 import { LONG_STAY_MIN_NIGHTS, priceFormat } from "@/lib/format";
-import { googleMapsUrl } from "@/lib/maps";
+import { StaticMap } from "@/components/maps/static-map";
+import { coordinatesOf, googleMapsUrl } from "@/lib/maps";
 import { localeAlternates } from "@/lib/seo";
 import { siteUrl } from "@/lib/site-url";
 
@@ -120,6 +121,8 @@ async function ApartmentContent({
       ? [{ icon: Sofa, label: tApartment("sofaBeds", { count: apartment.sofa_beds }) }]
       : []),
   ];
+  const coordinates = coordinatesOf(apartment);
+  const mapsUrl = googleMapsUrl(apartment.address, apartment.city.name, coordinates);
   const rules = houseRulesList(settings.house_rules);
   const pageUrl = `${siteUrl()}${locale === "en" ? "/en" : ""}/apartamento/${apartment.id}`;
   const whatsapp = whatsappUrl(settings.whatsapp, tWhatsApp("apartment", { name: apartment.name, url: pageUrl }));
@@ -217,23 +220,28 @@ async function ApartmentContent({
 
             {apartment.address && (
               <Section title={t("location")}>
-                <div className="flex flex-col gap-4 rounded-2xl border border-sand-200 bg-white p-5 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="flex items-start gap-3 text-stone-700">
-                    <MapPin aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-terracotta-600" />
-                    <span>
-                      {apartment.address}
-                      <span className="block text-sm text-stone-500">{location}</span>
-                    </span>
-                  </p>
-                  <a
-                    href={googleMapsUrl(apartment.address, apartment.city.name)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={buttonClasses({ variant: "secondary", className: "shrink-0" })}
-                  >
-                    {t("openMap")}
-                    <ExternalLink aria-hidden="true" className="size-3.5" />
-                  </a>
+                <div className="overflow-hidden rounded-2xl border border-sand-200 bg-white">
+                  {coordinates && (
+                    <StaticMap coordinates={coordinates} href={mapsUrl} label={t("openMap")} />
+                  )}
+                  <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="flex items-start gap-3 text-stone-700">
+                      <MapPin aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-terracotta-600" />
+                      <span>
+                        {apartment.address}
+                        <span className="block text-sm text-stone-500">{location}</span>
+                      </span>
+                    </p>
+                    <a
+                      href={mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={buttonClasses({ variant: "secondary", className: "shrink-0" })}
+                    >
+                      {t("openMap")}
+                      <ExternalLink aria-hidden="true" className="size-3.5" />
+                    </a>
+                  </div>
                 </div>
               </Section>
             )}

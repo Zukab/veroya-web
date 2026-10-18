@@ -198,6 +198,7 @@ export function privacyPolicy(locale: Locale, owner: LegalOwner): LegalDocument 
           paragraphs: [
             "We do not share your data with third parties unless required by law. We use providers that process data on our behalf under contract: Supabase (database and files), Vercel (website hosting) and Resend (email delivery).",
             "If you contact us by WhatsApp, that conversation is handled by WhatsApp (Meta) under its own privacy policy.",
+            "The apartment maps are loaded from OpenStreetMap servers, which receive your IP address to deliver the map images. They do not set cookies.",
           ],
         },
         {
@@ -280,6 +281,7 @@ export function privacyPolicy(locale: Locale, owner: LegalOwner): LegalDocument 
         paragraphs: [
           "No cedemos tus datos a terceros salvo obligación legal. Usamos proveedores que los tratan por nuestra cuenta y con contrato: Supabase (base de datos y archivos), Vercel (alojamiento de la web) y Resend (envío de correos).",
           "Si nos contactas por WhatsApp, esa conversación la gestiona WhatsApp (Meta) según su propia política de privacidad.",
+          "Los mapas de los apartamentos se cargan desde los servidores de OpenStreetMap, que reciben tu dirección IP para enviar las imágenes del mapa. No instalan cookies.",
         ],
       },
       {
@@ -354,6 +356,7 @@ export function cookiesPolicy(locale: Locale): LegalDocument {
           title: "External websites",
           paragraphs: [
             "Google Maps and WhatsApp links open on their own websites, which use their own cookies under their own policies.",
+            "The apartment maps are images from OpenStreetMap and do not set cookies.",
           ],
         },
         {
@@ -389,6 +392,7 @@ export function cookiesPolicy(locale: Locale): LegalDocument {
         title: "Webs externas",
         paragraphs: [
           "Los enlaces a Google Maps y WhatsApp se abren en sus propias webs, que usan sus propias cookies según sus políticas.",
+          "Los mapas de los apartamentos son imágenes de OpenStreetMap y no instalan cookies.",
         ],
       },
       {
