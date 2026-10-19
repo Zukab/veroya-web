@@ -443,6 +443,30 @@
     "help": "¿Tienes alguna pregunta? Responde a este correo o escríbenos por WhatsApp al {phone}.",
     "signature": "El equipo de Euronest Apartamentos"
   },
+  "AccessEmail": {
+    "subject": "Datos de acceso a tu reserva {code} · Euronest Apartamentos",
+    "preheader": "Tu localizador y tu PIN para consultar la reserva.",
+    "title": "Datos de acceso a tu reserva",
+    "greeting": "Hola, {name}:",
+    "intro": "Te enviamos el localizador y el PIN de tu reserva. Con ellos puedes consultar su estado cuando quieras en «Mi reserva», en nuestra web.",
+    "details": "Datos de la reserva",
+    "code": "Localizador",
+    "pin": "PIN",
+    "status": "Estado",
+    "statuses": {
+      "Pendiente": "Pendiente de confirmar",
+      "Confirmada": "Confirmada",
+      "Cancelada": "Cancelada"
+    },
+    "apartment": "Alojamiento",
+    "city": "Ciudad",
+    "checkIn": "Entrada",
+    "checkOut": "Salida",
+    "statusButton": "Ver el estado de la reserva",
+    "statusNote": "Guarda este correo: el PIN no aparece en el voucher.",
+    "help": "¿Tienes alguna pregunta? Responde a este correo o escríbenos por WhatsApp al {phone}.",
+    "signature": "El equipo de Euronest Apartamentos"
+  },
   "Receipt": {
     "title": "Comprobante de pago",
     "issued": "Emitido el {date}",

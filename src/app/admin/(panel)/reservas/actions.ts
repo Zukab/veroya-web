@@ -15,6 +15,7 @@ import {
 } from "@/lib/bookings/codes";
 import { nightsBetween } from "@/lib/bookings/dates";
 import { stayDateErrors } from "@/lib/bookings/schema";
+import { sendAccessEmail } from "@/lib/email/access";
 import { sendConfirmationEmail } from "@/lib/email/confirmation";
 import { sendRequestReceivedEmail } from "@/lib/email/request-received";
 import type { Database } from "@/types/database";
@@ -179,6 +180,17 @@ export async function updateBooking(_previous: AdminFormState, formData: FormDat
 }
 
 // Envía (o reenvía) al huésped el correo de confirmación con el voucher.
+// Localizador y PIN por correo, en cualquier estado.
+export async function sendAccessDetails(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
+  await requireAdmin();
+  const id = String(formData.get("booking_id") ?? "");
+
+  const email = await sendAccessEmail(id);
+  return email.ok
+    ? { status: "success", message: `Localizador y PIN enviados a ${email.to}.` }
+    : errorState(`No se envió el correo. ${email.message}`);
+}
+
 export async function sendVoucherEmail(_previous: AdminFormState, formData: FormData): Promise<AdminFormState> {
   await requireAdmin();
   const id = String(formData.get("booking_id") ?? "");

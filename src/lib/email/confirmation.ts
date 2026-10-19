@@ -3,9 +3,10 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { loadVoucherData } from "@/lib/voucher/data";
 import { renderVoucherPdf, voucherFileName } from "@/lib/voucher/render";
 import { confirmationEmail } from "./confirmation-template";
-import { EmailNotConfiguredError, EmailSendError, ExampleAddressError, sendEmail } from "./resend";
+import { sendEmail } from "./resend";
+import { type EmailResult, emailErrorResult } from "./result";
 
-export type EmailResult = { ok: true; to: string } | { ok: false; message: string };
+export type { EmailResult };
 
 // Envía al huésped el correo de confirmación con el voucher en PDF y el enlace de
 // verificación, y anota confirmation_email_sent_at. Solo para reservas
@@ -40,27 +41,6 @@ export async function sendConfirmationEmail(bookingId: string): Promise<EmailRes
 
     return { ok: true, to: data.guest.email };
   } catch (error) {
-    if (error instanceof EmailNotConfiguredError) {
-      return {
-        ok: false,
-        message: "El envío de correos no está configurado (faltan RESEND_API_KEY y EMAIL_FROM).",
-      };
-    }
-    if (error instanceof ExampleAddressError) {
-      return { ok: false, message: "Es un correo de ejemplo (@example.com): no se envía." };
-    }
-    if (error instanceof EmailSendError) {
-      console.error("Correo: Resend rechazó el envío", error.status, error.message);
-      // Sin dominio verificado, Resend solo envía a la dirección de su cuenta.
-      if (error.status === 403) {
-        return {
-          ok: false,
-          message: `Resend no permite enviar a este destinatario todavía: hasta verificar el dominio solo envía a la dirección de la cuenta. (${error.message})`,
-        };
-      }
-      return { ok: false, message: `Resend no aceptó el envío: ${error.message}` };
-    }
-    console.error("Correo: error al enviar la confirmación", error);
-    return { ok: false, message: "No se pudo enviar el correo. Inténtalo de nuevo en unos minutos." };
+    return emailErrorResult(error, "la confirmación");
   }
 }

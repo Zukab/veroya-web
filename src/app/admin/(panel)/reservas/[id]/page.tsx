@@ -15,6 +15,7 @@ import { deleteBooking, deletePayment } from "../actions";
 import { readApartmentOptions, readConfirmedStays } from "../apartment-options";
 import { BookingForm } from "../booking-form";
 import { PaymentForm } from "../payment-form";
+import { SendAccessButton } from "../send-access-button";
 import { SendVoucherButton } from "../send-voucher-button";
 
 export const metadata: Metadata = { title: "Reserva" };
@@ -144,7 +145,12 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
                   sent={Boolean(booking.confirmation_email_sent_at)}
                 />
               )}
+              <SendAccessButton bookingId={booking.id} email={booking.user_email} />
             </div>
+            <p className="mt-3 text-xs text-stone-500">
+              «Enviar PIN por correo» manda al huésped el localizador y el PIN para consultar la
+              reserva en la web, en cualquier estado. El correo del voucher ya los incluye.
+            </p>
           </FormSection>
 
           <FormSection title="Pagos">

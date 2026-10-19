@@ -333,7 +333,10 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
    (`src/lib/email/request-received.ts`, con `after()` para no retrasar la respuesta; si
    falla solo se registra). Desde el 2026-10-19 también lo envían las reservas creadas en el
    panel como `Pendiente` (las creadas `Confirmada` reciben el de confirmación): el huésped
-   recibe siempre su PIN por correo, sea cual sea el estado.
+   recibe siempre su PIN por correo, sea cual sea el estado. Para reservas anteriores o si
+   el huésped lo pierde: botón «Enviar PIN por correo» en la sección «Voucher» de la ficha,
+   en cualquier estado (`src/lib/email/access.ts`, mensajes `AccessEmail`). Los errores de
+   envío del panel se explican en `src/lib/email/result.ts`.
 7. **Correo de confirmación:** al confirmar una reserva en el panel se envía un correo al
    huésped con el PDF adjunto y el enlace de verificación. Con huéspedes reales funciona
    solo cuando el dominio esté verificado en Resend.

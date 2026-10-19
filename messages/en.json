@@ -443,6 +443,30 @@
     "help": "Any questions? Reply to this email or message us on WhatsApp at {phone}.",
     "signature": "The Euronest Apartamentos team"
   },
+  "AccessEmail": {
+    "subject": "Access details for your booking {code} · Euronest Apartamentos",
+    "preheader": "Your booking reference and PIN to check your booking.",
+    "title": "Access details for your booking",
+    "greeting": "Hello {name},",
+    "intro": "Here are the booking reference and PIN for your booking. Use them to check its status at any time under “My booking” on our website.",
+    "details": "Booking details",
+    "code": "Booking reference",
+    "pin": "PIN",
+    "status": "Status",
+    "statuses": {
+      "Pendiente": "Awaiting confirmation",
+      "Confirmada": "Confirmed",
+      "Cancelada": "Cancelled"
+    },
+    "apartment": "Accommodation",
+    "city": "City",
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "statusButton": "View booking status",
+    "statusNote": "Keep this email: the PIN is not shown on the voucher.",
+    "help": "Any questions? Reply to this email or message us on WhatsApp at {phone}.",
+    "signature": "The Euronest Apartamentos team"
+  },
   "Receipt": {
     "title": "Payment receipt",
     "issued": "Issued on {date}",
