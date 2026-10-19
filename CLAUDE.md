@@ -331,7 +331,9 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
 6. **Acuse de recibo:** cada solicitud de la web (apartamento o `/solicitud`) envía al
    huésped un correo con el localizador, el PIN, los datos y el enlace de estado, sin voucher
    (`src/lib/email/request-received.ts`, con `after()` para no retrasar la respuesta; si
-   falla solo se registra). Las reservas creadas desde el panel no lo envían.
+   falla solo se registra). Desde el 2026-10-19 también lo envían las reservas creadas en el
+   panel como `Pendiente` (las creadas `Confirmada` reciben el de confirmación): el huésped
+   recibe siempre su PIN por correo, sea cual sea el estado.
 7. **Correo de confirmación:** al confirmar una reserva en el panel se envía un correo al
    huésped con el PDF adjunto y el enlace de verificación. Con huéspedes reales funciona
    solo cuando el dominio esté verificado en Resend.
@@ -340,8 +342,7 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
      «Enviar / Reenviar por correo» en la sección «Voucher» de la ficha.
    - Si el envío falla, la reserva se guarda igual y el panel explica el motivo (sin
      configurar, Resend sin dominio verificado, etc.).
-   - Incluye el localizador y el **PIN** (pedido el 2026-10-19: las reservas del panel no
-     envían acuse, así que este es el único correo con el PIN). El voucher sigue sin PIN.
+   - Incluye el localizador y el **PIN** (pedido el 2026-10-19). El voucher sigue sin PIN.
    - Código en `src/lib/email/`: `resend.ts` (API de Resend con `fetch`, sin SDK),
      `layout.ts` (diseño común), `confirmation-template.ts` (mensajes `ConfirmationEmail`) y
      `confirmation.ts` (`sendConfirmationEmail`, nunca lanza). Responder al correo llega al

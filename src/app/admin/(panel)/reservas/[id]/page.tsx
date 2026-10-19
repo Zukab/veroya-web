@@ -62,6 +62,7 @@ export default async function BookingPage({ params, searchParams }: PageProps<"/
           <Notice>
             Reserva creada.
             {correo === "enviado" && ` Correo de confirmación enviado a ${booking.user_email}.`}
+            {correo === "acuse" && ` Se envía a ${booking.user_email} un correo con el localizador y el PIN.`}
           </Notice>
         )}
         {correo === "fallido" && (

@@ -10,7 +10,8 @@ import { renderEmail } from "./layout";
 import { EmailNotConfiguredError, ExampleAddressError, sendEmail } from "./resend";
 
 // Acuse de recibo de una solicitud hecha en la web (formulario del apartamento o
-// solicitud general): localizador, PIN, datos y enlace de estado. Sin voucher: el
+// solicitud general) o creada como Pendiente en el panel: localizador, PIN, datos y
+// enlace de estado. Sin voucher: el
 // voucher llega al confirmar. Se envía después de responder al huésped (after());
 // si falla, solo se registra: la solicitud ya está guardada.
 export async function sendRequestReceivedEmail(bookingId: string) {

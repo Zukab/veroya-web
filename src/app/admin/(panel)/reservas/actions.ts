@@ -3,6 +3,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { refresh } from "next/cache";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { adminBookingSchema, paymentSchema, spanishFieldErrors } from "@/lib/admin/booking-schema";
 import { type AdminFormState, adminFieldErrors, errorState } from "@/lib/admin/form";
 import { requireAdmin } from "@/lib/auth/admin";
@@ -15,6 +16,7 @@ import {
 import { nightsBetween } from "@/lib/bookings/dates";
 import { stayDateErrors } from "@/lib/bookings/schema";
 import { sendConfirmationEmail } from "@/lib/email/confirmation";
+import { sendRequestReceivedEmail } from "@/lib/email/request-received";
 import type { Database } from "@/types/database";
 
 type Client = SupabaseClient<Database>;
@@ -109,11 +111,17 @@ export async function createBooking(_previous: AdminFormState, formData: FormDat
       .single();
 
     if (!error) {
-      // Creada ya confirmada: se envía el correo de confirmación con el voucher.
+      // Creada ya confirmada: correo de confirmación con el voucher. Pendiente: el
+      // mismo acuse que las solicitudes de la web (localizador y PIN), después de
+      // responder. Así el huésped recibe siempre su PIN.
       let email = "";
       if (booking.status === "Confirmada") {
         const result = await sendConfirmationEmail(data.id);
         email = `&correo=${result.ok ? "enviado" : "fallido"}`;
+      } else if (booking.status === "Pendiente") {
+        const id = data.id;
+        after(() => sendRequestReceivedEmail(id));
+        email = "&correo=acuse";
       }
       redirect(`/admin/reservas/${data.id}?creada=1${email}`);
     }
