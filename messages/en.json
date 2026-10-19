@@ -350,6 +350,7 @@
     "intro": "Your booking at {apartment} is confirmed. Your voucher is attached as a PDF: please show it with a valid ID on arrival.",
     "details": "Booking details",
     "code": "Booking reference",
+    "pin": "PIN",
     "apartment": "Accommodation",
     "address": "Address",
     "checkIn": "Check-in",

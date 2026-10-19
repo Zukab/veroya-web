@@ -31,6 +31,7 @@ export function confirmationEmail(data: VoucherData) {
     detailsTitle: t("details"),
     rows: [
       [t("code"), data.code],
+      [t("pin"), data.pin],
       [t("apartment"), apartmentLabel],
       ...(apartment.address ? ([[t("address"), fullAddress(apartment)]] as [string, string][]) : []),
       [t("checkIn"), t("checkInValue", { date: day(data.checkIn), time: settings.check_in_time })],

@@ -350,6 +350,7 @@
     "intro": "Tu reserva en {apartment} está confirmada. Te adjuntamos el voucher en PDF: preséntalo junto con un documento de identidad al llegar.",
     "details": "Datos de la reserva",
     "code": "Localizador",
+    "pin": "PIN",
     "apartment": "Alojamiento",
     "address": "Dirección",
     "checkIn": "Entrada",

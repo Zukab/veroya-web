@@ -340,6 +340,8 @@ Reglas aprobadas por el cliente (2026-10-13; la 3 cambió el 2026-10-16).
      «Enviar / Reenviar por correo» en la sección «Voucher» de la ficha.
    - Si el envío falla, la reserva se guarda igual y el panel explica el motivo (sin
      configurar, Resend sin dominio verificado, etc.).
+   - Incluye el localizador y el **PIN** (pedido el 2026-10-19: las reservas del panel no
+     envían acuse, así que este es el único correo con el PIN). El voucher sigue sin PIN.
    - Código en `src/lib/email/`: `resend.ts` (API de Resend con `fetch`, sin SDK),
      `layout.ts` (diseño común), `confirmation-template.ts` (mensajes `ConfirmationEmail`) y
      `confirmation.ts` (`sendConfirmationEmail`, nunca lanza). Responder al correo llega al

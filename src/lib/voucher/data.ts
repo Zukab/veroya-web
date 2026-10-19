@@ -17,6 +17,8 @@ export type { PaymentKind };
 export type VoucherData = {
   bookingId: string;
   code: string;
+  // Solo para el correo de confirmación: nunca se muestra en el voucher ni en el comprobante.
+  pin: string;
   status: Database["public"]["Enums"]["booking_status"];
   locale: "es" | "en";
   issuedAt: Date;
@@ -53,7 +55,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
     createAdminClient()
       .from("bookings")
       .select(
-        "id, booking_code, status, locale, user_name, user_email, guests, companions, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, latitude, longitude, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
+        "id, booking_code, booking_pin, status, locale, user_name, user_email, guests, companions, check_in, check_out, apartment_name, city_name, payment_terms, total_amount, verification_token, confirmation_email_sent_at, apartment:apartments(address, latitude, longitude, rooms, baths, size, beds_double, beds_single, sofa_beds, amenities, city:cities(name, country)), booking_payments(amount, paid_on, method, created_at)",
       )
       .eq("id", bookingId)
       .maybeSingle(),
@@ -73,6 +75,7 @@ export async function loadVoucherData(bookingId: string): Promise<VoucherData | 
   return {
     bookingId: booking.id,
     code: booking.booking_code,
+    pin: booking.booking_pin,
     status: booking.status,
     locale,
     issuedAt: new Date(),
